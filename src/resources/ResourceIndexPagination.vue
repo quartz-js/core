@@ -36,7 +36,6 @@ export default {
     created () {
         this._pagination =  this.pagination;
 
-        console.log(this._pagination.pages);
         if (this._pagination.page > this._pagination.pages) {
             this._pagination.page = this._pagination.pages;
             this.onChange();

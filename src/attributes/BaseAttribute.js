@@ -1,19 +1,50 @@
 export class BaseAttribute {
 
-	constructor(name)
+	constructor(name, options)
 	{	
 		var self = this;
 
 		this.name = name;
 		this.label = name;
+		this.column = name;
+
+		if (options && options.column) {
+			this.column = options.column;
+		}
+
 		this.mutator = function(value) {
 			return value;
 		};
 		this.extractor = function(resource) {
-			return resource[self.name];
+			return resource[self.column];
+		};
+		this.injector = function(resource, value) {
+			resource[self.column] = value;
+
+			return resource;
 		};
 	}
 
+	/**
+	 * @param {string} description
+	 *
+	 * @return this
+	 */
+	setDescription(description)
+	{
+		this.description = description;
+
+		return this;
+	}
+
+	/**
+	 * @return {string}
+	 */
+	getDescription()
+	{
+		return this.description;
+	}
+	
 	/**
 	 * @param {string} name
 	 *
@@ -87,6 +118,18 @@ export class BaseAttribute {
 	}
 
 	/**
+	 * @param {Callable} injector
+	 *
+	 * @return this
+	 */
+	setInjector(injector)
+	{
+		this.injector = injector;
+
+		return this;
+	}
+
+	/**
 	 * @return {Callable}
 	 */
 	getExtractor()
@@ -97,10 +140,46 @@ export class BaseAttribute {
 	/**
 	 * Extract value from resource
 	 *
+	 * @param {object} resource
+	 *
 	 * @return mixed
 	 */
 	extractValue(resource)
 	{
+		return this.extractor(resource);
+	}
+
+	/**
+	 * Extract value from resource in a readable format
+	 *
+	 * @param {object} resource
+	 *
+	 * @return mixed
+	 */
+	extractReadableValue(resource)
+	{
 		return this.mutator(this.extractor(resource));
 	}
+
+	/**
+	 * Inject value from resource
+	 *
+	 * @param {object} resource
+	 * @param {mixed} value
+	 *
+	 * @return mixed
+	 */
+	injectValue(resource, value)
+	{
+		return this.injector(resource, value);
+	}
+
+	/**
+	 * @return {Callable}
+	 */
+	load(resources)
+	{
+		return null;
+	}
+
 }

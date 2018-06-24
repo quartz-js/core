@@ -1,0 +1,53 @@
+
+
+.fluid-center {
+    align-items:center;
+    justify-content:center;
+
+}
+
+.fill {
+    flex-grow: 1;
+}
+
+.fluid {
+    display: flex;
+}
+
+.full-height {
+    min-height: 100vh;
+}
+
+
+
+
+.fluid {
+  display: flex;
+}
+
+.fluid-vcenter {
+  align-items: center;
+}
+
+.fluid-fill, .fill {
+  flex-grow: 1;
+}
+
+
+.fluid-center {
+    align-items:center;
+    justify-content:center;
+}
+
+
+.fluid-wrap {
+    flex-wrap: wrap;
+}
+
+.fluid-right {
+    justify-content: flex-end;
+}
+
+.full-height {
+    min-height: 100vh;
+}

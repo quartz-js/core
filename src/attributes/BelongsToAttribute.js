@@ -3,13 +3,34 @@ import { BaseAttribute } from './BaseAttribute'
 export class BelongsToAttribute extends BaseAttribute 
 {
 
-	constructor(name, api)
+	constructor(name, api, options)
 	{	
-		super(name);
+		super(name, options);
+		var self = this;
+		
 		this.api = api;
 		this.query = function(key) { 
 			return "name ct '"+key+"'";
 		};
+		this.mutator = function(value) {
+			return value ? value.name : null;
+		};
+
+		this.injector = function(resource, value) {
+			resource[self.name] = value;
+
+			return resource;
+		};
+		
+
+		this.extractor = (resource => {
+			return typeof resource[this.getRelationName()] !== "undefined" ? resource[this.getRelationName()] : null;
+		});
+	}
+
+	getRelationName()
+	{
+		return this.name + "_relation";
 	}
 
 	/**
@@ -67,5 +88,18 @@ export class BelongsToAttribute extends BaseAttribute
 		return resource.name;
 	}
 
+	/**
+	 * @return {Callable}
+	 */
+	load(resources)
+	{
+		console.log(resources);
+		var ids = resources.map(resource => { return resource[this.column]}).join(",");
+		return this.api.index({query: ids ? "id in ("+ids+")" : ""}).then(response => {
+			resources.map(resource => {
+				resource[this.getRelationName()] = response.body.resources.find(b_resource => { return b_resource.id == resource[this.column] });
+			});
+		});
+	}
 
 }

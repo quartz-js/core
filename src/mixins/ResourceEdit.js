@@ -1,9 +1,18 @@
-
+import { ResourceBase } from './ResourceBase'
+var _ = require('lodash');
 
 export var ResourceEdit = {
-    props: ['value'],
+    props: ['config', 'value'],
     components: {
 
+    },
+    mixins: [
+        ResourceBase
+    ],
+    computed: {
+        render() {
+            return [this.resource];
+        }
     },
     data () {
         return {
@@ -14,21 +23,19 @@ export var ResourceEdit = {
             syncing: false,
             error: false,
             resource: null,
-            form: {},
-            old_form: {},
             errors: [],
-            timeout: null,
-            skip: false,
+        }
+    },
+    watch: {
+        resource: {
+            handler: function(val, oldVal) {
+                this.$emit("update", val);
+            },
+            deep: true,
         }
     },
     methods: {
-
-        getAttribute(name) {
-            return this.attributes.find(function(attribute) {
-                return attribute.name === name;
-            });
-        },
-
+        
         /**
          * Load data
          *
@@ -38,17 +45,37 @@ export var ResourceEdit = {
             var self = this
                 
             this.manager.show(this.id).then(response => {
-                self.resource = response.body.resource;
-                self.old_form = JSON.parse(JSON.stringify(this.resource));
-                self.form = self.data;
-                this.$emit("input", self.resource);
+
+                this.handleResponse(response);
+
             }).catch(response => {
-                if (response.code == 'NOT-FOUND') {
-                    self.data = 0
-                }
+                self.resource = 0;
                 // self.$notify(response.message, 'error');
             })
         },
+
+        /**
+         * Handle response
+         *
+         * @param {object} response
+         *
+         * @return void
+         */
+        handleResponse(response) {
+
+            var self = this;
+            var resource = response.body.resource;
+            var promises = this.attributes.map(attribute => {
+                return attribute.load([resource]);
+            });
+
+            Promise.all(promises).then(function() {
+                self.resource = response.body.resource;
+            }).catch(response => {
+                // ... Some sort of error
+            });
+        },
+
         /**
          * Save data
          *
@@ -57,43 +84,58 @@ export var ResourceEdit = {
         save () {
             var self = this
 
-            this.manager.update(this.id, this.resource).then(response => {
-                self.syncing = false
-                self.resource = response.body.resource;
-                self.errors = [];
-                self.form = self.data;
-                self.old_form = JSON.parse(JSON.stringify(this.resource));
-                self.editing = false;
-                this.$emit("input", self.resource);
+            var params = {};
+
+            self.attributes.map(attribute => {
+                return params[attribute.name] = self.resource[attribute.name];
+            });
+
+            var params1 = {};
+            
+            _.forEach(params, function(value, key) {
+              _.set(params1, key, value);
+            });
+
+            this.manager.update(this.id, params1).then(response => {
+                this.syncing = false
+                this.errors = [];
+                this.editing = false;
+                this.handleResponse(response);
+
             }).catch(response => {
-                self.syncing = false
+                self.syncing = false;
                 self.errors = response.body.errors
             });
         },
         
-        remove: function(id) {
+        /**
+         * Remove resource
+         *
+         * @return void
+         */
+        remove: function() {
 
-            this.manager.remove(id).then(response => {
-
-                this.$notify(response.message, 'success')
-
-            }).then(response => {
-                this.load(null);
+            this.manager.remove(this.id).then(response => {
+                this.$router.push({name: this.config.route + ".index"});
             }).catch(response => {
-                this.$notify(response.message, 'error')
+                alert('uhm...');
             });
         },
         
-
-        hideModal () {
-            this.$refs.delete.hide()
+        /**
+         * Hide modals remove resource
+         *
+         * @return void
+         */
+        hideRemoveModal (ref) {
+            this.$refs[ref].hide()
         },
     },
-    created () {
-
-    },
     mounted () {
-        this.id = this.$route.params.id;
+
+        this.initConfig();
+
+        this.id = this.config.getKeyByRoute(this.$route.params);
         this.manager && this.show();
     }
 }

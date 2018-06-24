@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class='form-group' v-bind:class="{error: error}">
-            <input type='text' class='form-control' placeholder=' ' v-model='_value' v-on:input="onChange()">
+            <input type='number' min="0" step="1" class='form-control' placeholder=' ' v-model='rawValue' v-on:input="onChange()" autocomplete="off">
             <span class="form-highlight"></span>
             <label>{{ attribute.label }}</label>
         </div>
-
+        <div class='description'>{{ $t(attribute.description) }}</div>
         <div class="error" v-if="error">{{ $t("API_" + error.code) }}&nbsp;</div>
     </div>
 </template>
@@ -15,10 +15,15 @@ export default {
     props: ['value', 'error', 'attribute', 'errors'],
     methods: {
         onChange: function() {
-
-            this.$emit("input", this._value);
+            this.attribute.injectValue(this.value, this.rawValue);
+            this.$emit("input", this.rawValue);
         },
        
+    },
+    data() {
+        return {
+            rawValue: null,
+        }
     },
     mounted() {
             
@@ -31,7 +36,8 @@ export default {
         }
     },
     created () {
-        this._value =  this.value;
+        this.rawValue = this.attribute.extractValue(this.value);
+
         if (!this.attribute.label) {
             this.attribute.label = this.$t(this.attribute.name);
         }

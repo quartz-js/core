@@ -2,23 +2,18 @@
     <div>
         <div v-on-clickaway="fade" class='select'>
             <div class='form-group ' v-bind:class="{error: error}" >
-                <input type='hidden' v-model='_value' v-on:input="onChangeValue()">
-                <input type='text' class='form-control' placeholder=' ' v-model='query' v-on:focus="visible = true;onChange()" v-on:input="onChange()">
+                <input type='hidden' v-model='rawValue' v-on:input="onChangeValue()">
+                <input type='text' class='form-control' placeholder=' ' v-model='query' v-on:focus="visible = true;onChange()" v-on:blur="hide" v-on:input="onChange()">
                 <span class="form-highlight"></span>
                 <label>{{ attribute.label }}</label>
             </div>
 
             <div v-if='visible' class='paper window'>
-                <div v-if='data'>
-                    <div v-for='resource in data.resources' class='nav-link text-link text-link-router' v-on:click="onSelect(resource)">
-                        {{ attribute.getLabelByResource(resource) }}
-                    </div>
-                    <div class='info'>
-                        {{ data.pagination.total }} results
-                    </div>
+                <div v-for='option in resources' class='nav-link text-link text-link-router' v-on:click="onSelect(option)">
+                    {{ option.label }}
                 </div>
-                <div v-else class="content">
-                    Loading...
+                <div class='info'>
+                    {{ total }} results
                 </div>
             </div>
         </div>
@@ -30,20 +25,21 @@
 import { mixin as clickaway } from 'vue-clickaway';
 
 export default {
-    props: ['value', 'attribute', 'errors'],
+    props: ['value', 'attribute', 'error', 'errors'],
     mixins: [ clickaway ],
     data: function() {
         return {
-            error: null,
             visible: false,
-            data: null,
+            resources: null,
             query: null,
+            rawValue: null,
+            total: 0,
         }
     },
 
     methods: {
         onChangeValue: function() {
-            // this.$emit("input", this._value);
+            // this.$emit("input", this.rawValue);
         },
 
         onChange: function() {
@@ -53,31 +49,38 @@ export default {
             clearTimeout(self.timeout);
             self.timeout = setTimeout(self.onLoad, 100)
 
-
         },
 
-        onSelect: function(resource) {
-            this.query = this.attribute.getLabelByResource(resource);
-            this._value = resource.id;
-            this.$emit("input", this._value);
+        onSelect: function(option) {
+            this.query = option.label;
+            this.rawValue = option.value;
+
+
+            this.attribute.injectValue(this.value, option.value);
+
+
+            this.$emit("input", this.rawValue);
             this.fade();
         },
 
+        hide: function() {
+            var self = this;
+            setTimeout(function() {
+                self.visible = false;
+            }, 100);
+        },
         onLoad: function() {
 
-            var query = this.query ? this.attribute.executeQuery(this.query) : '';
+            var self = this;
+            var query = this.query;
 
-            this.attribute.api.index({show: 5, query: query}).then(response => {
-                this.data = response.body;
+            var totals = query ? this.attribute.options.filter(function(value) {
+                return value.label.includes(query);
+            }) : this.attribute.options;
 
-                this.error = null;
+            this.total = totals.length;
+            this.resources = totals.slice(0, 10);
 
-                if (this.data.resources.length === 0) {
-                    this.error = {
-                        code: "NOT_FOUND"
-                    };
-                }
-            });
         },
         fade: function() {
             this.visible = false;
@@ -100,18 +103,21 @@ export default {
     },
     created () {
 
-        this._value =  this.value;
         var self = this;
 
         if (!this.attribute.label) {
             this.attribute.label = this.$t(this.attribute.name);
         }
 
-        if (this._value) {
-            this.attribute.api.show(this._value).then(response => {
-                this.query = this.attribute.getLabelByResource(response.body.resource);
-            })
+        var option = this.attribute.extractValue(this.value);
+
+        this.rawValue = null;
+        
+        if (option) {
+            this.query = option.label;
+            this.rawValue = option.value;
         }
+
 
     }
 }

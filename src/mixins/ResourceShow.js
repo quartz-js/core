@@ -1,4 +1,9 @@
+import { ResourceBase } from './ResourceBase'
+
 export var ResourceShow = {
+    mixins: [
+        ResourceBase
+    ],
     data: function() {
         return {
             resource: null,
@@ -31,6 +36,10 @@ export var ResourceShow = {
                 // handle 404
             });
         }
+    },
+    created() {
+
+        this.initConfig();
     },
     mounted() {
         var self = this;

@@ -1,11 +1,11 @@
-import ResourceIndexPagination from '../components/Resources/ResourceIndexPagination.vue'
-import ResourceIndexQuery from '../components/Resources/ResourceIndexQuery.vue'
+import { ResourceBase } from './ResourceBase'
 
 export var ResourceIndex = {
     components: {
-        ResourceIndexPagination,
-        ResourceIndexQuery
     },
+    mixins: [
+        ResourceBase
+    ],
     data: function() {
         return {
             pagination: {
@@ -15,7 +15,7 @@ export var ResourceIndex = {
             },
             query: '',
             manager: null,
-            cols: {},
+            cols: [],
             data: null,
             form: {},
             params: null,
@@ -25,7 +25,9 @@ export var ResourceIndex = {
                 search: null
             },
             timeout: null,
-            selected: []
+            sort: {},
+            selected: [],
+            loading: false,
         }
     },
     computed: {
@@ -48,14 +50,38 @@ export var ResourceIndex = {
         },
         cols: {
             handler: function(val, oldVal) {
-                this.$localStorage.set(this.manager.getFullUrl()+'.cols', JSON.stringify(val))
+                this.$localStorage.set(this.config.manager.getFullUrl()+'.cols', JSON.stringify(val))
             },
             deep: true
         }
     },
     methods: {
+
+        /**
+         * Get attribute by name
+         *
+         * @param {string} name
+         *
+         * @return {BaseAttribute}
+         */
+        getAttribute(name) {
+            return this.attributes.find(function(attribute) {
+                return attribute.name === name;
+            });
+        },
+        getAttributes(names) {
+
+            return this.attributes.filter(function(attribute) {
+                return names.indexOf(attribute.name) !== -1;
+            });
+        },
         onChangePagination: function(pagination){
             this.pagination = pagination;
+            this.load();
+        },
+        onSort: function(key, direction){
+            this.sort.name = key;
+            this.sort.value = direction;
             this.load();
         },
         updateAllSelected($event) {
@@ -67,7 +93,6 @@ export var ResourceIndex = {
         },
         onChangeQuery: function(query){
 
-            console.log(query);
             if (this.query == query) {
                 return
             }
@@ -89,6 +114,12 @@ export var ResourceIndex = {
         onSearch: function() {
 
         },
+        isAttributeListable: function(attribute) {
+            return this.listable.indexOf(attribute.name) !== -1;
+        },
+        showAttribute: function(attribute) {
+            return this.isAttributeListable(attribute) && this.cols.find(col => { return col.value === attribute.name}).enabled;
+        },
 
         /**
          * Load data
@@ -97,9 +128,8 @@ export var ResourceIndex = {
          */
         load: function(params) {
             
-            var manager = this.manager;
-            var self = this
-            this.params = params
+            var manager = this.config.manager;
+            this.params = params;
             this.$router.push({
                 query: {
                     query: this.query,
@@ -108,27 +138,49 @@ export var ResourceIndex = {
                 }
             })
 
+
+            this.loading = true;
+
             this.selected = [];
 
             manager.index({
                 query: this.query,
                 show: this.pagination.show,
-                page: this.pagination.page
+                page: this.pagination.page,
+                sort_field: this.sort.name,
+                sort_direction: this.sort.value,
             }).then(response => {
+                var self = this;
+                this.errors.search = null
+                this.pagination.pages = response.body.pagination.pages;
+                this.pagination.page = response.body.pagination.page;
+                this.sort = response.body.sort[0];
+                this.loading = false;
 
-                self.errors.search = null
-                self.data = response.body;
-                self.pagination.pages = response.body.pagination.pages;
-                self.pagination.page = response.body.pagination.page;
+                var promises = this.attributes.map(attribute => {
+                    return attribute.load(response.body.resources);
+                });
 
-            }).catch(response => {
+                Promise.all(promises).then(function() {
+                    self.data = response.body;
+                }).catch(response => {
+                    this.$notify(response.message, 'error')
+                });
 
-                if (response.body.code === 'QUERY_SYNTAX_ERROR') {
-                    self.errors.search = response.body.message;
+
+
+            })/*.catch(response => {
+
+                if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
+                    this.errors.search = response.body.message;
                 }
 
-                self.$notify(response.body.message, 'error')
-            });
+                this.data = null;
+                this.loading = false;
+            }).then(response => {
+            });*/
+
+
         },
 
         removeSelected: function() {
@@ -150,30 +202,35 @@ export var ResourceIndex = {
             });
         },
 
-        hideModal () {
-            this.$refs.delete.hide()
+        hideModal (ref) {
+            this.$refs[ref].hide()
         },
     },
     created: function(){
         var self = this;
 
+        this.initConfig();
 
-        this.query = this.$route.query.query ? this.$route.query.query : "created_at > '2018-01-01'";
+        this.query = this.$route.query.query ? this.$route.query.query : "";
         this.pagination.show = this.$route.query.show ? parseInt(this.$route.query.show) : 10;
         this.pagination.page = this.$route.query.page ? parseInt(this.$route.query.page) : 1;
     },
     mounted: function() {
-    
+        
+
+        if (!this.config.manager) {
+            return null;
+        }
+
         this.load(null);
 
-        
         try {
-            var cols = JSON.parse(this.$localStorage.get(this.manager.getFullUrl()+'.cols'));
+            var cols = JSON.parse(this.$localStorage.get(this.config.manager.getFullUrl()+'.cols'));
 
             for (var x in cols) {
-                this.cols[x].enabled = cols[x].enabled;
-
+                this.cols.find(c => { return c.value === cols[x].value; }).enabled = cols[x].enabled;
             }
+
         } catch (e) {
 
         }

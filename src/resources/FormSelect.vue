@@ -2,8 +2,8 @@
     <div>
         <div v-on-clickaway="fade" class='select'>
             <div class='form-group ' v-bind:class="{error: error}" >
-                <input type='hidden' v-model='_value' v-on:input="onChangeValue()">
-                <input type='text' class='form-control' placeholder=' ' v-model='query' v-on:focus="visible = true;onChange()" v-on:input="onChange()">
+                <input type='hidden' v-model='rawValue' v-on:input="onChangeValue()">
+                <input type='text' class='form-control' placeholder=' ' v-model='query' v-on:focus="visible = true;onChange()" v-on:blur="hide" v-on:input="onChange()">
                 <span class="form-highlight"></span>
                 <label>{{ attribute.label }}</label>
             </div>
@@ -32,13 +32,14 @@ export default {
             visible: false,
             resources: null,
             query: null,
+            rawValue: null,
             total: 0,
         }
     },
 
     methods: {
         onChangeValue: function() {
-            // this.$emit("input", this._value);
+            // this.$emit("input", this.rawValue);
         },
 
         onChange: function() {
@@ -48,16 +49,26 @@ export default {
             clearTimeout(self.timeout);
             self.timeout = setTimeout(self.onLoad, 100)
 
-
         },
 
         onSelect: function(option) {
             this.query = option.label;
-            this._value = option.value;
-            this.$emit("input", this._value);
+            this.rawValue = option.value;
+
+
+            this.attribute.injectValue(this.value, option.value);
+
+
+            this.$emit("input", this.rawValue);
             this.fade();
         },
 
+        hide: function() {
+            var self = this;
+            setTimeout(function() {
+                self.visible = false;
+            }, 100);
+        },
         onLoad: function() {
 
             var self = this;
@@ -68,7 +79,7 @@ export default {
             }) : this.attribute.options;
 
             this.total = totals.length;
-            this.resources = totals.slice(0, 3);
+            this.resources = totals.slice(0, 10);
 
         },
         fade: function() {
@@ -92,21 +103,19 @@ export default {
     },
     created () {
 
-        this._value =  this.value;
         var self = this;
 
         if (!this.attribute.label) {
             this.attribute.label = this.$t(this.attribute.name);
         }
 
-        if (this._value) {
-            var res = this.attribute.options.filter(function(option) {
-                return option.value === self._value;
-            });
+        var option = this.attribute.extractValue(this.value);
 
-            if (res.length > 0) {
-                this.query = res[0].label;
-            }
+        this.rawValue = null;
+        
+        if (option) {
+            this.query = option.label;
+            this.rawValue = option.value;
         }
 
 
