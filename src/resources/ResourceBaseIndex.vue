@@ -109,11 +109,11 @@
 
 <script>
 
-import { ResourceIndex } from 'railken-vue-admin-core/src/mixins/ResourceIndex'
+import { ResourceIndex } from '../mixins/ResourceIndex'
 import NoResults from '../components/NoResults'
-import { ResourceIndexPagination } from './ResourceIndexPagination'
-import { ResourceIndexQuery } from './ResourceIndexQuery'
-import { ResourceIndexSort } from './ResourceIndexSort'
+import ResourceIndexPagination from './ResourceIndexPagination'
+import ResourceIndexQuery from './ResourceIndexQuery'
+import ResourceIndexSort from './ResourceIndexSort'
 
 require('pretty-checkbox/dist/pretty-checkbox.min.css');
 export default {

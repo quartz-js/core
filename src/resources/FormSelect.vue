@@ -9,7 +9,7 @@
             </div>
 
             <div v-if='visible' class='paper window'>
-                <div v-for='option in resources' class='nav-link text-link text-link-router' v-on:click="onSelect(option)">
+                <div v-for='option in resources' class='select-link text-link text-link-router' v-on:click="onSelect(option)">
                     {{ option.label }}
                 </div>
                 <div class='info'>
@@ -147,5 +147,14 @@ export default {
         font-size: 11px;
         padding: 20px;
         border-top: 1px solid #efefef;
+    }
+
+    .select-link {
+        padding: 15px 20px;
+    }
+
+    .select-link:hover {
+        background: #616ad9;
+        color: white;
     }
 </style>

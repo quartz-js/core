@@ -10,7 +10,7 @@
 
             <div v-if='visible' class='paper window'>
                 <div v-if='data'>
-                    <div v-for='resource in data.resources' class='nav-link text-link text-link-router' v-on:click="onSelect(resource)">
+                    <div v-for='resource in data.resources' class='select-link text-link text-link-router' v-on:click="onSelect(resource)">
                         {{ attribute.getLabelByResource(resource) }}
                     </div>
                     <div class='info'>
@@ -140,5 +140,14 @@ export default {
         font-size: 11px;
         padding: 20px;
         border-top: 1px solid #efefef;
+    }
+
+    .select-link {
+        padding: 15px 20px;
+    }
+
+    .select-link:hover {
+        background: #616ad9;
+        color: white;
     }
 </style>
