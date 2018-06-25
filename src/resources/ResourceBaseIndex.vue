@@ -40,7 +40,7 @@
 
                             <table class='table' v-if='attributes'>
                                 <tr>
-                                    <td> 
+                                    <td class="table-column-select"> 
                                         <div class="pretty p-default">
                                             <input type="checkbox" v-on:change="updateAllSelected($event)"/>
                                             <div class="state p-primary-o">
@@ -141,5 +141,9 @@ export default {
 <style scoped>
     .resource-index-head {
         padding: 30px 30px 10px 30px;
+    }
+
+    .table-column-select {
+        width: 60px;
     }
 </style>
