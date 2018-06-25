@@ -7,16 +7,4 @@ export class WorkApi extends ResourceApi
 {
 	resource_url = "/admin/works";
 
-	/**
-	 * renderTemplate
-	 *
-	 * @param {Object} params
-	 *
-	 * @return {Promise}
-	 */
-	renderTemplate(params)
-	{
-		return Vue.http.post(this.getFullUrl() + "/render", params, { headers: { Authorization: "Bearer "+this.access_token }});
-	}
-
 };
