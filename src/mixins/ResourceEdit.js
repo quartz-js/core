@@ -83,20 +83,9 @@ export var ResourceEdit = {
          */
         save () {
             var self = this
-
             var params = {};
 
-            self.attributes.map(attribute => {
-                return params[attribute.name] = self.resource[attribute.name];
-            });
-
-            var params1 = {};
-            
-            _.forEach(params, function(value, key) {
-              _.set(params1, key, value);
-            });
-
-            this.manager.update(this.id, params1).then(response => {
+            this.manager.update(this.id, self.resource).then(response => {
                 this.syncing = false
                 this.errors = [];
                 this.editing = false;

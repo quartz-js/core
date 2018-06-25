@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export class BaseAttribute {
 
 	constructor(name, options)
@@ -16,10 +18,10 @@ export class BaseAttribute {
 			return value;
 		};
 		this.extractor = function(resource) {
-			return resource[self.column];
+			return _.get(resource, self.column);
 		};
 		this.injector = function(resource, value) {
-			resource[self.column] = value;
+			_.set(resource, self.column, value);
 
 			return resource;
 		};
