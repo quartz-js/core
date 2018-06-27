@@ -28,7 +28,7 @@ export class UserApi
 	 */
 	signIn(params)
 	{
-		return Vue.http.post(this.url+"/sign-in", params);
+		return Vue.http.post(this.url+"/auth/sign-in", params);
 	}
 
 	/**
@@ -81,7 +81,7 @@ export class UserApi
 	 */
 	getUser(access_token)
 	{
-		return Vue.http.get(this.url+"/user", { headers: {
+		return Vue.http.get(this.url+"/account", { headers: {
             Authorization: "Bearer "+access_token
         }});
 	}
