@@ -10,10 +10,7 @@ export var ResourceCreate = {
             attributes: [],
             manager: null,
             error: false,
-            resource: {
-
-                name: null,
-            },
+            resource: {},
             route: null,
             errors: [],
         }

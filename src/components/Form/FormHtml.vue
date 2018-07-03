@@ -32,38 +32,28 @@ export default {
             doc: null,
             options: {
                 tabSize: 2,
-                mode: 'application/ld+json',
+                mode: 'text/html',
                 theme: 'material',
+                showInvisibles: true,
                 lineNumbers: true,
-                line: true,
                 lineWrapping: true,
+                line: true,
                 autoCloseBrackets: true,
-            }
+            },
         }
     },
 
     methods: {
 
-        isJson(test)
-        {
-            try {
-                JSON.parse(test);
-                return true;
-            } catch (e) {
-                return false;
-            }
-        },
 
         fix()
         {
-            this.rawValue = this.beautify(this.rawValue);
+            this.rawValue = this.rawValue;
         },
 
         beautify(text)
         {
-            var beautify_js = require('js-beautify').js_beautify; 
-
-            return text ? beautify_js(text, { indent_size: 4 }) : '';
+            return text;
         },
 
         onCursorActivity($event)
@@ -73,25 +63,17 @@ export default {
 
         onInput($event)
         {
-            if (this.isJson($event)) {
+            this.$emit("input", $event);
+            // $event = this.beautify($event);
 
-                this.$emit("input", JSON.parse($event));
-                // $event = this.beautify($event);
+            var pos_original = this.doc.getCursor();
 
-                var pos_original = this.doc.getCursor();
-
-                // this.rawValue = $event;
-                // var pos_new = this.doc.getCursor();
-                // console.log(pos_original.line, pos_original.ch);
-                // this.doc.setCursor(pos_original.line, pos_original.ch);
-            }
 
             // 
         }
     },
     created() {
-        this.rawValue = JSON.stringify(this.value);
-        this.rawValue = this.beautify(this.rawValue);
+        this.rawValue = this.beautify(this.value);
     }
 }
 

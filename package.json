@@ -11,11 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cm-show-invisibles": "^2.0.2",
+    "json-formatter-js": "^2.2.0",
     "less": "^2.7.2",
     "vue": "^2.2.4",
     "vue-resource": "^1.2.1",
-    "vuex": "^2.2.1",
-    "json-formatter-js": "^2.2.0"
+    "vuex": "^2.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",
