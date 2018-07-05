@@ -28,7 +28,7 @@ export class UserApi
 	 */
 	signIn(params)
 	{
-		return Vue.http.post(this.url+"/auth/sign-in", params);
+		return Vue.http.post(this.url+"/auth", params);
 	}
 
 	/**
