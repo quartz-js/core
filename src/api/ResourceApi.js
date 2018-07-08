@@ -17,6 +17,13 @@ export class ResourceApi
 		}
 	}
 
+	setParams(params) 
+	{
+		this.params = params;
+
+		return this;
+	}
+
 	getFullUrl()
 	{
 		return this.url+this.resource_url;

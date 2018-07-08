@@ -15,6 +15,11 @@
 		margin: 50px 0;
 	}
 
+	.ct img{
+
+		max-height: 300px;
+	}
+
 	h4 {
 		margin-top: 20px;
 

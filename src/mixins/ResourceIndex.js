@@ -50,7 +50,7 @@ export var ResourceIndex = {
         },
         cols: {
             handler: function(val, oldVal) {
-                this.$localStorage.set(this.config.manager.getFullUrl()+'.cols', JSON.stringify(val))
+                this.$localStorage.set(this.config.getIdentification()+'.cols', JSON.stringify(val))
             },
             deep: true
         }
@@ -144,7 +144,7 @@ export var ResourceIndex = {
             this.selected = [];
 
             manager.index({
-                query: this.query,
+                query: this.config.getFinalQuery(this.query),
                 show: this.pagination.show,
                 page: this.pagination.page,
                 sort_field: this.sort.name,
@@ -208,7 +208,6 @@ export var ResourceIndex = {
     },
     created: function(){
         var self = this;
-
         this.initConfig();
 
         this.query = this.$route.query.query ? this.$route.query.query : "";
@@ -218,6 +217,8 @@ export var ResourceIndex = {
     mounted: function() {
         
 
+
+
         if (!this.config.manager) {
             return null;
         }
@@ -225,7 +226,7 @@ export var ResourceIndex = {
         this.load(null);
 
         try {
-            var cols = JSON.parse(this.$localStorage.get(this.config.manager.getFullUrl()+'.cols'));
+            var cols = JSON.parse(this.$localStorage.get(this.config.getIdentification()+'.cols'));
 
             for (var x in cols) {
                 this.cols.find(c => { return c.value === cols[x].value; }).enabled = cols[x].enabled;

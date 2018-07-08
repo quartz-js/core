@@ -1,53 +1,57 @@
 <template>
     <div>
         <div v-if='resource !== 0 && resource !== null'>
-
             <div class='fluid'>
-                 <div class='page-section paper'>
-                    <div class='fluid-fill content relative'>
-                        <div class='content' v-bind:class="{ 'container-fields-editing': editing}">
 
-                            <h3>{{ config.title }} #{{ resource.id }}</h3>
+                <slot name="main" :resource="resource">
+                     <div class='page-section paper'>
+                        <div class='fluid-fill content relative'>
+                            <div class='content' v-bind:class="{ 'container-fields-editing': editing}">
 
-                            <div>
-                                <div v-if='errors.length > 0'>
-                                    <br>
-                                    <ul  class='alert alert-danger'>
-                                        An error has occurred<br>
-                                        <span v-for='error in errors'>
-                                            - <b>{{ error.label }}</b>: {{ error.message }}<br>
-                                        </span>
-                                    </ul>
-                                </div>
-                                <div v-if='!shouldEdit()'>
+                                <h3>{{ config.title }} #{{ resource.id }}</h3>
 
-                                    <div class='button-edit'>
-                                        <button class='btn btn-sm btn-primary' v-on:click="$router.push({name: config.route + '.index'})"><i class='fa fa-list'></i></button>
-                                        <slot name="buttons" v-bind:resource="resource"></slot>
-                                        <button class='btn btn-sm btn-danger' v-b-modal="'delete-'+config.route" v-if="config.remove === true"><i class='fa fa-trash'></i></button>
-                                        <button class='btn btn-sm btn-primary' v-on:click="editing = true" v-if="config.update === true"><i class='fa fa-pencil-alt'></i></button>
+                                <div>
+                                    <div v-if='errors.length > 0'>
+                                        <br>
+                                        <ul  class='alert alert-danger'>
+                                            An error has occurred<br>
+                                            <span v-for='error in errors'>
+                                                - <b>{{ error.label }}</b>: {{ error.message }}<br>
+                                            </span>
+                                        </ul>
+                                    </div>
+                                    <div v-if='!shouldEdit()'>
+
+                                        <div class='button-edit'>
+                                            <button class='btn btn-sm btn-primary' v-on:click="$router.push({name: config.route + '.index'})"><i class='fa fa-list'></i></button>
+                                            <slot name="buttons" v-bind:resource="resource"></slot>
+                                            <button class='btn btn-sm btn-danger' v-b-modal="'delete-'+config.route" v-if="config.remove === true"><i class='fa fa-trash'></i></button>
+                                            <button class='btn btn-sm btn-primary' v-on:click="editing = true" v-if="config.update === true"><i class='fa fa-pencil-alt'></i></button>
+
+                                        </div>
+                                        <slot name='show' v-bind:getAttribute="getAttribute" v-bind:resource="resource" v-bind:errors="errors"></slot>
+                                    </div>
+                                    <div v-if='shouldEdit()'>
+                                        <div class='fix-spacing'></div>
+                                        <div class='button-edit' >
+                                            <button class='btn btn-sm btn-primary' v-on:click="save()"><i class='fa fa-save'></i></button>
+                                            <button v-if="!alwaysEdit()" class='btn btn-sm btn-primary' v-on:click="editing = false"><i class='fa fa-times'></i></button>
+
+                                        </div>
+                                        
+                                        <slot name='edit' v-bind:getAttribute="getAttribute" v-bind:resource="resource" v-bind:errors="errors"></slot>
 
                                     </div>
-                                    <slot name='show' v-bind:getAttribute="getAttribute" v-bind:resource="resource" v-bind:errors="errors"></slot>
-                                </div>
-                                <div v-if='shouldEdit()'>
-                                    <div class='fix-spacing'></div>
-                                    <div class='button-edit' >
-                                        <button class='btn btn-sm btn-primary' v-on:click="save()"><i class='fa fa-save'></i></button>
-                                        <button v-if="!alwaysEdit()" class='btn btn-sm btn-primary' v-on:click="editing = false"><i class='fa fa-times'></i></button>
-
-                                    </div>
-                                    
-                                    <slot name='edit' v-bind:getAttribute="getAttribute" v-bind:resource="resource" v-bind:errors="errors"></slot>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </slot>
+
+                <slot name="extra" :resource="resource"></slot>
+                <slot name="sidebar-right" :resource="resource"></slot>
             </div>
 
-            <slot name="extra" :resource="resource"></slot>
         </div>
         <b-modal :id="'delete-'+config.route" :ref="'delete-'+config.route" hide-footer :title="$t('removing')">
             <div class="d-block text-center">
@@ -59,7 +63,7 @@
         <div v-if='resource === 0'>
             <not-found/>
         </div>
-        <div class="spinner" v-if='resource === null'></div>
+        <!--<div class="spinner" v-if='resource === null'></div>-->
     </div>
 </template>
 

@@ -77,7 +77,7 @@
 
                                     <td class='actions'>
                                         <div class='fluid fluid-right'>
-                                            <router-link :to="{ name: config.route+'.show', params: config.getParamsShow(resource)}" class='btn btn-sm btn-primary icon-circle' v-if="config.show">
+                                            <router-link :to="config.getRouteShow(resource)" class='btn btn-sm btn-primary icon-circle' v-if="config.show">
                                                 <i class='fa fa-eye'></i>
                                             </router-link>
                                         </div>
@@ -126,6 +126,7 @@ export default {
     },
     props: ['config'],
     created() {
+        this.initConfig();
         this.manager = this.config.manager;
         this.attributes = this.config.attributes;
         this.listable = this.config.list;

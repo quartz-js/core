@@ -33,7 +33,7 @@ export var ResourceCreate = {
 
             this.manager.create(this.resource).then(response => {
                 
-                this.$router.push({name : this.route + '.show', params: this.config.getParamsShow(response.body.resource)})
+                this.$router.push(this.config.getRouteShow(response.body.resource))
 
             }).catch(response => {
                 self.errors = response.body.errors
@@ -42,8 +42,4 @@ export var ResourceCreate = {
         
 
     },
-
-    created() {
-        this.initConfig();
-    }
 }

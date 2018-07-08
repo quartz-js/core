@@ -35,10 +35,16 @@ export var ResourceBase = {
          */
         initConfig()
         {
-                
+
             if (!this.config.getParamsShow) {
                 this.config.getParamsShow = function(resource) {
                     return { id: resource.id };
+                };
+            }   
+
+            if (!this.config.getRouteShow) {
+                this.config.getRouteShow = function(resource) {
+                    return { name: this.route + '.show', params: this.getParamsShow(resource) };
                 };
             }   
 
