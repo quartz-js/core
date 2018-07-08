@@ -41,7 +41,7 @@
                             <table class='table' v-if='attributes'>
                                 <tr>
                                     <td class="table-column-select"> 
-                                        <div class="pretty p-default">
+                                        <div class="pretty p-default ">
                                             <input type="checkbox" v-on:change="updateAllSelected($event)"/>
                                             <div class="state p-primary-o">
                                                 <label></label>
@@ -58,9 +58,9 @@
                                     </td>
                                 </tr>
 
-                                <tr v-for="(resource, key) in data.resources" v-bind:class="{ 'disable': loading }">
+                                <tr class='table-row' v-for="(resource, key) in data.resources" v-bind:class="{ 'disable': loading }" v-on:click="alert('a')">
 
-                                    <td>
+                                    <td >
                                         <div class="pretty p-default">
                                             <input type="checkbox" v-model="selected[key]"/>
                                             <div class="state p-primary-o">
@@ -71,13 +71,13 @@
                                     
                                     <slot name="row">
                                         <slot name='row' v-bind:getAttribute="getAttribute" v-bind:showAttribute="showAttribute" v-bind:resource="resource">
-                                            <td v-for="attribute in attributes" v-if="showAttribute(attribute)" v-html="attribute.extractReadableValue(resource)"></td>
+                                            <td v-on:click="goToShow(resource)" v-for="attribute in attributes" v-if="showAttribute(attribute)" v-html="attribute.extractReadableValue(resource)"></td>
                                         </slot>
                                     </slot>
 
                                     <td class='actions'>
                                         <div class='fluid fluid-right'>
-                                            <router-link :to="config.getRouteShow(resource)" class='btn btn-sm btn-primary icon-circle' v-if="config.show">
+                                            <router-link  class='btn btn-sm btn-primary icon-circle' v-if="config.show">
                                                 <i class='fa fa-eye'></i>
                                             </router-link>
                                         </div>
@@ -125,6 +125,12 @@ export default {
         ResourceIndexQuery
     },
     props: ['config'],
+    methods: {
+
+        alert(message) {
+            console.log('a');
+        }
+    },
     created() {
         this.initConfig();
         this.manager = this.config.manager;
@@ -146,5 +152,28 @@ export default {
 
     .table-column-select {
         width: 60px;
+    }
+
+    .table-row:nth-child(even) {
+        background: #f7f7ff;
+    }
+
+    .table-row:hover {
+        background: #eaeaff;
+    }
+
+    .pretty .state label:before {
+        background: white;
+    }
+    
+    .pretty .state label:before, .pretty .state label:after{
+        top: -2px;
+    }
+
+    .pretty {
+        line-height: 1;
+    }
+    .table tr:first-child td {
+        vertical-align: middle;
     }
 </style>

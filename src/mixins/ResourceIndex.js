@@ -120,6 +120,12 @@ export var ResourceIndex = {
         showAttribute: function(attribute) {
             return this.isAttributeListable(attribute) && this.cols.find(col => { return col.value === attribute.name}).enabled;
         },
+        goToShow: function(resource) {
+            if (window.getSelection().isCollapsed === false) {
+                return;
+            }
+            this.$router.push(this.config.getRouteShow(resource));
+        },
 
         /**
          * Load data
