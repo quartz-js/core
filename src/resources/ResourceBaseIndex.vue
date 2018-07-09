@@ -32,6 +32,11 @@
                                         </button>
                                     </div>
                                 </div>
+                                <select-checkbox v-model='cols'>
+                                    <template slot='activator'>
+                                        Edit columns (wip)
+                                    </template>
+                                </select-checkbox>
                                 <div class='fill'></div>
                                 <div>
                                     <resource-index-pagination v-if='data' :pagination='pagination' @change="onChangePagination"/>
@@ -52,10 +57,6 @@
                                     <slot name='head' v-bind:sort="sort" v-bind:getAttributes="getAttributes" v-bind:showAttribute="showAttribute" v-bind:onSort="onSort">
                                         <resource-index-sort v-for="(attribute, key) in attributes" :key="key" :showAttribute="showAttribute" :sort='sort' :attribute='attribute' @change='onSort'/>
                                     </slot>
-
-                                    <td class='actions'>
-                                        <select-checkbox v-model='cols'></select-checkbox>
-                                    </td>
                                 </tr>
 
                                 <tr class='table-row' v-for="(resource, key) in data.resources" v-bind:class="{ 'disable': loading }" v-on:click="alert('a')">
@@ -74,15 +75,6 @@
                                             <td v-on:click="goToShow(resource)" v-for="attribute in attributes" v-if="showAttribute(attribute)" v-html="attribute.extractReadableValue(resource)"></td>
                                         </slot>
                                     </slot>
-
-                                    <td class='actions'>
-                                        <div class='fluid fluid-right'>
-                                            <router-link  class='btn btn-sm btn-primary icon-circle' v-if="config.show">
-                                                <i class='fa fa-eye'></i>
-                                            </router-link>
-                                        </div>
-                                    </td>
-
                                 </tr>
                             </table>
 
@@ -165,7 +157,7 @@ export default {
     .pretty .state label:before {
         background: white;
     }
-    
+
     .pretty .state label:before, .pretty .state label:after{
         top: -2px;
     }
