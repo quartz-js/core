@@ -1,14 +1,14 @@
 <template>
 
-    <div>
-        <codemirror
-            :value="rawValue" 
-            @input="onInput($event)" 
-            :options="options"
-            @cursorActivity="onCursorActivity"
-            @blur = "fix"
-        ></codemirror> 
-    </div>
+<div>
+<codemirror
+:value="rawValue" 
+@input="onInput($event)" 
+:options="options"
+@cursorActivity="onCursorActivity"
+@blur = "fix"
+></codemirror> 
+</div>
 </template>
 
 <script>
@@ -22,73 +22,73 @@ import 'codemirror/mode/htmlmixed/htmlmixed.js'
 
 export default {
 
-    props: ["json", "value"],
-    components: {
-        codemirror
-    },
-    data() {
-        return {
-            rawValue: "",
-            doc: null,
-            options: {
-                tabSize: 2,
-                mode: 'text/html',
-                theme: 'material',
-                showInvisibles: true,
-                lineNumbers: true,
-                lineWrapping: true,
-                line: true,
-                autoCloseBrackets: true,
-            },
-        }
-    },
+props: ["json", "value"],
+components: {
+codemirror
+},
+data() {
+return {
+rawValue: "",
+doc: null,
+options: {
+tabSize: 2,
+mode: 'text/html',
+theme: 'material',
+showInvisibles: true,
+lineNumbers: true,
+lineWrapping: true,
+line: true,
+autoCloseBrackets: true,
+},
+}
+},
 
-    methods: {
-
-
-        fix()
-        {
-            this.rawValue = this.rawValue;
-        },
-
-        beautify(text)
-        {
-            return text;
-        },
-
-        onCursorActivity($event)
-        {
-            this.doc = $event.doc;
-        },
-
-        onInput($event)
-        {
-            this.$emit("input", $event);
-            // $event = this.beautify($event);
-
-            var pos_original = this.doc.getCursor();
+methods: {
 
 
-            // 
-        }
-    },
-    created() {
-        this.rawValue = this.beautify(this.value);
-    }
+fix()
+{
+this.rawValue = this.rawValue;
+},
+
+beautify(text)
+{
+return text;
+},
+
+onCursorActivity($event)
+{
+this.doc = $event.doc;
+},
+
+onInput($event)
+{
+this.$emit("input", $event);
+// $event = this.beautify($event);
+
+var pos_original = this.doc.getCursor();
+
+
+// 
+}
+},
+created() {
+this.rawValue = this.beautify(this.value);
+}
 }
 
 </script>
 <style>
-    .editor .CodeMirror {
-        height: 700px;
-    }
+.editor .CodeMirror {
+height: 700px;
+}
 
 
-    .editor {
-        height: 700px;
-    }
-    .editor > * {
-        height:auto !important;
+.editor {
+height: 700px;
+}
+.editor > * {
+height:auto !important;
 
-    }
+}
 </style>

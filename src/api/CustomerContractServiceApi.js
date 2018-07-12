@@ -3,15 +3,11 @@ import VueResource from 'vue-resource';
 import { ResourceApi } from './ResourceApi'
 Vue.use(VueResource);
 
-export class CustomerContractServiceApi extends ResourceApi
-{
-	resource_url = "/admin/contract-services";
+export class CustomerContractServiceApi extends ResourceApi {
+resource_url = '/admin/contract-services';
 
-
-	constructor(params)
-	{
-		super();
-		this.params = params;
-	}
-
+constructor (params) {
+  super();
+  this.params = params;
+}
 };
