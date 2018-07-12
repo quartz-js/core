@@ -26,7 +26,7 @@
                                             <button class='btn btn-sm btn-primary' v-on:click="$router.push({name: config.route + '.index'})"><i class='fa fa-list'></i></button>
                                             <slot name="buttons" v-bind:resource="resource"></slot>
                                             <button class='btn btn-sm btn-danger' v-b-modal="'delete-'+config.route" v-if="config.remove === true"><i class='fa fa-trash'></i></button>
-                                            <button class='btn btn-sm btn-primary' v-on:click="editing = true" v-if="config.update === true"><i class='fa fa-pencil-alt'></i></button>
+                                            <button class='btn btn-sm btn-primary' v-on:click="toEdit(true)" v-if="config.update === true"><i class='fa fa-pencil-alt'></i></button>
 
                                         </div>
                                         <slot name='show' v-bind:getAttribute="getAttribute" v-bind:resource="resource" v-bind:errors="errors"></slot>
@@ -35,7 +35,7 @@
                                         <div class='fix-spacing'></div>
                                         <div class='button-edit' >
                                             <button class='btn btn-sm btn-primary' v-on:click="save()"><i class='fa fa-save'></i></button>
-                                            <button v-if="!alwaysEdit()" class='btn btn-sm btn-primary' v-on:click="editing = false"><i class='fa fa-times'></i></button>
+                                            <button v-if="!alwaysEdit()" class='btn btn-sm btn-primary' v-on:click="toEdit(false)"><i class='fa fa-times'></i></button>
 
                                         </div>
                                         
@@ -91,6 +91,13 @@ export default {
 
             return this.editing;
 
+        },
+        toEdit(flag) {
+            this.editing = flag;
+
+            if (this.editing) {
+                this.config.onShowEdit(this.resource);
+            }
         }
     },
     created() {

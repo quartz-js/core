@@ -23,6 +23,10 @@ export class ResourceConfig
             return this.manager.getFullUrl();
         };
 
+        this.onShowEdit = function() {
+
+        };
+
         for (var i in params) {
             this[i] = params[i];
         }
