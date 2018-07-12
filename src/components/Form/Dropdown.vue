@@ -1,12 +1,15 @@
 <template>
 
-<div class='select'>
-<div v-on:click='visible = true'><slot name='activator'><i class='fa fa-list dropdown'></i></slot></div>
-<div v-if='visible' class='paper window' v-on-clickaway="fade">
-<slot name='window'></slot>
-</div>
+  <div class="select">
+    <div @click="visible = true"><slot name="activator"><i class="fa fa-list dropdown"/></slot></div>
+    <div
+      v-on-clickaway="fade"
+      v-if="visible"
+      class="paper window">
+      <slot name="window"/>
+    </div>
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -16,19 +19,19 @@ require('pretty-checkbox/dist/pretty-checkbox.min.css');
 
 export default {
 
-mixins: [ clickaway ],
-props: [ 'options',  "value"],
-data: function() {
-return {
-visible: false
-}
-},
+  mixins: [ clickaway ],
+  props: [ 'options', 'value'],
+  data: function () {
+    return {
+      visible: false
+    }
+  },
 
-methods: {
-fade: function() {
-this.visible = false;
-}
-},
+  methods: {
+    fade: function () {
+      this.visible = false;
+    }
+  }
 }
 
 </script>
