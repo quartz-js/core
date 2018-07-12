@@ -83,14 +83,6 @@ export default {
         height: 700px;
     }
 
-    .editor iframe {
-        height: 700px;
-    }
-
-    .editor iframe {      
-        overflow-y: scroll;
-        min-height: 0;
-    }
 
     .editor {
         height: 700px;

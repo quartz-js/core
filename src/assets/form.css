@@ -108,3 +108,18 @@ select.form-control {
     margin: 0 !important;
 
 }
+
+
+iframe {
+    width: 133.33%;
+    height: 133.33%;
+    transform: scale(0.75);
+    position: absolute;
+    top: -16.666%;
+    left: -16.666%;
+}
+
+.editor iframe {      
+    overflow-y: scroll;
+    min-height: 0;
+}
