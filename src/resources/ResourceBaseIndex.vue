@@ -178,7 +178,7 @@ export default {
     this.initConfig();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
-    this.listable = this.config.list;
+    this.listable = this.config.listable;
 
     for (var i in this.attributes) {
       var attribute = this.attributes[i];

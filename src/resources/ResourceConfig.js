@@ -1,5 +1,11 @@
 export class ResourceConfig {
   constructor (params) {
+
+    this.create = true;
+    this.update = true;
+    this.remove = true;
+    this.show = true;
+
     this.getParamsShow = function (resource) {
       return { id: resource.id };
     };
