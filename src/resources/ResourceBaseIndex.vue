@@ -44,8 +44,7 @@
                     <div class="w10"/>
                     <button
                       class="btn btn-sm btn-primary icon-circle"
-                      style="opacity:0.3
-">
+                      style="opacity:0.3">
                       <i class="fa fa-pencil-alt"/>
                     </button>
                   </div>

@@ -230,7 +230,6 @@ ul,li{
   padding: 15px 12px !important;
 }
 
-
 .actions {
   max-width: 200px;
   position: relative;
@@ -251,26 +250,26 @@ ul,li{
 
 .btn-primary {
   color: #fff;
-  background-color: #666ecd;
-  border-color: #666ecd;
+  background-color: #898fd5;
+  border-color: #898fd5;
 }
 
 .btn-primary:not([disabled]):not(.disabled):active, .btn-primary:not([disabled]):not(.disabled).active {
   color: #fff;
-  background-color: #5d64b6;
-  border-color: #5d64b6;
+  background-color: #666ecd;
+  border-color: #666ecd;
   box-shadow: 0 0 0 0.2rem rgba(93, 100, 182, 0.5);
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #5d64b6;
-  border-color: #5d64b6;
+  background-color: #666ecd;
+  border-color: #666ecd;
 }
 
 
 .selector:hover {
-  background: #666ecd !important;
+  background: #898fd5 !important;
   color: white !important;
 }
 
