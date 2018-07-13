@@ -134,35 +134,36 @@ export default {
 <style scoped>
 
 .select {
-position: relative;
-font-size: 14px;
+  position: relative;
+  font-size: 14px;
 }
 
 .select .window {
-position: absolute;
-left:0;
-right: 0;
-margin-top: -5px;
-text-align: left;
-z-index: 5;
+  position: absolute;
+  left:0;
+  right: 0;
+  margin-top: -5px;
+  text-align: left;
+  z-index: 5;
 }
+
 .dropdown {
-cursor: pointer;
-font-size: 19px;
+  cursor: pointer;
+  font-size: 19px;
 }
 
 .info {
-font-size: 11px;
-padding: 20px;
-border-top: 1px solid #efefef;
+  font-size: 11px;
+  padding: 20px;
+  border-top: 1px solid #efefef;
 }
 
 .select-link {
-padding: 15px 20px;
+  padding: 15px 20px;
 }
 
 .select-link:hover {
-background: #616ad9;
-color: white;
+  background: #616ad9;
+  color: white;
 }
 </style>

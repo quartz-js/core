@@ -73,14 +73,15 @@ export default {
 </script>
 <style>
 .editor .CodeMirror {
-height: 700px;
+  height: 700px;
 }
 
 .editor {
-height: 700px;
+  height: 700px;
 }
+
 .editor > * {
-height:auto !important;
+  height:auto !important;
 
 }
 </style>

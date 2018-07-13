@@ -62,8 +62,8 @@ export default {
 </script>
 <style scoped>
 .container-switch {
-padding-top: 10px;
-padding-left: 5px;
-position: relative;
+  padding-top: 10px;
+  padding-left: 5px;
+  position: relative;
 }
 </style>

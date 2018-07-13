@@ -57,12 +57,13 @@ export default {
 
 <style scoped>
 .pagination {
-max-width: 400px;
-white-space: nowrap;
+  max-width: 400px;
+  white-space: nowrap;
 }
+
 .pagination .form-control{
-text-align: center;
-margin: 0 10px;
-width: 60px;
+  text-align: center;
+  margin: 0 10px;
+  width: 60px;
 }
 </style>

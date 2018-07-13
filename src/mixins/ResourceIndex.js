@@ -102,7 +102,7 @@ export var ResourceIndex = {
 
       self.timeout = setTimeout(function () {
         self.load()
-      }, 300)
+      }, 900)
     },
     showCol: function (name) {
 
@@ -167,16 +167,17 @@ export var ResourceIndex = {
         }).catch(response => {
           this.$notify(response.message, 'error')
         });
-      })/* .catch(response => {
+      }).catch(response => {
 
-if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
-this.errors.search = response.body.message;
-}
+        if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
+          this.errors.search = response.body.message;
+        }
 
-this.data = null;
-this.loading = false;
-}).then(response => {
-}); */
+        this.data = null;
+        this.loading = false;
+      }).then(response => {
+
+      });
     },
 
     removeSelected: function () {

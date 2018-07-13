@@ -89,25 +89,26 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 .editor .CodeMirror {
-height: 700px;
+  height: 700px;
 }
 
 .editor iframe {
-height: 700px;
+  height: 700px;
 }
 
 .editor iframe {
-overflow-y: scroll;
-min-height: 0;
+  overflow-y: scroll;
+  min-height: 0;
 }
 
 .editor {
-height: 700px;
+  height: 700px;
 }
+
 .editor > * {
-height:auto !important;
+  height:auto !important;
 
 }
 </style>

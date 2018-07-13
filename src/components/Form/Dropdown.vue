@@ -39,18 +39,20 @@ export default {
 <style scoped>
 
 .select {
-position: relative;
-font-size: 14px;
+  position: relative;
+  font-size: 14px;
 }
+
 .select .window {
-position: absolute;
-right: 0;
-margin-top: 5px;
-text-align: left;
-z-index: 5;
+  position: absolute;
+  right: 0;
+  margin-top: 5px;
+  text-align: left;
+  z-index: 5;
 }
+
 .dropdown {
-cursor: pointer;
-font-size: 19px;
+  cursor: pointer;
+  font-size: 19px;
 }
 </style>

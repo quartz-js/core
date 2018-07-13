@@ -1,7 +1,7 @@
 <template>
   <td
     v-if="showAttribute(attribute)"
-    class="table-column-head">
+    class="table-column-head selector">
     <div
       :class="{ 'hide': ! (sort.name == attribute.name && sort.value == 'asc')}"
       @click="onChange(attribute.name, 'desc')">

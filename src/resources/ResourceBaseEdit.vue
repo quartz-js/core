@@ -94,12 +94,12 @@
       </div>
       <b-btn
         class="mt-3"
-        variant="outline-danger"
+        variant="danger"
         block
         @click="hideRemoveModal('delete-'+config.route); remove();">{{ $t('yes') }}</b-btn>
       <b-btn
         class="mt-3"
-        variant="outline-primary"
+        variant="primary"
         block
         @click="hideRemoveModal('delete-'+config.route); ">{{ $t('no') }}</b-btn>
     </b-modal>

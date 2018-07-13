@@ -9,19 +9,18 @@
 </template>
 <style scoped>
 .ct {
-width: 100%;
-text-align: center;
-flex-wrap: wrap;
-margin: 50px 0;
+  width: 100%;
+  text-align: center;
+  flex-wrap: wrap;
+  margin: 50px 0;
 }
 
 .ct img{
-
-max-height: 300px;
+  max-height: 300px;
 }
 
 h4 {
-margin-top: 20px;
+  margin-top: 20px;
 
 }
 </style>

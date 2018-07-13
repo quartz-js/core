@@ -7,12 +7,20 @@
           <div class="resource-index-head"><h3>{{ config.title }}</h3></div>
 
           <div class="button-edit">
+
+              <select-checkbox v-model="cols">
+                <template slot="activator">
+                  <span class='btn btn-primary'>
+                    <i class="fa fa-cogs"/>
+                  </span>
+                </template>
+              </select-checkbox>
+
             <router-link
               v-if="config.create"
               :to="{ name: config.route + '.create' }"
               class="btn btn-primary"><i class="fa fa-plus"/></router-link>
           </div>
-
           <resource-index-query
             :query="query"
             :error="errors.search"
@@ -36,16 +44,12 @@
                     <div class="w10"/>
                     <button
                       class="btn btn-sm btn-primary icon-circle"
-                      style="opacity:0.3">
+                      style="opacity:0.3
+">
                       <i class="fa fa-pencil-alt"/>
                     </button>
                   </div>
                 </div>
-                <select-checkbox v-model="cols">
-                  <template slot="activator">
-                    Edit columns (wip)
-                  </template>
-                </select-checkbox>
                 <div class="fill"/>
                 <div>
                   <resource-index-pagination
@@ -89,8 +93,7 @@
                 <tr
                   v-for="(resource, key) in data.resources"
                   :class="{ 'disable': loading }"
-                  class="table-row"
-                  @click="alert('a')">
+                  class="table-row selector">
 
                   <td >
                     <div class="pretty p-default">
@@ -140,12 +143,12 @@
       </div>
       <b-btn
         class="mt-3"
-        variant="outline-danger"
+        variant="danger"
         block
         @click="hideModal('delete-'+config.route); removeSelected();">{{ $t('yes') }}</b-btn>
       <b-btn
         class="mt-3"
-        variant="outline-primary"
+        variant="primary"
         block
         @click="hideModal('delete-'+config.route); ">{{ $t('no') }}</b-btn>
     </b-modal>
@@ -194,33 +197,30 @@ export default {
 </script>
 <style scoped>
 .resource-index-head {
-padding: 30px 30px 10px 30px;
+  padding: 30px 30px 10px 30px;
 }
 
 .table-column-select {
-width: 60px;
+  width: 60px;
 }
 
 .table-row:nth-child(even) {
-background: #f7f7ff;
+  background: #f7f7ff;
 }
 
-.table-row:hover {
-background: #eaeaff;
+.pretty .state label::before {
+  background: white;
 }
 
-.pretty .state label:before {
-background: white;
-}
-
-.pretty .state label:before, .pretty .state label:after{
-top: -2px;
+.pretty .state label::before, .pretty .state label::after{
+  top: -2px;
 }
 
 .pretty {
-line-height: 1;
+  line-height: 1;
 }
+
 .table tr:first-child td {
-vertical-align: middle;
+  vertical-align: middle;
 }
 </style>
