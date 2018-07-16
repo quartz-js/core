@@ -4,5 +4,5 @@ import { ResourceApi } from './ResourceApi'
 Vue.use(VueResource);
 
 export class WorkApi extends ResourceApi {
-resource_url = '/admin/works';
+	resource_url = '/admin/works';
 };

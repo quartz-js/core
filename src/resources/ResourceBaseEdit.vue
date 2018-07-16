@@ -30,13 +30,16 @@
                       <button
                         class="btn btn-sm btn-primary"
                         @click="$router.push({name: config.route + '.index'})"><i class="fa fa-list"/></button>
+                        
                       <slot
                         :resource="resource"
                         name="buttons"/>
+
                       <button
                         v-b-modal="'delete-'+config.route"
                         v-if="config.remove === true"
                         class="btn btn-sm btn-danger"><i class="fa fa-trash"/></button>
+
                       <button
                         v-if="config.update === true"
                         class="btn btn-sm btn-primary"
