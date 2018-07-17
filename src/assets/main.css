@@ -473,3 +473,8 @@ iframe html,body{
     -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
   }
 }
+
+.alert {
+  border-radius: 0;
+  padding: 10px 20px;
+}

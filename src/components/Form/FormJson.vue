@@ -7,7 +7,13 @@
       @input="onInput($event)"
       @cursorActivity="onCursorActivity"
       @blur = "fix"
+      class=""
+      v-bind:class="{'error' : error }"
+
     />
+  <div v-if="error" class='alert alert-danger error-text content'>
+    An error has been detected in your json. Please fix it before saving
+  </div>
   </div>
 </template>
 
@@ -27,12 +33,13 @@ export default {
   props: ['json', 'value'],
   data () {
     return {
+      error: false,
       rawValue: '',
       doc: null,
       options: {
         tabSize: 2,
         mode: 'application/ld+json',
-        theme: 'material',
+        theme: 'material',  
         lineNumbers: true,
         line: true,
         lineWrapping: true,
@@ -48,12 +55,14 @@ export default {
   methods: {
 
     isJson (test) {
+
       try {
         JSON.parse(test);
-        return true;
+        this.error = false;
       } catch (e) {
-        return false;
+        this.error = true;
       }
+      return this.error;
     },
 
     fix () {
@@ -109,6 +118,14 @@ export default {
 
 .editor > * {
   height:auto !important;
-
 }
+
+.vue-codemirror {
+  border: 2px solid #232f35
+}
+
+.vue-codemirror.error {
+  border: 2px solid #dc3545;
+}
+
 </style>
