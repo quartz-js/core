@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     onChange: function () {
-      this.$emit('on-change-pagination', this._pagination);
+      this.$emit('change', this._pagination);
     },
     prev: function () {
       this._pagination.page = this._pagination.page <= 1 ? 1 : this._pagination.page - 1;
