@@ -62,7 +62,7 @@ export default {
       } catch (e) {
         this.error = true;
       }
-      return this.error;
+      return !this.error;
     },
 
     fix () {
