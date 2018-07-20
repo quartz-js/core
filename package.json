@@ -1,5 +1,5 @@
 {
-  "name": "railken-vue-admin-core",
+  "name": "@railken/vue-admin-core",
   "version": "1.0.8",
   "description": "",
   "main": "index.js",
@@ -36,5 +36,13 @@
     "vue-template-compiler": "^2.2.4",
     "webpack": "^2.3.1",
     "webpack-dev-server": "^2.4.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/railken/vue-admin-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/railken/vue-admin-core/issues"
+  },
+  "homepage": "https://github.com/railken/vue-admin-core#readme"
 }
