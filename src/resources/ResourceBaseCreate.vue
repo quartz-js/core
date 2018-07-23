@@ -43,7 +43,7 @@
 
 <script>
 
-import { ResourceCreate } from 'railken-vue-admin-core/src/mixins/ResourceCreate'
+import { ResourceCreate } from '@railken/vue-admin-core/src/mixins/ResourceCreate'
 
 export default {
   mixins: [ ResourceCreate ],

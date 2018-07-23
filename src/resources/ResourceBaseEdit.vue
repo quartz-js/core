@@ -115,7 +115,7 @@
 
 <script>
 
-import { ResourceEdit } from 'railken-vue-admin-core/src/mixins/ResourceEdit'
+import { ResourceEdit } from '@railken/vue-admin-core/src/mixins/ResourceEdit'
 import NotFound from '../components/NotFound'
 
 export default {
