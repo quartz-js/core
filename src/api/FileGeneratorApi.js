@@ -7,7 +7,7 @@ export class FileGeneratorApi extends ResourceApi {
 	resource_url = '/admin/file-generators';
 
 	/**
-	 * renderTemplate
+	 * Generate file
 	 *
 	 * @param {int} id
 	 * @param {Object} params
@@ -16,5 +16,16 @@ export class FileGeneratorApi extends ResourceApi {
 	 */
 	generate (id, params) {
 	  return Vue.http.post(this.getFullUrl() + '/' + id + '/generate', params, { headers: { Authorization: 'Bearer ' + this.access_token }});
+	}
+
+	/**
+	 * Render file
+	 *
+	 * @param {Object} params
+	 *
+	 * @return {Promise}
+	 */
+	render (params) {
+	  return Vue.http.post(this.getFullUrl() + '/render', params, { headers: { Authorization: 'Bearer ' + this.access_token }});
 	}
 };
