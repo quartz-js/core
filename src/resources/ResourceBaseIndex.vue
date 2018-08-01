@@ -187,10 +187,6 @@ export default {
     }
   },
   methods: {
-
-    alert (message) {
-      console.log('a');
-    }
   }
 }
 </script>
