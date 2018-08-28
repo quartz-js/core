@@ -50,21 +50,21 @@ export default {
 <style>
   .mx-input{
     border: none !important;
-    box-shadow: none;
-    opacity: 0.6;
-    font-size: 15px;
-    padding: 0 1px;
-    color: inherit;
+    box-shadow: none !important;
+    opacity: 0.6 !important;
+    font-size: 15px !important;
+    padding: 0 1px !important;
+    color: inherit !important;
   }
 
   .mx-datepicker {
-    width: 100%;
-    font-family: inherit;
-    color: inherit;
+    width: 100% !important;
+    font-family: inherit !important;
+    color: inherit !important;
   }
 
   .mx-calendar {
-    font-family: inherit;
+    font-family: inherit !important;
   }
 
   .date-picker {
