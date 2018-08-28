@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <date-picker :value="value" :lang="lang" class='form-control' v-on:change="onInput($event)"></date-picker>
+    <date-picker :value="value" :lang="lang" class='form-control date-picker' v-on:change="onInput($event)"></date-picker>
     <span class="form-highlight"/>
   </div>
   </div>
@@ -61,5 +61,13 @@ export default {
     width: 100%;
     font-family: inherit;
     color: inherit;
+  }
+
+  .mx-calendar {
+    font-family: inherit;
+  }
+
+  .date-picker {
+    z-index: initial;
   }
 </style>
