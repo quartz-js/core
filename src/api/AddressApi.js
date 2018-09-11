@@ -4,5 +4,5 @@ import { ResourceApi } from './ResourceApi'
 Vue.use(VueResource);
 
 export class AddressApi extends ResourceApi {
-resource_url = '/admin/addresses';
+	resource_url = '/admin/addresses';
 };

@@ -5,7 +5,7 @@
         :class="{error: error}"
         class="form-group">
         <input
-          v-model="_query"
+          v-model="queryRaw"
           type="text"
           class="form-control"
           placeholder=" "
@@ -23,12 +23,23 @@
 
 export default {
   props: ['query', 'error'],
-  created () {
-    this._query = this.query;
+  data() {
+    return {
+      queryRaw: null
+    }
+  },
+  watch: {
+    'query'() {
+      this.queryRaw = this.query;
+    }
+  },
+  mounted () {
+    this.queryRaw = this.query;
   },
   methods: {
     onChange: function () {
-      this.$emit('on-change-query', this._query);
+      this.$emit('on-change-query', this.queryRaw);
+      // this.query = this.queryRaw;
     }
 
   }

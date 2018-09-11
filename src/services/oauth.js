@@ -5,11 +5,11 @@ import { OAuthGoogleProvider } from './oauth.provider.google';
 import { OAuthFacebookProvider } from './oauth.provider.facebook';
 
 import { container } from './container';
-import { UserApi } from '../api/UserApi';
+import { AccountApi } from '../api/AccountApi';
 
 export class OAuth {
   constructor () {
-    this.api = new UserApi();
+    this.api = new AccountApi();
   }
 
   /**

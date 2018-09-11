@@ -9,8 +9,8 @@ export var ResourceIndex = {
   data: function () {
     return {
       pagination: {
-        show: null,
-        page: 0,
+        show: 10,
+        page: 1,
         max_pages: null
       },
       query: '',
@@ -47,9 +47,18 @@ export var ResourceIndex = {
       var self = this
       clearTimeout(self.timeout)
 
-      self.timeout = setTimeout(function () {
-        self.load()
+      self.timeout = setTimeout(() => {
+        this.updateUrl();
       }, 300)
+    },
+
+    '$route.query'() {
+        this.reload();
+        this.load(null);
+        // this.$forceUpdate();
+
+        // console.log(this.$route);
+        // this.$router.push(this.$route.query.page);
     },
     cols: {
       handler: function (val, oldVal) {
@@ -79,12 +88,12 @@ export var ResourceIndex = {
     },
     onChangePagination: function (pagination) {
       this.pagination = pagination;
-      this.load();
+      this.updateUrl();
     },
     onSort: function (key, direction) {
       this.sort.name = key;
       this.sort.value = direction;
-      this.load();
+      this.updateUrl();
     },
     updateAllSelected ($event) {
       var self = this;
@@ -100,11 +109,10 @@ export var ResourceIndex = {
 
       this.query = query;
 
-      var self = this
-      clearTimeout(self.timeout)
+      clearTimeout(this.timeout)
 
-      self.timeout = setTimeout(function () {
-        self.load()
+      this.timeout = setTimeout(() => {
+        self.updateUrl()
       }, 900)
     },
     showCol: function (name) {
@@ -127,6 +135,29 @@ export var ResourceIndex = {
       this.$router.push(this.config.getRouteShow(resource));
     },
 
+
+    updateUrl() {
+
+      var currentQuery = this.$route.query.query;
+      var currentPage = this.$route.query.page ? this.$route.query.page : 1;
+      var currentShow = this.$route.query.show ? this.$route.query.show : 10;
+
+      if (this.query === currentQuery && this.pagination.page == currentPage && this.pagination.show == currentShow) {
+        return;
+      }
+
+      this.$router.push({
+        query: {
+          query: this.query,
+          page: this.pagination.page,
+          show: this.pagination.show
+        }
+      });
+
+      this.$forceUpdate();
+
+    },
+
     /**
     * Load data
     *
@@ -135,13 +166,7 @@ export var ResourceIndex = {
     load: function (params) {
       var manager = this.config.manager;
       this.params = params;
-      this.$router.push({
-        query: {
-          query: this.query,
-          page: this.pagination.page,
-          show: this.pagination.show
-        }
-      })
+
 
       this.loading = true;
 
@@ -203,17 +228,23 @@ export var ResourceIndex = {
 
     hideModal (ref) {
       this.$refs[ref].hide()
+    },
+
+    reload(){ 
+
+      this.query = this.$route.query.query ? this.$route.query.query : '';
+      this.pagination.show = this.$route.query.show ? parseInt(this.$route.query.show) : 10;
+      this.pagination.page = this.$route.query.page ? parseInt(this.$route.query.page) : 1;
     }
   },
   created: function () {
     var self = this;
     this.initConfig();
-
-    this.query = this.$route.query.query ? this.$route.query.query : '';
-    this.pagination.show = this.$route.query.show ? parseInt(this.$route.query.show) : 10;
-    this.pagination.page = this.$route.query.page ? parseInt(this.$route.query.page) : 1;
+    this.reload();
   },
   mounted: function () {
+    console.log('a');
+
     if (!this.config.manager) {
       return null;
     }
