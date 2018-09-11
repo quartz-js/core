@@ -17,17 +17,18 @@ export var ResourceShow = {
     },
 
     /**
-* Load data
-*
-* @return void
-*/
+    * Load data
+    *
+    * @return void
+    */
     load: function (params) {
-      var self = this;
       var id = this.$route.params.id;
 
       this.manager.show(id).then(response => {
-        self.resource = response.body.resource;
+        console.log(response);
+        this.resource = this.parseApiBody(response.body).data;
       }).catch(response => {
+        console.log(response);
 
         // handle 404
       });

@@ -37,67 +37,67 @@ export var ResourceEdit = {
   methods: {
 
     /**
-* Load data
-*
-* @return void
-*/
+   * Load data
+   *
+   * @return void
+   */
     show () {
       var self = this
 
       this.manager.show(this.id).then(response => {
         this.handleResponse(response);
       }).catch(response => {
-        self.resource = 0;
+        this.resource = 0;
         // self.$notify(response.message, 'error');
       })
     },
 
     /**
-* Handle response
-*
-* @param {object} response
-*
-* @return void
-*/
+     * Handle response
+     *
+     * @param {object} response
+     *
+     * @return void
+     */
     handleResponse (response) {
-      var self = this;
-      var resource = response.body.resource;
+      var resource = this.parseApiBody(response.body).data;
       var promises = this.attributes.map(attribute => {
         return attribute.load([resource]);
       });
 
-      Promise.all(promises).then(function () {
-        self.resource = response.body.resource;
+
+      Promise.all(promises).then(() =>  {
+        this.resource = response.body.data;
       }).catch(response => {
         // ... Some sort of error
+
       });
     },
 
     /**
-* Save data
-*
-* @return void
-*/
+     * Save data
+     *
+     * @return void
+     */
     save () {
-      var self = this
       var params = {};
 
-      this.manager.update(this.id, self.resource).then(response => {
+      this.manager.update(this.id, this.resource).then(response => {
         this.syncing = false
         this.errors = [];
         this.editing = false;
         this.handleResponse(response);
       }).catch(response => {
-        self.syncing = false;
-        self.errors = response.body.errors
+        this.syncing = false;
+        this.errors = response.body.errors
       });
     },
 
     /**
-* Remove resource
-*
-* @return void
-*/
+     * Remove resource
+     *
+     * @return void
+     */
     remove: function () {
       this.manager.remove(this.id).then(response => {
         this.$router.push({name: this.config.route + '.index'});
@@ -107,10 +107,10 @@ export var ResourceEdit = {
     },
 
     /**
-* Hide modals remove resource
-*
-* @return void
-*/
+     * Hide modals remove resource
+     *
+     * @return void
+     */
     hideRemoveModal (ref) {
       this.$refs[ref].hide()
     }

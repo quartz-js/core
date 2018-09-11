@@ -29,10 +29,10 @@ export class BelongsToAttribute extends BaseAttribute {
   }
 
   /**
-* @param {string} name
-*
-* @return this
-*/
+   * @param {string} name
+   *
+   * @return this
+   */
   setApi (api) {
     this.api = api;
 
@@ -40,17 +40,17 @@ export class BelongsToAttribute extends BaseAttribute {
   }
 
   /**
-* @return {string}
-*/
+   * @return {string}
+   */
   getApi () {
     return this.api;
   }
 
   /**
-* @param {callable} query
-*
-* @return this
-*/
+   * @param {callable} query
+   *
+   * @return this
+   */
   setQuery (query) {
     this.query = query;
 
@@ -58,17 +58,17 @@ export class BelongsToAttribute extends BaseAttribute {
   }
 
   /**
-* @return {string}
-*/
+   * @return {string}
+   */
   getQuery () {
     return this.query;
   }
 
   /**
-* @param {string} key
-*
-* @return this
-*/
+   * @param {string} key
+   *
+   * @return this
+   */
   executeQuery (key) {
     return this.query(key);
   }
@@ -78,8 +78,8 @@ export class BelongsToAttribute extends BaseAttribute {
   }
 
   /**
-* @return {Callable}
-*/
+   * @return {Callable}
+   */
   load (resources) {
     console.log(resources);
     var ids = resources.filter(resource => { return resource[this.column]; }).map(resource => { return resource[this.column] }).join(',');

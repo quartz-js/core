@@ -26,10 +26,10 @@ export class SelectAttribute extends BaseAttribute {
   }
 
   /**
-* @param {array} options
-*
-* @return this
-*/
+   * @param {array} options
+   *
+   * @return this
+   */
   setOptions (options) {
     this.options = options;
 
@@ -37,8 +37,8 @@ export class SelectAttribute extends BaseAttribute {
   }
 
   /**
-* @return {string}
-*/
+   * @return {string}
+   */
   getOptions () {
     return this.options;
   }

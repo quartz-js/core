@@ -2,7 +2,6 @@
   <div>
     <div class="fluid">
       <div class="page-section paper">
-
         <div class="relative">
           <div class="resource-index-head"><h3>{{ config.title }}</h3></div>
 
@@ -26,12 +25,12 @@
             :error="errors.search"
             @on-change-query="onChangeQuery"/>
           <div v-if="data">
-            <div v-if="data.resources.length === 0">
+            <div v-if="data.data.length === 0">
               <no-results/>
             </div>
-            <div v-if="data.resources.length > 0">
+            <div v-if="data.data.length > 0">
               <div class="fluid fluid-vcenter">
-                <div class="content">{{ $t('total_results', { total: data.pagination.total }) }}, {{ $t('selected') }}: {{ selected.filter(function(v) { return v;}).length }}</div>
+                <div class="content">{{ $t('total_results', { total: data.meta.pagination.total }) }}, {{ $t('selected') }}: {{ selected.filter(function(v) { return v;}).length }}</div>
                 <div class="w10"/>
                 <div :class="{ 'hide': selected.filter(function(v) { return v;}).length === 0}">
                   <div class="fluid">
@@ -90,7 +89,7 @@
                 </tr>
 
                 <tr
-                  v-for="(resource, key) in data.resources"
+                  v-for="(resource, key) in data.data"
                   :class="{ 'disable': loading }"
                   class="table-row selector">
 

@@ -2,7 +2,6 @@
   <div>
     <div v-if="resource !== 0 && resource !== null">
       <div class="fluid">
-
         <slot
           :resource="resource"
           name="main">
@@ -107,7 +106,11 @@
         @click="hideRemoveModal('delete-'+config.route); ">{{ $t('no') }}</b-btn>
     </b-modal>
     <div v-if="resource === 0">
-      <not-found/>
+      <div class="page-section paper">
+        <div class="fluid-fill content relative">
+          <no-results />
+        </div>
+      </div>
     </div>
     <!--<div class="spinner" v-if='resource === null'></div>-->
   </div>
@@ -116,11 +119,11 @@
 <script>
 
 import { ResourceEdit } from '@railken/vue-admin-core/src/mixins/ResourceEdit'
-import NotFound from '../components/NotFound'
+import NoResults from '../components/NoResults'
 
 export default {
   components: {
-    NotFound
+    NoResults
   },
   mixins: [ ResourceEdit ],
   props: ['config'],

@@ -116,7 +116,7 @@ export default {
 
         this.error = null;
 
-        if (this.data.resources.length === 0) {
+        if (this.data.data.length === 0) {
           this.error = {
             code: 'NOT_FOUND'
           };

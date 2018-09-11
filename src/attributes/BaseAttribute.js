@@ -26,10 +26,10 @@ export class BaseAttribute {
   }
 
   /**
-* @param {string} description
-*
-* @return this
-*/
+   * @param {string} description
+   *
+   * @return this
+   */
   setDescription (description) {
     this.description = description;
 
@@ -37,17 +37,17 @@ export class BaseAttribute {
   }
 
   /**
-* @return {string}
-*/
+   * @return {string}
+   */
   getDescription () {
     return this.description;
   }
 
   /**
-* @param {string} name
-*
-* @return this
-*/
+   * @param {string} name
+   *
+   * @return this
+   */
   setName (name) {
     this.name = name;
 
@@ -55,17 +55,17 @@ export class BaseAttribute {
   }
 
   /**
-* @return {string}
-*/
+   * @return {string}
+   */
   getName () {
     return this.name;
   }
 
   /**
-* @param {string} label
-*
-* @return this
-*/
+   * @param {string} label
+   *
+   * @return this
+   */
   setLabel (label) {
     this.label = label;
 
@@ -73,17 +73,17 @@ export class BaseAttribute {
   }
 
   /**
-* @return {string}
-*/
+   * @return {string}
+   */
   getLabel () {
     return this.label;
   }
 
   /**
-* @param {Callable} mutator
-*
-* @return this
-*/
+   * @param {Callable} mutator
+   *
+   * @return this
+   */
   setMutator (mutator) {
     this.mutator = mutator;
 
@@ -91,17 +91,17 @@ export class BaseAttribute {
   }
 
   /**
-* @return {Callable}
-*/
+   * @return {Callable}
+   */
   getMutator () {
     return this.mutator;
   }
 
   /**
-* @param {Callable} extractor
-*
-* @return this
-*/
+   * @param {Callable} extractor
+   *
+   * @return this
+   */
   setExtractor (extractor) {
     this.extractor = extractor;
 
@@ -109,10 +109,10 @@ export class BaseAttribute {
   }
 
   /**
-* @param {Callable} injector
-*
-* @return this
-*/
+   * @param {Callable} injector
+   *
+   * @return this
+   */
   setInjector (injector) {
     this.injector = injector;
 
@@ -120,49 +120,49 @@ export class BaseAttribute {
   }
 
   /**
-* @return {Callable}
-*/
+   * @return {Callable}
+   */
   getExtractor () {
     return this.extractor;
   }
 
   /**
-* Extract value from resource
-*
-* @param {object} resource
-*
-* @return mixed
-*/
+   * Extract value from resource
+   *
+   * @param {object} resource
+   *
+   * @return mixed
+   */
   extractValue (resource) {
     return this.extractor(resource);
   }
 
   /**
-* Extract value from resource in a readable format
-*
-* @param {object} resource
-*
-* @return mixed
-*/
+   * Extract value from resource in a readable format
+   *
+   * @param {object} resource
+   *
+   * @return mixed
+   */
   extractReadableValue (resource) {
     return this.mutator(this.extractor(resource));
   }
 
   /**
-* Inject value from resource
-*
-* @param {object} resource
-* @param {mixed} value
-*
-* @return mixed
-*/
+   * Inject value from resource
+   *
+   * @param {object} resource
+   * @param {mixed} value
+   *
+   * @return mixed
+   */
   injectValue (resource, value) {
     return this.injector(resource, value);
   }
 
   /**
-* @return {Callable}
-*/
+   * @return {Callable}
+   */
   load (resources) {
     return null;
   }

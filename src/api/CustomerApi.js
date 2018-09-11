@@ -8,12 +8,12 @@ export class CustomerApi extends ResourceApi {
 resource_url = '/admin/customers';
 
 /**
-* Create
-*
-* @param {Object} params
-*
-* @return {Promise}
-*/
+   * Create
+   *
+   * @param {Object} params
+   *
+   * @return {Promise}
+   */
 create (params) {
   return new LegalEntityApi().create({name: params.name}).then(response2 => {
     params.legal_entity_id = response2.body.resource.id;

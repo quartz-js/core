@@ -24,15 +24,15 @@ export var ResourceCreate = {
     },
 
     /**
-* Save data
-*
-* @return void
-*/
+    * Save data
+    *
+    * @return void
+    */
     create () {
       var self = this
 
       this.manager.create(this.resource).then(response => {
-        this.$router.push(this.config.getRouteShow(response.body.resource))
+        this.$router.push(this.config.getRouteShow(this.parseApiBody(response.body).data))
       }).catch(response => {
         self.errors = response.body.errors
       });

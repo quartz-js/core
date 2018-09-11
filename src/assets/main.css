@@ -1,4 +1,4 @@
-*{
+   *{
   box-sizing:border-box;
   -moz-box-sizing:border-box;
 }
@@ -157,7 +157,7 @@ h3 {
   font-size: 18px;
 }
 
-*{
+   *{
   box-sizing:border-box;
   -moz-box-sizing:border-box;
 }

@@ -24,8 +24,11 @@ export var ResourceIndex = {
         form: [],
         search: null
       },
+      sort: {
+        name: 'id',
+        value: 'desc'
+      },
       timeout: null,
-      sort: {},
       selected: [],
       loading: false
     }
@@ -58,12 +61,12 @@ export var ResourceIndex = {
   methods: {
 
     /**
-* Get attribute by name
-*
-* @param {string} name
-*
-* @return {BaseAttribute}
-*/
+    * Get attribute by name
+    *
+    * @param {string} name
+    *
+    * @return {BaseAttribute}
+    */
     getAttribute (name) {
       return this.attributes.find(function (attribute) {
         return attribute.name === name;
@@ -86,7 +89,7 @@ export var ResourceIndex = {
     updateAllSelected ($event) {
       var self = this;
       this.selected = [];
-      this.data.resources.map(function (value, key) {
+      this.data.data.map(function (value, key) {
         self.selected[key] = $event.target.checked;
       });
     },
@@ -125,10 +128,10 @@ export var ResourceIndex = {
     },
 
     /**
-* Load data
-*
-* @return void
-*/
+    * Load data
+    *
+    * @return void
+    */
     load: function (params) {
       var manager = this.config.manager;
       this.params = params;
@@ -148,26 +151,29 @@ export var ResourceIndex = {
         query: this.config.getFinalQuery(this.query),
         show: this.pagination.show,
         page: this.pagination.page,
-        sort_field: this.sort.name,
-        sort_direction: this.sort.value
+        sort: (this.sort.value === 'desc' ? "-" : "") + this.sort.name,
       }).then(response => {
         var self = this;
         this.errors.search = null
-        this.pagination.pages = response.body.pagination.pages;
-        this.pagination.page = response.body.pagination.page;
-        this.sort = response.body.sort[0];
+        this.pagination.pages = response.body.meta.pagination.total_pages;
+        this.pagination.page = response.body.meta.pagination.current_page;
+        // this.sort = response.body.sort[0];
         this.loading = false;
 
+
         var promises = this.attributes.map(attribute => {
-          return attribute.load(response.body.resources);
+          return attribute.load(response.body.data);
         });
 
-        Promise.all(promises).then(function () {
-          self.data = response.body;
+        Promise.all(promises).then(() => {
+          this.data = this.parseApiBody(response.body);
         }).catch(response => {
           this.$notify(response.message, 'error')
         });
+
       }).catch(response => {
+
+        console.log(response);
 
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;
@@ -181,10 +187,9 @@ export var ResourceIndex = {
     },
 
     removeSelected: function () {
-      var self = this;
-
-      var promises = this.selected.map(function (value, key) {
-        return self.manager.remove(self.data.resources[key].id);
+      
+      var promises = this.selected.map((value, key) => {
+        return this.manager.remove(this.data.data[key].id);
       });
 
       Promise.all(promises).then(response => {

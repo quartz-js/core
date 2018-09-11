@@ -1,14 +1,16 @@
+import _ from 'lodash';
+
 export var ResourceBase = {
 
   methods: {
 
     /**
-* Get attribute by name
-*
-* @param {string} name
-*
-* @return {BaseAttribute}
-*/
+     * Get attribute by name
+     *
+     * @param {string} name
+     *
+     * @return {BaseAttribute}
+     */
     getAttribute (name) {
       return this.attributes.find(function (attribute) {
         return attribute.name === name;
@@ -16,12 +18,12 @@ export var ResourceBase = {
     },
 
     /**
-* Get attributes by names
-*
-* @param {string} name
-*
-* @return {BaseAttribute}
-*/
+     * Get attributes by names
+     *
+     * @param {string} name
+     *
+     * @return {BaseAttribute}
+     */
     getAttributes (names) {
       return this.attributes.filter(function (attribute) {
         return names.indexOf(attribute.name) !== -1;
@@ -29,10 +31,31 @@ export var ResourceBase = {
     },
 
     /**
-* Initialize config
-*
-* @return void
-*/
+     * Parse API body
+     * 
+     * @param mixed $object
+     *
+     * @return {object}
+     */
+    parseApiBody (body) {
+
+      if (Array.isArray(body.data)) {
+        for (var i in body.data) {
+          body.data[i] = _.merge({id: body.data[i].id}, body.data[i].attributes);
+        }
+      } else if (_.isObject(body.data)) {
+          body.data = _.merge({id: body.data.id}, body.data.attributes);
+      }
+      console.log(body.data);
+
+      return body;
+    },
+
+    /**
+     * Initialize config
+     *
+     * @return void
+     */
     initConfig () {
       if (!this.config.getParamsShow) {
         this.config.getParamsShow = function (resource) {

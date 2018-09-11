@@ -7,12 +7,12 @@ export class EventLogApi extends ResourceApi {
 resource_url = '/admin/event-logs';
 
 /**
-* stats
-*
-* @param {Object} params
-*
-* @return {Promise}
-*/
+   * stats
+   *
+   * @param {Object} params
+   *
+   * @return {Promise}
+   */
 stats (params) {
   return Vue.http.get(this.getFullUrl() + '/stats', { params: params, headers: { Authorization: 'Bearer ' + this.access_token }});
 }

@@ -7,12 +7,12 @@ export class FileApi extends ResourceApi {
 resource_url = '/admin/files';
 
 /**
-* Upload
-*
-* @param {Object} params
-*
-* @return {Promise}
-*/
+   * Upload
+   *
+   * @param {Object} params
+   *
+   * @return {Promise}
+   */
 upload (params, progress) {
   return Vue.http.post(this.getFullUrl() + '/upload', params, {
     progress (e) {

@@ -13,12 +13,12 @@ export class OAuth {
   }
 
   /**
-* Sign in
-*
-* @param {User} user
-*
-* @return {Observable}
-*/
+   * Sign in
+   *
+   * @param {User} user
+   *
+   * @return {Observable}
+   */
   providerSignIn (provider, vars) {
     provider = this.getProviderByName(provider);
 
