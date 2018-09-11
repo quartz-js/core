@@ -25,8 +25,7 @@ export var ResourceShow = {
       var id = this.$route.params.id;
 
       this.manager.show(id).then(response => {
-        console.log(response);
-        this.resource = this.parseApiBody(response.body).data;
+        this.resource = response.body.data;
       }).catch(response => {
         console.log(response);
 

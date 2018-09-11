@@ -31,27 +31,6 @@ export var ResourceBase = {
     },
 
     /**
-     * Parse API body
-     * 
-     * @param mixed $object
-     *
-     * @return {object}
-     */
-    parseApiBody (body) {
-
-      if (Array.isArray(body.data)) {
-        for (var i in body.data) {
-          body.data[i] = _.merge({id: body.data[i].id}, body.data[i].attributes);
-        }
-      } else if (_.isObject(body.data)) {
-          body.data = _.merge({id: body.data.id}, body.data.attributes);
-      }
-      console.log(body.data);
-
-      return body;
-    },
-
-    /**
      * Initialize config
      *
      * @return void

@@ -166,7 +166,7 @@ export var ResourceIndex = {
         });
 
         Promise.all(promises).then(() => {
-          this.data = this.parseApiBody(response.body);
+          this.data = response.body;
         }).catch(response => {
           this.$notify(response.message, 'error')
         });

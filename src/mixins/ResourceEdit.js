@@ -60,9 +60,9 @@ export var ResourceEdit = {
      * @return void
      */
     handleResponse (response) {
-      var resource = this.parseApiBody(response.body).data;
+      var resource = response.body;
       var promises = this.attributes.map(attribute => {
-        return attribute.load([resource]);
+        return attribute.load([resource.data]);
       });
 
 

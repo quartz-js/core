@@ -81,11 +81,10 @@ export class BelongsToAttribute extends BaseAttribute {
    * @return {Callable}
    */
   load (resources) {
-    console.log(resources);
     var ids = resources.filter(resource => { return resource[this.column]; }).map(resource => { return resource[this.column] }).join(',');
     return this.api.index({query: ids ? 'id in (' + ids + ')' : ''}).then(response => {
       resources.map(resource => {
-        resource[this.getRelationName()] = response.body.resources.find(b_resource => { return b_resource.id == resource[this.column] });
+        resource[this.getRelationName()] = response.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
       });
     });
   }

@@ -32,7 +32,7 @@ export var ResourceCreate = {
       var self = this
 
       this.manager.create(this.resource).then(response => {
-        this.$router.push(this.config.getRouteShow(this.parseApiBody(response.body).data))
+        this.$router.push(this.config.getRouteShow(response.body.data))
       }).catch(response => {
         self.errors = response.body.errors
       });

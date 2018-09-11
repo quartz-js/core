@@ -26,13 +26,13 @@
         class="paper window">
         <div v-if="data">
           <div
-            v-for="resource in data.resources"
+            v-for="resource in data.data"
             class="select-link text-link text-link-router"
             @click="onSelect(resource)">
             {{ attribute.getLabelByResource(resource) }}
           </div>
           <div class="info">
-            {{ data.pagination.total }} results
+            {{ data.meta.pagination.total }} results
           </div>
         </div>
         <div
