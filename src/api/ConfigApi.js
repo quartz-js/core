@@ -6,7 +6,7 @@ Vue.use(VueResource);
 export class ConfigApi extends ResourceApi {
 resource_url = '/admin/configs';
 
-/**
+  /**
    * Patch
    *
    * @param {Object} params

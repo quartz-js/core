@@ -64,8 +64,6 @@ export var ResourceEdit = {
       var promises = this.attributes.map(attribute => {
         return attribute.load([resource.data]);
       });
-
-
       Promise.all(promises).then(() =>  {
         this.resource = response.body.data;
       }).catch(response => {

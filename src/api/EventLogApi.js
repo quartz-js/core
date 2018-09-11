@@ -6,7 +6,7 @@ Vue.use(VueResource);
 export class EventLogApi extends ResourceApi {
 resource_url = '/admin/event-logs';
 
-/**
+  /**
    * stats
    *
    * @param {Object} params

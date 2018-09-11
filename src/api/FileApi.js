@@ -6,7 +6,7 @@ Vue.use(VueResource);
 export class FileApi extends ResourceApi {
 resource_url = '/admin/files';
 
-/**
+  /**
    * Upload
    *
    * @param {Object} params

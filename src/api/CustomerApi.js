@@ -7,7 +7,7 @@ Vue.use(VueResource);
 export class CustomerApi extends ResourceApi {
 resource_url = '/admin/customers';
 
-/**
+  /**
    * Create
    *
    * @param {Object} params
