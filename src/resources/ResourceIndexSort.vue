@@ -3,17 +3,17 @@
     v-if="showAttribute(attribute)"
     class="table-column-head selector">
     <div
-      :class="{ 'hide': ! (sort.name == attribute.name && sort.value == 'asc')}"
+      :class="{ 'hide': ! (sort.key == attribute.name && sort.direction == 'asc')}"
       @click="onChange(attribute.name, 'desc')">
       <div class="nav-link table-column-head-content"><span>{{ attribute.label }}</span><span class="fill"/> <i class="fas fa-sort-up"/></div>
     </div>
     <div
-      :class="{ 'hide': ! (sort.name == attribute.name && sort.value == 'desc')}"
+      :class="{ 'hide': ! (sort.key == attribute.name && sort.direction == 'desc')}"
       @click="onChange(attribute.name, 'asc')">
       <div class="nav-link table-column-head-content"><span>{{ attribute.label }}</span><span class="fill"/> <i class="fas fa-sort-down"/></div>
     </div>
     <div
-      :class="{ 'hide': ! (sort.name != attribute.name)}"
+      :class="{ 'hide': ! (sort.key != attribute.name)}"
       @click="onChange(attribute.name, 'asc')">
       <div class="nav-link table-column-head-content"><span>{{ attribute.label }}</span><span class="fill"/></div>
     </div>

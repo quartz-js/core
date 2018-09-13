@@ -25,8 +25,8 @@ export var ResourceIndex = {
         search: null
       },
       sort: {
-        name: 'id',
-        value: 'desc'
+        key: 'id',
+        direction: 'desc'
       },
       timeout: null,
       selected: [],
@@ -55,10 +55,6 @@ export var ResourceIndex = {
     '$route.query'() {
         this.reload();
         this.load(null);
-        // this.$forceUpdate();
-
-        // console.log(this.$route);
-        // this.$router.push(this.$route.query.page);
     },
     cols: {
       handler: function (val, oldVal) {
@@ -91,8 +87,11 @@ export var ResourceIndex = {
       this.updateUrl();
     },
     onSort: function (key, direction) {
-      this.sort.name = key;
-      this.sort.value = direction;
+      this.sort.key = key;
+      this.sort.direction = direction;
+
+      console.log(this.sort);
+
       this.updateUrl();
     },
     updateAllSelected ($event) {
@@ -136,13 +135,30 @@ export var ResourceIndex = {
     },
 
 
+
+    reload(){ 
+
+      this.query = this.$route.query.query ? this.$route.query.query : '';
+      this.pagination.show = this.$route.query.show ? parseInt(this.$route.query.show) : 10;
+      this.pagination.page = this.$route.query.page ? parseInt(this.$route.query.page) : 1;
+      this.sort.direction = this.$route.query.sort_direction ? this.$route.query.sort_direction : 'desc';
+      this.sort.key = this.$route.query.sort_field ? this.$route.query.sort_field : 'id';
+    },
     updateUrl() {
 
       var currentQuery = this.$route.query.query;
       var currentPage = this.$route.query.page ? this.$route.query.page : 1;
       var currentShow = this.$route.query.show ? this.$route.query.show : 10;
+      var currentSortDirection = this.$route.query.sort_direction ? this.$route.query.sort_direction : 'desc';
+      var currentSortKey = this.$route.query.sort_field ? this.$route.query.sort_field : 'id';
 
-      if (this.query === currentQuery && this.pagination.page == currentPage && this.pagination.show == currentShow) {
+      if (this.query === currentQuery && 
+          this.pagination.page == currentPage && 
+          this.pagination.show == currentShow && 
+          this.pagination.show == currentShow &&
+          this.sort.key == currentSortKey &&
+          this.sort.direction == currentSortDirection
+        ) {
         return;
       }
 
@@ -150,7 +166,9 @@ export var ResourceIndex = {
         query: {
           query: this.query,
           page: this.pagination.page,
-          show: this.pagination.show
+          show: this.pagination.show,
+          sort_direction: this.sort.direction,
+          sort_field: this.sort.key,
         }
       });
 
@@ -176,7 +194,7 @@ export var ResourceIndex = {
         query: this.config.getFinalQuery(this.query),
         show: this.pagination.show,
         page: this.pagination.page,
-        sort: (this.sort.value === 'desc' ? "-" : "") + this.sort.name,
+        sort: (this.sort.direction === 'desc' ? "-" : "") + this.sort.key,
       }).then(response => {
         var self = this;
         this.errors.search = null
@@ -229,13 +247,6 @@ export var ResourceIndex = {
     hideModal (ref) {
       this.$refs[ref].hide()
     },
-
-    reload(){ 
-
-      this.query = this.$route.query.query ? this.$route.query.query : '';
-      this.pagination.show = this.$route.query.show ? parseInt(this.$route.query.show) : 10;
-      this.pagination.page = this.$route.query.page ? parseInt(this.$route.query.page) : 1;
-    }
   },
   created: function () {
     var self = this;

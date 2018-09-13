@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import { container } from '../services/container';
+import _ from 'lodash';
 Vue.use(VueResource);
 
 export class ResourceApi {
