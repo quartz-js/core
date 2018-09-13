@@ -24,11 +24,10 @@ export default {
     }
   },
   mounted () {
-    var self = this;
 
     if (this.errors) {
-      this.error = this.errors.find(function (error) {
-        return error.label === self.attribute.name;
+      this.error = this.errors.find((error) => {
+        return error.label === this.attribute.name;
       });
     }
   },
@@ -36,10 +35,8 @@ export default {
     if (!this.attribute.label) {
       this.attribute.label = this.$t(this.attribute.name);
     }
-    var self = this;
-
-    var res = this.attribute.options.findIndex(function (option) {
-      return option.value === self.value;
+    var res = this.attribute.options.findIndex((option) => {
+      return option.value === this.value;
     });
 
     this.rawValue = res === 1;
@@ -47,7 +44,6 @@ export default {
   methods: {
     onChange: function () {
       var index = this.rawValue ? 1 : 0;
-      console.log(index);
       this.$emit('input', this.attribute.options[index].value);
       this.$forceUpdate();
     }

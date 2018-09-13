@@ -42,13 +42,11 @@ export var ResourceEdit = {
    * @return void
    */
     show () {
-      var self = this
-
       this.manager.show(this.id).then(response => {
         this.handleResponse(response);
       }).catch(response => {
         this.resource = 0;
-        // self.$notify(response.message, 'error');
+        // this.$notify(response.message, 'error');
       })
     },
 

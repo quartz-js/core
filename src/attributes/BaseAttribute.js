@@ -2,7 +2,6 @@ import _ from 'lodash';
 
 export class BaseAttribute {
   constructor (name, options) {
-    var self = this;
 
     this.name = name;
     this.label = name;
@@ -12,14 +11,14 @@ export class BaseAttribute {
       this.column = options.column;
     }
 
-    this.mutator = function (value) {
+    this.mutator = (value) => {
       return value;
     };
-    this.extractor = function (resource) {
-      return _.get(resource, self.column);
+    this.extractor = (resource) => {
+      return _.get(resource, this.column);
     };
-    this.injector = function (resource, value) {
-      _.set(resource, self.column, value);
+    this.injector = (resource, value) => {
+      _.set(resource, this.column, value);
 
       return resource;
     };

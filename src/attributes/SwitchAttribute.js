@@ -8,7 +8,5 @@ export class SwitchAttribute extends SelectAttribute {
   }
   constructor (name) {
     super(name);
-
-    var self = this;
   }
 }

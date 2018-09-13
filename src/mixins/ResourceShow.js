@@ -37,7 +37,6 @@ export var ResourceShow = {
     this.initConfig();
   },
   mounted () {
-    var self = this;
-    self.load();
+    this.load();
   }
 }

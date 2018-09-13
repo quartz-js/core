@@ -29,12 +29,10 @@ export var ResourceCreate = {
     * @return void
     */
     create () {
-      var self = this
-
       this.manager.create(this.resource).then(response => {
         this.$router.push(this.config.getRouteShow(response.body.data))
       }).catch(response => {
-        self.errors = response.body.errors
+        this.errors = response.body.errors
       });
     }
 

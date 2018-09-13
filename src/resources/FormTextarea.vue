@@ -28,12 +28,11 @@ export default {
       rawValue: null
     }
   },
-  mounted () {
-    var self = this;
+   mounted () {
 
     if (this.errors) {
-      this.error = this.errors.find(function (error) {
-        return error.label === self.attribute.name;
+      this.error = this.errors.find((error) => {
+        return error.label === this.attribute.name;
       });
     }
   },

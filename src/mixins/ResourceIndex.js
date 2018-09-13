@@ -44,10 +44,9 @@ export var ResourceIndex = {
         return
       }
 
-      var self = this
-      clearTimeout(self.timeout)
+      clearTimeout(this.timeout)
 
-      self.timeout = setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.updateUrl();
       }, 300)
     },
@@ -65,23 +64,6 @@ export var ResourceIndex = {
   },
   methods: {
 
-    /**
-    * Get attribute by name
-    *
-    * @param {string} name
-    *
-    * @return {BaseAttribute}
-    */
-    getAttribute (name) {
-      return this.attributes.find(function (attribute) {
-        return attribute.name === name;
-      });
-    },
-    getAttributes (names) {
-      return this.attributes.filter(function (attribute) {
-        return names.indexOf(attribute.name) !== -1;
-      });
-    },
     onChangePagination: function (pagination) {
       this.pagination = pagination;
       this.updateUrl();
@@ -95,10 +77,9 @@ export var ResourceIndex = {
       this.updateUrl();
     },
     updateAllSelected ($event) {
-      var self = this;
       this.selected = [];
-      this.data.data.map(function (value, key) {
-        self.selected[key] = $event.target.checked;
+      this.data.data.map((value, key) => {
+        this.selected[key] = $event.target.checked;
       });
     },
     onChangeQuery: function (query) {
@@ -111,15 +92,8 @@ export var ResourceIndex = {
       clearTimeout(this.timeout)
 
       this.timeout = setTimeout(() => {
-        self.updateUrl()
+        this.updateUrl()
       }, 900)
-    },
-    showCol: function (name) {
-
-    },
-
-    onSearch: function () {
-
     },
     isAttributeListable: function (attribute) {
       return this.listable.indexOf(attribute.name) !== -1;
@@ -133,8 +107,6 @@ export var ResourceIndex = {
       }
       this.$router.push(this.config.getRouteShow(resource));
     },
-
-
 
     reload(){ 
 
@@ -196,7 +168,6 @@ export var ResourceIndex = {
         page: this.pagination.page,
         sort: (this.sort.direction === 'desc' ? "-" : "") + this.sort.key,
       }).then(response => {
-        var self = this;
         this.errors.search = null
         this.pagination.pages = response.body.meta.pagination.total_pages;
         this.pagination.page = response.body.meta.pagination.current_page;
@@ -249,7 +220,6 @@ export var ResourceIndex = {
     },
   },
   created: function () {
-    var self = this;
     this.initConfig();
     this.reload();
   },

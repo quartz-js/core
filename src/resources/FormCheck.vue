@@ -59,11 +59,10 @@ export default {
   },
   watch: {
     errors: function (val, oldVal) {
-      var self = this;
 
       if (this.errors.length) {
-        this.error = this.errors.find(function (error) {
-          return error.label === self.attribute.name;
+        this.error = this.errors.find((error) => {
+          return error.label === this.attribute.name;
         });
       }
     }
@@ -71,7 +70,6 @@ export default {
   mounted () {
   },
   created () {
-    var self = this;
 
     if (!this.attribute.label) {
       this.attribute.label = this.$t(this.attribute.name);
@@ -93,10 +91,9 @@ export default {
     },
 
     onChange: function () {
-      var self = this;
       this.data = null;
-      clearTimeout(self.timeout);
-      self.timeout = setTimeout(self.onLoad, 100)
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(this.onLoad, 100)
     },
 
     onSelect: function (option) {
@@ -110,13 +107,11 @@ export default {
     },
 
     hide: function () {
-      var self = this;
-      setTimeout(function () {
-        self.visible = false;
+      setTimeout(() => {
+        this.visible = false;
       }, 100);
     },
     onLoad: function () {
-      var self = this;
       var query = this.query;
 
       var totals = query ? this.attribute.options.filter(function (value) {

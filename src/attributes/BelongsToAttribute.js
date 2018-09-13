@@ -3,18 +3,17 @@ import { BaseAttribute } from './BaseAttribute'
 export class BelongsToAttribute extends BaseAttribute {
   constructor (name, api, options) {
     super(name, options);
-    var self = this;
 
     this.api = api;
-    this.query = function (key) {
+    this.query = (key) => {
       return "name ct '" + key + "'";
     };
-    this.mutator = function (value) {
+    this.mutator = (value) => {
       return value ? value.name : null;
     };
 
-    this.injector = function (resource, value) {
-      resource[self.name] = value;
+    this.injector = (resource, value) => {
+      resource[this.name] = value;
 
       return resource;
     };

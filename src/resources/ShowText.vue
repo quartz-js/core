@@ -13,7 +13,6 @@
 export default {
   props: ['resource', 'value', 'error', 'attribute', 'errors'],
   created () {
-    var self = this;
 
     if (!this.attribute.label) {
       this.attribute.label = this.$t(this.attribute.name);

@@ -16,7 +16,6 @@ export default {
   props: ['value', 'error', 'attribute', 'errors'],
   created () {
     this.rawValue = this.value;
-    var self = this;
 
     if (!this.attribute.label) {
       this.attribute.label = this.$t(this.attribute.name);

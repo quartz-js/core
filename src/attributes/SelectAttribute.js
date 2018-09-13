@@ -3,9 +3,6 @@ import { BaseAttribute } from './BaseAttribute'
 export class SelectAttribute extends BaseAttribute {
   constructor (name) {
     super(name);
-
-    var self = this;
-
     this.extractor = resource => {
       var value = resource[this.name];
 
@@ -14,13 +11,13 @@ export class SelectAttribute extends BaseAttribute {
       return option;
     };
 
-    this.injector = function (resource, value) {
-      resource[self.name] = value;
+    this.injector = (resource, value) => {
+      resource[this.name] = value;
 
       return resource;
     };
 
-    this.mutator = function (value) {
+    this.mutator = (value) => {
       return value ? value.label : null;
     };
   }

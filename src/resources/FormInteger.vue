@@ -31,11 +31,9 @@ export default {
     }
   },
   mounted () {
-    var self = this;
-
     if (this.errors) {
-      this.error = this.errors.find(function (error) {
-        return error.label === self.attribute.name;
+      this.error = this.errors.find((error) =>{
+        return error.label === this.attribute.name;
       });
     }
   },
@@ -47,7 +45,7 @@ export default {
     }
   },
   methods: {
-    onChange: function () {
+    onChange () {
       this.attribute.injectValue(this.value, this.rawValue);
       this.$emit('input', this.rawValue);
     }
