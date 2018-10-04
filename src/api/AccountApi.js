@@ -1,4 +1,5 @@
-import { container } from '../services/container';	
+import Vue from 'vue';	
+import { container } from '../services/container';
 
 export class AccountApi {	
   constructor () {	
