@@ -28,7 +28,7 @@
                     <div class="button-edit">
                       <button
                         class="btn btn-sm btn-primary"
-                        @click="$router.push({name: config.route + '.index'})"><i class="fa fa-list"/></button>
+                        @click="$router.push({name: config.route + '.index'})"><i class="fa fa-list"/><span class='w5'></span>List</button>
                         
                       <slot
                         :resource="resource"
@@ -37,12 +37,12 @@
                       <button
                         v-b-modal="'delete-'+config.route"
                         v-if="config.remove === true"
-                        class="btn btn-sm btn-danger"><i class="fa fa-trash"/></button>
+                        class="btn btn-sm btn-danger"><i class="fa fa-trash"/><span class='w5'></span>Remove</button>
 
                       <button
                         v-if="config.update === true"
                         class="btn btn-sm btn-primary"
-                        @click="toEdit(true)"><i class="fa fa-pencil-alt"/></button>
+                        @click="toEdit(true)"><i class="fa fa-pencil-alt"/><span class='w5'></span> Update</button>
 
                     </div>
                     <slot
@@ -56,11 +56,11 @@
                     <div class="button-edit" >
                       <button
                         class="btn btn-sm btn-primary"
-                        @click="save()"><i class="fa fa-save"/></button>
+                        @click="save()"><i class="fa fa-save"/><span class='w5'></span> Save</button>
                       <button
                         v-if="!alwaysEdit()"
                         class="btn btn-sm btn-primary"
-                        @click="toEdit(false)"><i class="fa fa-times"/></button>
+                        @click="toEdit(false)"><i class="fa fa-times"/><span class='w5'></span> Cancel</button>
 
                     </div>
 

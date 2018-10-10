@@ -348,13 +348,10 @@ label {
 }
 
 .button-edit .btn {
-  cursor:pointer;
   z-index: 99;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 30px;
   margin: 0 2px;
 }
 

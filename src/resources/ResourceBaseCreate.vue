@@ -21,11 +21,16 @@
             <div class="button-edit" >
               <button
                 class="btn btn-sm btn-primary"
-                @click="$router.push({name: config.route + '.index'})"><i class="fa fa-list"/></button>
+                @click="$router.push({name: config.route + '.index'})">
+
+                <i class="fa fa-list"/> <span class='w5'></span> List
+              </button>
               <button
                 class="btn btn-sm btn-primary"
-                @click="create()"><i class="fa fa-save"/></button>
+                @click="create()">
 
+                <i class="fa fa-save"/> <span class='w5'></span> Save
+                </button>
             </div>
 
             <slot

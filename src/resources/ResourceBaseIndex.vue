@@ -9,8 +9,8 @@
 
               <select-checkbox v-model="cols">
                 <template slot="activator">
-                  <span class='btn btn-primary'>
-                    <i class="fa fa-cogs"/>
+                  <span class='btn btn-primary btn-sm'>
+                    <i class="fa fa-cogs"/><span class='w5'></span> Settings
                   </span>
                 </template>
               </select-checkbox>
@@ -18,7 +18,7 @@
             <router-link
               v-if="config.create"
               :to="{ name: config.route + '.create' }"
-              class="btn btn-primary"><i class="fa fa-plus"/></router-link>
+              class="btn btn-primary btn-sm"><i class="fa fa-plus"/><span class='w5'></span> Create</router-link>
           </div>
           <resource-index-query
             :query="query"
@@ -37,14 +37,14 @@
 
                     <button
                       v-b-modal="'delete-'+config.route"
-                      class="btn btn-sm btn-danger icon-circle" >
-                      <i class="fa fa-trash"/>
+                      class="btn btn-sm btn-danger" >
+                      <i class="fa fa-trash"/><span class='w5'></span> Remove
                     </button>
                     <div class="w10"/>
                     <button
-                      class="btn btn-sm btn-primary icon-circle"
+                      class="btn btn-sm btn-primary"
                       style="opacity:0.3">
-                      <i class="fa fa-pencil-alt"/>
+                      <i class="fa fa-pencil-alt"/><span class='w5'></span> Update
                     </button>
                   </div>
                 </div>
