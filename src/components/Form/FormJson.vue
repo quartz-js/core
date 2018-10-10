@@ -100,11 +100,11 @@ export default {
 </script>
 <style scoped>
 .editor .CodeMirror {
-  height: 700px;
+  height: 800px;
 }
 
 .editor iframe {
-  height: 700px;
+  height: 800px;
 }
 
 .editor iframe {
@@ -113,7 +113,7 @@ export default {
 }
 
 .editor {
-  height: 700px;
+  height: 800px;
 }
 
 .editor > * {
