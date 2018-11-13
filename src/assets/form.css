@@ -28,6 +28,7 @@ select.form-control {
   opacity: 0.5;
   font-size: 15px;
   padding: 0 1px;
+  maring: 3px 0;
 }
 
 .form-control:not(:placeholder-shown) ~ label, .form-control:focus ~ label {

@@ -21,3 +21,14 @@ export default {
 }
 
 </script>
+<style>
+  .show-value {
+    font-size: 14px;
+  }
+
+  .label-show {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+</style>

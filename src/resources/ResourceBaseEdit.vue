@@ -1,21 +1,15 @@
 <template>
   <div>
     <div v-if="resource !== 0 && resource !== null">
-      <div class="fluid">
-        <slot
-          :resource="resource"
-          name="main">
-          <div class="page-section paper">
-            <div class="fluid-fill content relative">
-              <div
-                :class="{ 'container-fields-editing': editing}"
-                class="content">
-
-                <h3>{{ config.title }} #{{ resource.id }}</h3>
-
+      <div>
+        <slot :resource="resource" name="main">
+          <div class="md-layout md-alignment-top">
+            <div class="md-layout-item md-size-75">
+              <md-card :class="{ 'container-fields-editing': editing}" class="content">
                 <div>
-                  <div v-if="errors.length > 0">
-                    <br>
+                  <h3>{{ config.title }} #{{ resource.id }}</h3>
+                  <hr>
+                  <div v-if="errors && errors.length > 0">
                     <ul class="alert alert-danger">
                       An error has occurred<br>
                       <span v-for="error in errors">
@@ -23,66 +17,48 @@
                       </span>
                     </ul>
                   </div>
-                  <div v-if="!shouldEdit()">
-
-                    <div class="button-edit">
-                      <button
-                        class="btn btn-sm btn-primary"
-                        @click="$router.push({name: config.route + '.index'})"><i class="fa fa-list"/><span class='w5'></span>List</button>
-                        
-                      <slot
-                        :resource="resource"
-                        name="buttons"/>
-
-                      <button
-                        v-b-modal="'delete-'+config.route"
-                        v-if="config.remove === true"
-                        class="btn btn-sm btn-danger"><i class="fa fa-trash"/><span class='w5'></span>Remove</button>
-
-                      <button
-                        v-if="config.update === true"
-                        class="btn btn-sm btn-primary"
-                        @click="toEdit(true)"><i class="fa fa-pencil-alt"/><span class='w5'></span> Update</button>
-
-                    </div>
-                    <slot
-                      :getAttribute="getAttribute"
-                      :resource="resource"
-                      :errors="errors"
-                      name="show"/>
+                  <div v-if="!shouldEdit()"  style='margin-top: -25px'>
+                    <slot :getAttribute="getAttribute":resource="resource" :errors="errors" name="show"></slot>
                   </div>
                   <div v-if="shouldEdit()">
-                    <div class="fix-spacing"/>
-                    <div class="button-edit" >
-                      <button
-                        class="btn btn-sm btn-primary"
-                        @click="save()"><i class="fa fa-save"/><span class='w5'></span> Save</button>
-                      <button
-                        v-if="!alwaysEdit()"
-                        class="btn btn-sm btn-primary"
-                        @click="toEdit(false)"><i class="fa fa-times"/><span class='w5'></span> Cancel</button>
-
-                    </div>
-
-                    <slot
-                      :getAttribute="getAttribute"
-                      :resource="resource"
-                      :errors="errors"
-                      name="edit"/>
-
+                    <slot :getAttribute="getAttribute" :resource="resource" :errors="errors" name="edit"></slot>
                   </div>
                 </div>
-              </div>
+              </md-card>
+            </div>
+            <div class="md-layout-item md-size-25">
+              <md-card >
+                <div>
+                  <md-list>
+                    <md-list-item @click="$router.push({name: config.route + '.index'})">
+                      <md-icon>list</md-icon>
+                      <span class="md-list-item-text">List</span>
+                    </md-list-item>
+                    <md-list-item v-if="!shouldEdit() && config.remove === true" v-b-modal="'delete-'+config.route">
+                      <md-icon>delete</md-icon>
+                      <span class="md-list-item-text md-accent">Delete</span>
+                    </md-list-item>
+                    <md-list-item v-if="!shouldEdit() && config.update === true" @click="toEdit(true)">
+                      <md-icon>edit</md-icon>
+                      <span class="md-list-item-text">Update</span>
+                    </md-list-item>
+                    <md-list-item v-if="shouldEdit()" @click="save()" >
+                      <md-icon>save</md-icon>
+                      <span class="md-list-item-text">Save</span>
+                    </md-list-item>
+                    <md-list-item v-if="shouldEdit() && !alwaysEdit()" @click="toEdit(false)">
+                      <md-icon>clear</md-icon>
+                      <span class="md-list-item-text">Cancel</span>
+                    </md-list-item>
+                  </md-list>
+
+                  <slot :resource="resource" name="buttons"></slot>
+                </div>
+              </md-card>
             </div>
           </div>
         </slot>
-
-        <slot
-          :resource="resource"
-          name="extra"/>
-        <slot
-          :resource="resource"
-          name="sidebar-right"/>
+        <slot :resource="resource" name="extra"/>
       </div>
 
     </div>

@@ -8,8 +8,9 @@ export var ResourceIndex = {
   ],
   data: function () {
     return {
+      settingsActive: false,
       pagination: {
-        show: 10,
+        show: 25,
         page: 1,
         max_pages: null
       },
@@ -99,7 +100,7 @@ export var ResourceIndex = {
       return this.listable.indexOf(attribute.name) !== -1;
     },
     showAttribute: function (attribute) {
-      return this.isAttributeListable(attribute) && this.cols.find(col => { return col.value === attribute.name }).enabled;
+      return this.isAttributeListable(attribute) && this.cols.find(col => { return col === attribute.name });
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {
@@ -224,22 +225,27 @@ export var ResourceIndex = {
     this.reload();
   },
   mounted: function () {
-    console.log('a');
 
     if (!this.config.manager) {
       return null;
     }
 
     this.load(null);
+    
+    var cols = [];
 
     try {
-      var cols = JSON.parse(this.$localStorage.get(this.config.getIdentification() + '.cols'));
-
-      for (var x in cols) {
-        this.cols.find(c => { return c.value === cols[x].value; }).enabled = cols[x].enabled;
-      }
+      cols = JSON.parse(this.$localStorage.get(this.config.getIdentification() + '.cols'));
     } catch (e) {
 
     }
+
+    if (cols.length === 0 || cols[0].label) {
+      cols = this.config.listable;
+    }
+
+    console.log(cols);
+
+    this.cols = cols;
   }
 }

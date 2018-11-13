@@ -1,17 +1,6 @@
 <template>
   <div>
-
-    <div class="form-group" >
-      <label>{{ attribute.label }}</label>
-      <div class="container-switch">
-        <switches
-          v-model="rawValue"
-          type-bold="true"
-          theme="bootstrap"
-          color="primary"
-          @input="onChange()"/>
-      </div>
-    </div>
+      <md-switch v-model="rawValue" class="md-primary">{{ attribute.label }}</md-switch>
   </div>
 </template>
 <script>

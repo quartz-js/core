@@ -3,24 +3,17 @@
     <div class="fluid-fill"/>
     <div class="pagination fluid fluid-vcenter">
       <div/>
-      <select
-        v-model="_pagination.show"
-        class="form-control"
-        @change="onChange()">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="100">100</option>
-      </select>
-      <span
-        class="btn btn-primary icon-circle"
-        @click="prev()"><i class="fa fa-angle-double-left"/></span>
-      <input
-        v-model="_pagination.page"
-        class="form-control"
-        @change="onChange()">
-      <span
-        class="btn btn-primary icon-circle"
-        @click="next()"><i class="fa fa-angle-double-right"/></span>
+      <md-field>
+        <md-select v-model="_pagination.show" @change="onChange()" style='width: 60px'>
+          <md-option value="10">10</md-option>
+          <md-option value="25">25</md-option>
+          <md-option value="100">100</md-option>
+        </md-select>
+      </md-field>
+
+      <md-button class="md-raised md-primary avatar" @click="prev()"><i class="fa fa-angle-double-left"/></md-button>
+      <input v-model="_pagination.page" class="form-control" @change="onChange()">
+      <md-button class="md-raised md-primary avatar" @click="next()"><i class="fa fa-angle-double-right"/></md-button>
     </div>
   </div>
 </template>
