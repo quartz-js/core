@@ -16,6 +16,7 @@ export var ResourceEdit = {
   },
   data () {
     return {
+      showRemoveDialog: false,
       id: null,
       attributes: [],
       manager: null,

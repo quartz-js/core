@@ -34,9 +34,9 @@
                       <md-icon>list</md-icon>
                       <span class="md-list-item-text">List</span>
                     </md-list-item>
-                    <md-list-item v-if="!shouldEdit() && config.remove === true" v-b-modal="'delete-'+config.route">
+                    <md-list-item v-if="!shouldEdit() && config.remove === true" @click="showRemoveDialog = true" class='md-accent'>
                       <md-icon>delete</md-icon>
-                      <span class="md-list-item-text md-accent">Delete</span>
+                      <span class="md-list-item-text">Delete</span>
                     </md-list-item>
                     <md-list-item v-if="!shouldEdit() && config.update === true" @click="toEdit(true)">
                       <md-icon>edit</md-icon>
@@ -62,25 +62,14 @@
       </div>
 
     </div>
-    <b-modal
-      :id="'delete-'+config.route"
-      :ref="'delete-'+config.route"
-      :title="$t('removing')"
-      hide-footer>
-      <div class="d-block text-center">
-        <p>{{ $t('irreversible_operation') }} <br><br>{{ $t('are_you_sure') }}</p>
-      </div>
-      <b-btn
-        class="mt-3"
-        variant="danger"
-        block
-        @click="hideRemoveModal('delete-'+config.route); remove();">{{ $t('yes') }}</b-btn>
-      <b-btn
-        class="mt-3"
-        variant="primary"
-        block
-        @click="hideRemoveModal('delete-'+config.route); ">{{ $t('no') }}</b-btn>
-    </b-modal>
+    <md-dialog :md-active.sync="showRemoveDialog">
+      <md-dialog-title>{{ $t('irreversible_operation.title') }}</md-dialog-title>
+        <p class="content">{{ $t('irreversible_operation.message') }}<br><br>{{ $t('irreversible_operation.question') }}</p>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showRemoveDialog = false">No</md-button>
+        <md-button class="md-primary" @click="showRemoveDialog = false; remove();">Yes</md-button>
+      </md-dialog-actions>
+    </md-dialog>
     <div v-if="resource === 0">
       <div class="page-section paper">
         <div class="fluid-fill content relative">

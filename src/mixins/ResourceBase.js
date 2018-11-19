@@ -1,7 +1,10 @@
 import _ from 'lodash';
+import { utils } from './utils'
 
 export var ResourceBase = {
-
+  mixins: [
+    utils
+  ],
   methods: {
 
     /**
