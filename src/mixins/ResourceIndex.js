@@ -73,8 +73,6 @@ export var ResourceIndex = {
       this.sort.key = key;
       this.sort.direction = direction;
 
-      console.log(this.sort);
-
       this.updateUrl();
     },
     updateAllSelected ($event) {
@@ -201,8 +199,6 @@ export var ResourceIndex = {
 
     removeSelected: function () {
 
-      console.log(this.selected);
-      
       var promises = this.selected.map((value, key) => {
         return this.manager.remove(this.data.data[key].id);
       });

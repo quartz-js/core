@@ -28,11 +28,11 @@
             </md-dialog>
 
 
-            <md-button class="md-primary md-raised" @click="settingsActive = true">Settings</md-button>
+            <md-button class="md-primary" @click="settingsActive = true">Settings</md-button>
 
             &nbsp;
 
-            <md-button v-if="config.create" class="md-raised md-primary" :to="{ name: config.route + '.create' }">Create</md-button>
+            <md-button v-if="config.create" class="md-primary" :to="{ name: config.route + '.create' }">Create</md-button>
 
           </div>
         </md-table-toolbar>
@@ -66,7 +66,6 @@
 
       </md-table>
 
-          {{ selected }}
       <resource-index-pagination
         v-if="data"
         :pagination="pagination"

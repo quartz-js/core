@@ -1,19 +1,19 @@
 <template>
-  <div class="content fluid" >
-    <div class="fluid-fill"/>
-    <div class="pagination fluid fluid-vcenter">
-      <div/>
+  <div class="content fluid">
+    <div class="fluid-fill"></div>
+    <div class="fluid fluid-vcenter">
       <md-field>
-        <md-select v-model="_pagination.show" @change="onChange()" style='width: 60px'>
+        <md-select v-model="raw.show" style='width: 60px'>
           <md-option value="10">10</md-option>
           <md-option value="25">25</md-option>
           <md-option value="100">100</md-option>
         </md-select>
       </md-field>
-
-      <md-button class="md-raised md-primary avatar" @click="prev()"><i class="fa fa-angle-double-left"/></md-button>
-      <input v-model="_pagination.page" class="form-control" @change="onChange()">
-      <md-button class="md-raised md-primary avatar" @click="next()"><i class="fa fa-angle-double-right"/></md-button>
+      <md-button class="md-primary md-icon-button" @click="prev()"><i class="fa fa-angle-double-left"/></md-button>
+      <md-field class="page">
+        <md-input v-model="raw.page" style='width: 40px'></md-input>
+      </md-field>
+      <md-button class="md-primary md-icon-button" @click="next()"><i class="fa fa-angle-double-right"/></md-button>
     </div>
   </div>
 </template>
@@ -21,26 +21,45 @@
 
 export default {
   props: ['pagination'],
+  data: function () {
+    return {
+      raw: {
+        show: 10,
+        page: 1
+      }
+    }
+  },
+  watch: {
+    "raw.show": function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.onChange();
+      }
+    },
+    "raw.page": function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.onChange();
+      }
+    }
+  },
   created () {
-    this._pagination = this.pagination;
-
-    if (this._pagination.page > this._pagination.pages) {
-      this._pagination.page = this._pagination.pages;
-      this.onChange();
+    this.raw.show = this.pagination.show;
+    this.raw.page = this.pagination.page;
+    this.raw.pages = this.pagination.pages;
+  
+    if (this.raw.page > this.raw.pages) {
+      this.raw.page = this.raw.pages;
     }
   },
   methods: {
     onChange: function () {
-      this.$emit('change', this._pagination);
+      this.$emit('change', this.raw);
     },
     prev: function () {
-      this._pagination.page = this._pagination.page <= 1 ? 1 : this._pagination.page - 1;
-      this.onChange();
+      this.raw.page = this.raw.page <= 1 ? 1 : this.raw.page - 1;
     },
 
     next: function () {
-      this._pagination.page = this._pagination.page >= this._pagination.pages ? this._pagination.page : this._pagination.page + 1;
-      this.onChange();
+      this.raw.page = this.raw.page >= this.raw.pages ? this.raw.page : this.raw.page + 1;
     }
 
   }
@@ -49,14 +68,7 @@ export default {
 </script>
 
 <style scoped>
-.pagination {
-  max-width: 400px;
-  white-space: nowrap;
-}
-
-.pagination .form-control{
+.page > * {
   text-align: center;
-  margin: 0 10px;
-  width: 60px;
 }
 </style>
