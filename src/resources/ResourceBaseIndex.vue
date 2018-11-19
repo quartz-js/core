@@ -4,7 +4,6 @@
       <md-table v-model="data.data" @md-selected="onSelect" :md-sort.sync="sort.key" :md-sort-order.sync="sort.direction" :md-sort-fn="customSort">
         <md-table-toolbar>
           <h1 class="md-title">{{ config.title }} </h1>
-
           <div class="md-toolbar-section-end">
 
             <md-field md-clearable :class="getValidationClass(errors, 'search')" > 
@@ -22,7 +21,7 @@
                 <md-field>
                   <label for="columns">Columns</label>
                   <md-select v-model="cols" name="columns" id="columns" multiple>
-                    <md-option v-for="attribute in config.listable" :value="attribute">{{ attribute }}</md-option>
+                    <md-option v-for="(attribute, index) in config.listable" :value="attribute" :key="index">{{ attribute }}</md-option>
                   </md-select>
                 </md-field>
               </div>
@@ -42,7 +41,7 @@
           <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
           <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button" v-b-modal="'delete-'+config.route">
+            <md-button class="md-icon-button" @click='showRemoveSelectedDialog = true'>
               <md-icon>delete</md-icon>
             </md-button>
           </div>
@@ -55,7 +54,7 @@
         </md-table-empty-state>
 
         <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
-          <md-table-cell :md-label="attribute.name" :md-sort-by="attribute.name" v-for="attribute in attributes" v-if="showAttribute(attribute)">
+          <md-table-cell :md-label="attribute.name" :md-sort-by="attribute.name" v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
             {{ attribute.extractReadableValue(item) }}
           </md-table-cell>
           <md-table-cell md-numeric>
@@ -67,18 +66,22 @@
 
       </md-table>
 
+          {{ selected }}
       <resource-index-pagination
         v-if="data"
         :pagination="pagination"
         @change="onChangePagination"/>
     </md-card>
-    <b-modal :id="'delete-'+config.route" :ref="'delete-'+config.route" :title="$t('removing')" hide-footer>
-      <div class="d-block text-center">
-        <p>{{ $t('irreversible_operation') }} <br><br>{{ $t('are_you_sure') }}</p>
-      </div>
-      <b-btn class="mt-3" variant="danger" block @click="hideModal('delete-'+config.route); removeSelected();">{{ $t('yes') }}</b-btn>
-      <b-btn class="mt-3" variant="primary" block @click="hideModal('delete-'+config.route); ">{{ $t('no') }}</b-btn>
-    </b-modal>
+
+    <md-dialog :md-active.sync="showRemoveSelectedDialog">
+      <md-dialog-title>{{ $t('irreversible_operation.title') }}</md-dialog-title>
+        <p class="content">{{ $t('irreversible_operation.message') }}<br><br>{{ $t('irreversible_operation.question') }}</p>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showRemoveSelectedDialog = false">No</md-button>
+        <md-button class="md-primary" @click="showRemoveSelectedDialog = false; removeSelected();">Yes</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
   </div>
 </template>
 
@@ -121,10 +124,11 @@ export default {
         }
       }
     },
-     customSort (value) {
+    customSort (value) {
       this.updateUrl();
     },
     onSelect (item) {
+      console.log(item);
       this.selected = item
     },
     getAlternateLabel (count) {
@@ -141,7 +145,11 @@ export default {
 </script>
 <style scoped>
   .md-dialog {
-    max-width: 768px;
+    max-width: 468px;
     width: 100%;
+  }
+
+  .md-card {
+    margin-top: 16px;
   }
 </style>

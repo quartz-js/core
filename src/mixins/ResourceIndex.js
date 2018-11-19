@@ -8,6 +8,7 @@ export var ResourceIndex = {
   ],
   data: function () {
     return {
+      showRemoveSelectedDialog: false,
       settingsActive: false,
       pagination: {
         show: 25,
@@ -20,7 +21,6 @@ export var ResourceIndex = {
       data: null,
       form: {},
       params: null,
-      import: {},
       errors: {
         form: [],
         search: null
@@ -188,8 +188,6 @@ export var ResourceIndex = {
 
       }).catch(response => {
 
-        console.log(response);
-
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;
         }
@@ -202,6 +200,8 @@ export var ResourceIndex = {
     },
 
     removeSelected: function () {
+
+      console.log(this.selected);
       
       var promises = this.selected.map((value, key) => {
         return this.manager.remove(this.data.data[key].id);
@@ -214,10 +214,6 @@ export var ResourceIndex = {
       }).catch(response => {
         this.$notify(response.message, 'error')
       });
-    },
-
-    hideModal (ref) {
-      this.$refs[ref].hide()
     },
   },
   created: function () {
@@ -243,8 +239,6 @@ export var ResourceIndex = {
     if (cols.length === 0 || cols[0].label) {
       cols = this.config.listable;
     }
-
-    console.log(cols);
 
     this.cols = cols;
   }
