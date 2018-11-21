@@ -1,7 +1,7 @@
 <template>
   <div>
-    <md-card v-if="data">
-      <md-table v-model="data.data" @md-selected="onSelect" :md-sort.sync="sort.key" :md-sort-order.sync="sort.direction" :md-sort-fn="customSort">
+    <md-card v-if="response">
+      <md-table v-model="response.data" @md-selected="onSelect" :md-sort.sync="sort.key" :md-sort-order.sync="sort.direction" :md-sort-fn="customSort">
         <md-table-toolbar>
           <h1 class="md-title">{{ config.title }} </h1>
           <div class="md-toolbar-section-end">
@@ -65,11 +65,7 @@
         </md-table-row>
 
       </md-table>
-
-      <resource-index-pagination
-        v-if="data"
-        :pagination="pagination"
-        @change="onChangePagination"/>
+      <resource-index-pagination v-if="response && pagination.pages" :pagination="pagination" @change="onChangePagination"/>
     </md-card>
 
     <md-dialog :md-active.sync="showRemoveSelectedDialog">
@@ -127,7 +123,6 @@ export default {
       this.updateUrl();
     },
     onSelect (item) {
-      console.log(item);
       this.selected = item
     },
     getAlternateLabel (count) {

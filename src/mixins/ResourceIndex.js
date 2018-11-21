@@ -18,7 +18,7 @@ export var ResourceIndex = {
       query: '',
       manager: null,
       cols: [],
-      data: null,
+      response: null,
       form: {},
       params: null,
       errors: {
@@ -77,7 +77,7 @@ export var ResourceIndex = {
     },
     updateAllSelected ($event) {
       this.selected = [];
-      this.data.data.map((value, key) => {
+      this.response.data.map((value, key) => {
         this.selected[key] = $event.target.checked;
       });
     },
@@ -179,7 +179,7 @@ export var ResourceIndex = {
         });
 
         Promise.all(promises).then(() => {
-          this.data = response.body;
+          this.response = response.body;
         }).catch(response => {
           this.$notify(response.message, 'error')
         });
@@ -189,8 +189,11 @@ export var ResourceIndex = {
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;
         }
-
-        this.data = null;
+        
+        this.pagination.pages = 0;
+        this.pagination.page = 0;
+        this.response = response.body;
+        this.response.data = [];
         this.loading = false;
       }).then(response => {
 
@@ -200,7 +203,7 @@ export var ResourceIndex = {
     removeSelected: function () {
 
       var promises = this.selected.map((value, key) => {
-        return this.manager.remove(this.data.data[key].id);
+        return this.manager.remove(this.response.data[key].id);
       });
 
       Promise.all(promises).then(response => {

@@ -16,12 +16,10 @@ body{
   color: #5b5b5b;
   margin:0;
   font-size:14px;
-  font-family: "Lato", sans-serif;
   color: #54545b;
-  background: #f0f6fe;
   margin:0;
   font-size:12px;
-  font-family: "Montserrat";
+  font-family: "Montserrat" , sans-serif;
   color:#333;
 }
 
