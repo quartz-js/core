@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card >
     <v-card-title>
       <h3 class='title'>{{ $t(config.title) }}</h3>
       <v-spacer></v-spacer>
@@ -21,70 +21,68 @@
       <v-btn v-if="config.create" color="primary" :to="{ name: config.route + '.create' }">Create</v-btn>
 
     </v-card-title>
-
-    <v-data-table
-      v-model="selected"
-      :headers="getHeaders()"
-      :items="getData()"
-      select-all
-      item-key="id"
-      class="elevation-1"
-      v-if="response"
-      :pagination.sync="pagination"
-      :total-items="pagination.totalItems"
-      :loading="loading"
-      :rowsPerPageItems="rowsPerPageItems"
-    >
-    <template slot="headers" slot-scope="props">
-      <tr>
-        <th>
-          <v-checkbox
-            :input-value="props.all"
-            :indeterminate="props.indeterminate"
-            primary
-            hide-details
-            @click.native="toggleAll"
-          ></v-checkbox>
-        </th>
-        <th
-          v-for="header in props.headers"
-          :key="header.text"
-           class="text-xs-left"
-          :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-          @click="changeSort(header.value)"
-        >
-          {{ header.text }}
-          <v-icon small>arrow_upward</v-icon>
-        </th>
-
-        <th class="column sortable">
-          actions
-        </th>
-      </tr>
-    </template>
-
-      <template slot="items" slot-scope="props">
-        <tr :active="props.selected">
-          <td>
-            <v-checkbox @change="props.selected = !props.selected"
-              :input-value="props.selected"
+      <v-data-table
+        v-model="selected"
+        :headers="getHeaders()"
+        :items="getData()"
+        select-all
+        item-key="id"
+        v-if="response"
+        :pagination.sync="pagination"
+        :total-items="pagination.totalItems"
+        :loading="loading"
+        :rowsPerPageItems="rowsPerPageItems"
+        flat
+      >
+      <template slot="headers" slot-scope="props">
+        <tr>
+          <th>
+            <v-checkbox
+              :input-value="props.all"
+              :indeterminate="props.indeterminate"
               primary
               hide-details
+              @click.native="toggleAll"
             ></v-checkbox>
-          </td>
-          <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
-            {{ attribute.extractReadableValue(props.item) }}
-          </td>
-
-          <td class="justify-center align-center layout px-0">
-            <v-btn icon small @click="goToShow(props.item)"><v-icon small > edit </v-icon></v-btn>
-            <!--<v-icon small @click="deleteItem(props.item)">delete</v-icon>-->
-          </td>
-
+          </th>
+          <th
+            v-for="header in props.headers"
+            :key="header.text"
+             class="text-xs-left"
+            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+            @click="changeSort(header.value)"
+          >
+            {{ header.text }}
+            <v-icon small>arrow_upward</v-icon>
+          </th>
+          <th class="column sortable">
+            actions
+          </th>
         </tr>
-
       </template>
-    </v-data-table>
+
+        <template slot="items" slot-scope="props">
+          <tr :active="props.selected">
+            <td>
+              <v-checkbox @change="props.selected = !props.selected"
+                :input-value="props.selected"
+                primary
+                hide-details
+              ></v-checkbox>
+            </td>
+            <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
+              {{ attribute.extractReadableValue(props.item) }}
+            </td>
+
+            <td class="justify-center align-center layout px-0">
+              <v-btn icon small @click="goToShow(props.item)"><v-icon small > edit </v-icon></v-btn>
+              <!--<v-icon small @click="deleteItem(props.item)">delete</v-icon>-->
+            </td>
+
+          </tr>
+
+        </template>
+      </v-data-table>
   </v-card>
 </template>
 
