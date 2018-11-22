@@ -8,6 +8,7 @@
         v-model="rawValue"
         @change="onChange()"
         :search-input="search"
+        :search-input.sync="search"
         return-object
       ></v-autocomplete>
     <div
@@ -34,10 +35,14 @@ export default {
 
     var val = this.attribute.extractValue(this.value);
 
-    val.label = this.attribute.getLabelByResource(val);
-    this.items = [val];
-    this.rawValue = val;
-    this.search = this.attribute.mutator(this.attribute.extractValue(this.value));
+    if (val) {
+      val.label = this.attribute.getLabelByResource(val);
+      this.items = [val];
+      this.rawValue = val;
+      this.search = this.attribute.mutator(this.attribute.extractValue(this.value));
+    } else {
+      this.querySelections();
+    }
   },
   watch: {
     search (newVal) {
