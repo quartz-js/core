@@ -161,10 +161,6 @@ export default {
   },
   mounted: function () {
 
-    if (!this.config.manager) {
-      return null;
-    }
-
     this.load(null);
     
     var cols = [];
@@ -187,12 +183,6 @@ export default {
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
     this.listable = this.config.listable;
-
-    for (var i in this.attributes) {
-      var attribute = this.attributes[i];
-
-      this.isAttributeListable(attribute) && this.cols.push({ value: attribute.name, label: attribute.label, enabled: true});
-    }
   },
   methods: {
      onChangeQuery: function (query) {
