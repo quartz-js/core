@@ -1,7 +1,9 @@
 <template>
   <v-card >
-    <v-card-title>
-      <h3 class='title'>{{ $t(config.title) }}</h3>
+    <v-layout align-center class='content'>
+      <div>
+        <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
+      </div>
       <v-spacer></v-spacer>
       <v-text-field v-model="query" append-icon="search" label="Search" single-line hide-details></v-text-field>
       <v-dialog v-model="settingsActive" width="500">
@@ -20,7 +22,7 @@
 
       <v-btn v-if="config.create" color="primary" :to="{ name: config.route + '.create' }">Create</v-btn>
 
-    </v-card-title>
+    </v-layout>
       <v-data-table
         v-model="selected"
         :headers="getHeaders()"
@@ -75,7 +77,7 @@
             </td>
 
             <td class="justify-center align-center layout px-0">
-              <v-btn icon small @click="goToShow(props.item)"><v-icon small > edit </v-icon></v-btn>
+              <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon> edit </v-icon></v-btn>
               <!--<v-icon small @click="deleteItem(props.item)">delete</v-icon>-->
             </td>
 

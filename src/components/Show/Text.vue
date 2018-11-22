@@ -1,18 +1,21 @@
 <template>
   <p>
-      <label class="label-show">{{ attribute.label }}</label>
-      <span class="show-value" v-html="attribute.extractReadableValue(resource)"/>
+      <label class="label-show">{{ attribute.getLabel() }}</label>
+      <span v-if="html" class="show-value" v-html="html"/>
+      <span v-if="!html" class="show-value font-italic " v-html="'No information available'"/>
   </p>
 </template>
 <script>
 
 export default {
   props: ['resource', 'value', 'error', 'attribute', 'errors'],
-  created () {
-
-    if (!this.attribute.label) {
-      this.attribute.label = this.$t(this.attribute.name);
+  data() {
+    return {
+      html: null,
     }
+  },
+  created () {
+    this.html = this.attribute.extractReadableValue(this.resource);
   }
 }
 

@@ -100,25 +100,16 @@ export var ResourceEdit = {
      */
     remove: function () {
       this.manager.remove(this.id).then(response => {
-        this.$router.push({name: this.config.route + '.index'});
+        this.config.onRemoveSuccess(this, response);
       }).catch(response => {
-        alert('uhm...');
+        console.log(response);
       });
     },
-
-    /**
-     * Hide modals remove resource
-     *
-     * @return void
-     */
-    hideRemoveModal (ref) {
-      this.$refs[ref].hide()
-    }
   },
   mounted () {
     this.initConfig();
 
-    this.id = this.config.getKeyByRoute(this.$route.params);
-    this.manager && this.show();
+    this.id = this.config.getId(this);
+    this.show();
   }
 }

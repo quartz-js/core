@@ -14,7 +14,7 @@
         ></v-autocomplete>
 
 
-      <v-btn flat  small icon color="info" class="mx-1" @click.stop="create()" v-if="!rawValue && attribute.getCreateComponent()"><v-icon>create</v-icon></v-btn>
+      <v-btn flat  small icon color="info" class="mx-1" @click.stop="create()" v-if="!rawValue && attribute.getCreateComponent()"><v-icon>add</v-icon></v-btn>
       <v-btn flat  small icon color="info" class="mx-1" @click.stop="update()" v-if="rawValue && attribute.getUpdateComponent()"><v-icon>edit</v-icon></v-btn>
       <v-btn flat  small icon color="info" class="mx-1" @click.stop="rawValue = null;" v-if="rawValue"><v-icon>clear</v-icon></v-btn>
     </v-layout>
@@ -61,32 +61,40 @@ export default {
     }
   },
   methods: {
+    unload(data) {
+      this.loadByVal(data);
+      this.extraDrawer = false;
+      this.onChange();
+      this.extraComponent = null;
+    },
     create() {
       this.extraComponent = this.attribute.getCreateComponent().component;
       this.extraConfig = this.attribute.getCreateComponent().config;
       this.extraConfig.onCreateSuccess = (vue, response) => {
-        this.loadByVal(response.body.data);
-        this.extraDrawer = false;
-        this.onChange();
-        this.extraComponent = null;
+        this.unload(response.body.data);
       }
       this.extraDrawer = true;
     },
     update() {
       this.extraComponent = this.attribute.getUpdateComponent().component;
       this.extraConfig = this.attribute.getUpdateComponent().config;
+      this.extraConfig.getId = (vue) => {
+        return this.rawValue && this.rawValue.id;
+      };
       this.extraConfig.onUpdateSuccess = ($router, response) => {
-        this.loadByVal(response.body.data);
-        this.extraDrawer = false;
-        this.onChange();
-        this.extraComponent = null;
+        this.unload(response.body.data);
       }
-      this.extraConfig.show = false;
+      this.extraConfig.onRemoveSuccess = ($router, response) => {
+        this.unload(null);
+      }
       this.extraDrawer = true;
     },
     loadByVal (val) {
-      val.label = this.attribute.getLabelByResource(val);
-      this.items.push(val);
+      if (val) {
+        val.label = this.attribute.getLabelByResource(val);
+        this.items.push(val);
+      }
+
       this.rawValue = val;
     },
     querySelections (v) {

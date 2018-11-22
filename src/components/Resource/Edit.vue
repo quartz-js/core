@@ -4,12 +4,13 @@
     <div v-if="resource !== 0 && resource !== null">
       <div>
         <slot :resource="resource" name="main">
-          <v-container grid-list-md text-xs-center v-if="!type || type === 'page'">
+          <v-container grid-list-md v-if="!type || type === 'page'">
             <v-layout row wrap>
               <v-flex xs9>
                 <v-card :class="{ 'container-fields-editing': editing}" class="content" :flat="flat">
                   <div>
-                    <v-card-title><h3 class='title'>{{ config.title }} #{{ resource.id }}</h3></v-card-title>
+                    <h3 class='title'>{{ string(config.title+ " - #"+resource.id).humanize().toString() }}</h3>
+                    <p class='mt-3'>{{ config.description }}</p>
                     <v-divider class='mb-5'></v-divider>
                     <errors :errors='errors' />
                     <div v-if="!shouldEdit()" >
@@ -34,7 +35,7 @@
                         <v-list-tile-content>Delete</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile v-if="!shouldEdit() && config.update === true" @click="toEdit(true)" color="primary">
-                        <v-list-tile-action ><v-icon color="primary">update</v-icon></v-list-tile-action>
+                        <v-list-tile-action ><v-icon color="primary">edit</v-icon></v-list-tile-action>
                         <v-list-tile-content>Update</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile v-if="shouldEdit()" @click="save()" color="primary">
@@ -56,14 +57,24 @@
           <v-container v-if="type === 'wrap'">
             <v-card class="content" :flat="flat">
               <div>
-                <v-card-title><h3 class='title'>{{ config.title }} #{{ resource.id }}</h3></v-card-title>
+                <h3 class='title'>{{ string(config.title+ " - #"+resource.id).humanize().toString() }}</h3>
+                <p class='mt-3'>{{ config.description }}</p>
                 <v-divider class='mb-5'></v-divider>
-                <errors :errors='errors' />
 
-                <slot :getAttribute="getAttribute" :resource="resource" :errors="errors" name="edit"></slot>
+                <div v-if="!shouldEdit()" >
+                  <slot :getAttribute="getAttribute":resource="resource" :errors="errors" name="show"></slot>
+                </div>
+                <div v-if="shouldEdit()">
+                  <slot :getAttribute="getAttribute" :resource="resource" :errors="errors" name="edit"></slot>
+                </div>
               </div>
               <div class='text-xs-right mt-5'>
-                <v-btn color="primary"  @click="save()">Save</v-btn>
+                
+                <v-btn v-if="!shouldEdit() && config.remove === true" @click="showRemoveDialog = true" color="error"> Delete</v-btn>
+                <v-btn v-if="!shouldEdit() && config.update === true" @click="toEdit(true)" color="primary">Update</v-btn>
+                <v-btn v-if="shouldEdit()" @click="toEdit(false)">Cancel</v-btn>
+                <v-btn v-if="shouldEdit()" @click="save()" color="primary">Save</v-btn>
+
               </div>
             </v-card>
           </v-container>
@@ -115,6 +126,7 @@ export default {
       return !this.config.show && this.config.update;
     },
     shouldEdit () {
+
       if (this.alwaysEdit()) {
         return true;
       }

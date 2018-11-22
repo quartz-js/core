@@ -1,9 +1,10 @@
 <template>
-  <v-container grid-list-md text-xs-center>
+  <v-container grid-list-md>
     <v-layout row wrap v-if="!type || type === 'page'">
       <v-flex xs9>
         <v-card class="content" :flat="flat">
-          <v-card-title><h3 class='title'>{{ config.title }}</h3></v-card-title>
+          <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
+          <p class='mt-3'>{{ config.description }}</p>
           <v-divider class='mb-45'></v-divider>
           <errors :errors='errors' />
           <div>
@@ -35,7 +36,8 @@
     <v-layout row wrap v-if="type === 'wrap'">
       <v-flex xs12>
         <v-card class="content" :flat="flat">
-          <v-card-title><h3 class='title'>{{ config.title }}</h3></v-card-title>
+          <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
+          <p class='mt-3'>{{ config.description }}</p>
           <v-divider class='mb-5'></v-divider>
           <errors :errors='errors' />
           <div>

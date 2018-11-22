@@ -14,6 +14,14 @@ export class ResourceConfig {
       return { name: this.route + '.show', params: this.getParamsShow(resource) };
     };
 
+    this.getId = function(vue) {
+      return this.getKeyByRoute(vue.$route.params);
+    };
+
+    this.getRouteIndex = function(resource) {
+      return {name: this.config.route + '.index'};
+    }
+
     this.getKeyByRoute = function (params) {
       return params.id;
     };
@@ -31,7 +39,11 @@ export class ResourceConfig {
     };
 
     this.onCreateSuccess = function (vue, response) {
-        vue.$router.push(this.config.getRouteShow(response.body.data));
+        vue.$router.push(this.getRouteShow(response.body.data));
+    }
+
+    this.onCreateSuccess = function (vue, response) {
+        vue.$router.push(this.getRouteIndex(response.body.data));
     }
 
     this.onUpdateSuccess = function (vue, response) {
