@@ -1,47 +1,15 @@
 <template>
   <div>
-    <div
-      v-on-clickaway="fade"
-      class="select">
-      <div
-        :class="{error: error}"
-        class="form-group " >
-        <input
-          v-model="rawValue"
-          type="hidden"
-          @input="onChangeValue()">
-        <input
-          v-model="query"
-          type="text"
-          class="form-control"
-          placeholder=" "
-          @focus="visible = true;onChange()"
-          @input="onChange()">
-        <span class="form-highlight"/>
-        <label>{{ attribute.label }}</label>
-      </div>
-
-      <div
-        v-if="visible"
-        class="paper window">
-        <div v-if="data">
-          <div
-            v-for="resource in data.data"
-            class="select-link text-link text-link-router"
-            @click="onSelect(resource)">
-            {{ attribute.getLabelByResource(resource) }}
-          </div>
-          <div class="info">
-            {{ data.meta.pagination.total }} results
-          </div>
-        </div>
-        <div
-          v-else
-          class="content">
-          Loading...
-        </div>
-      </div>
-    </div>
+    <v-autocomplete
+        :loading="loading"
+        :items="items"
+        item-text="label"
+        :label="attribute.getLabel()"
+        v-model="rawValue"
+        @change="onChange()"
+        :search-input="search"
+        return-object
+      ></v-autocomplete>
     <div
       v-if="error"
       class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
@@ -53,113 +21,54 @@ import { mixin as clickaway } from 'vue-clickaway';
 
 export default {
   mixins: [ clickaway ],
-  props: ['value', 'attribute', 'errors'],
+  props: ['value', 'attribute', 'error', 'errors'],
   data: function () {
     return {
-      error: null,
-      visible: false,
-      data: null,
-      query: null
+      rawValue: null,
+      loading: false,
+      search: '',
+      items: [],
     }
-  },
-  watch: {
-    errors: function (val, oldVal) {
-      if (this.errors.length) {
-        this.error = this.errors.find((error) => {
-          return error.label === this.attribute.extractValue(this.value); ;
-        });
-      }
-    }
-  },
-  mounted () {
   },
   created () {
-    this.rawValue = this.value;
 
-    if (!this.attribute.label) {
-      this.attribute.label = this.$t(this.attribute.name);
-    }
+    var val = this.attribute.extractValue(this.value);
 
-    if (this.rawValue) {
-      this.query = this.attribute.mutator(this.attribute.extractValue(this.value));
+    val.label = this.attribute.getLabelByResource(val);
+    this.items = [val];
+    this.rawValue = val;
+    this.search = this.attribute.mutator(this.attribute.extractValue(this.value));
+  },
+  watch: {
+    search (newVal) {
+      newVal && newVal !== this.rawValue && this.querySelections(newVal)
     }
   },
-
   methods: {
-    onChangeValue: function () {
-      // this.$emit("input", this.rawValue);
+
+    querySelections (v) {
+      this.loading = true;
+
+      v = v ? this.attribute.executeQuery(v) : '';
+
+      this.attribute.api.index({show: 5, query: v})
+        .then(response => {
+          this.items = response.body.data.map((item) => {
+            item.label = this.attribute.getLabelByResource(item);
+            return item;
+          });
+        })
+        .finally(() => { this.loading = false});
     },
+    onChange: function (newVal, oldVal) {
+      this.query = this.attribute.mutator(this.rawValue);
+      this.attribute.injectValue(this.value, this.rawValue.id);
 
-    onChange: function () {
-      this.data = null;
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(this.onLoad, 100)
+      this.$emit('input', this.rawValue);
+
     },
-
-    onSelect: function (resource) {
-      this.query = this.attribute.mutator(resource);
-
-      this.attribute.injectValue(this.value, resource.id);
-      this.$emit('input', this.value);
-      this.fade();
-    },
-
-    onLoad: function () {
-      var query = this.query ? this.attribute.executeQuery(this.query) : '';
-
-      this.attribute.api.index({show: 5, query: query}).then(response => {
-        this.data = response.body;
-
-        this.error = null;
-
-        if (this.data.data.length === 0) {
-          this.error = {
-            code: 'NOT_FOUND'
-          };
-        }
-      });
-    },
-    fade: function () {
-      this.visible = false;
-    }
 
   }
 }
 
 </script>
-<style scoped>
-
-.select {
-  position: relative;
-  font-size: 14px;
-}
-
-.select .window {
-  position: absolute;
-  left:0;
-  right: 0;
-  margin-top: -5px;
-  text-align: left;
-  z-index: 5;
-}
-
-.dropdown {
-  cursor: pointer;
-  font-size: 19px;
-}
-
-.info {
-  font-size: 11px;
-  padding: 20px;
-  border-top: 1px solid #efefef;
-}
-
-.select-link {
-  padding: 15px 20px;
-}
-
-.select-link:hover {
-  background: #616ad9;
-  color: white;
-}
-</style>
