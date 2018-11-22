@@ -1,24 +1,7 @@
 <template>
   <div>
-    <div
-      :class="{error: error}"
-      class="form-group">
-      <input
-        v-model="rawValue"
-        type="number"
-        min="0"
-        step="1"
-        class="form-control"
-        placeholder=" "
-        autocomplete="off"
-        @input="onChange()">
-      <span class="form-highlight"/>
-      <label>{{ attribute.label }}</label>
-    </div>
-    <div class="description">{{ $t(attribute.description) }}</div>
-    <div
-      v-if="error"
-      class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
+    <v-text-field v-model="rawValue" :label="attribute.label" @input="onChange()"></v-text-field>
+    <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
 <script>
@@ -32,7 +15,7 @@ export default {
   },
   mounted () {
     if (this.errors) {
-      this.error = this.errors.find((error) =>{
+      this.error = this.errors.find((error) => {
         return error.label === this.attribute.name;
       });
     }
@@ -45,7 +28,7 @@ export default {
     }
   },
   methods: {
-    onChange () {
+    onChange: function () {
       this.attribute.injectValue(this.value, this.rawValue);
       this.$emit('input', this.rawValue);
     }

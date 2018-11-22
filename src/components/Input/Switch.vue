@@ -1,6 +1,6 @@
 <template>
   <div>
-      <md-switch v-model="rawValue" class="md-primary">{{ attribute.label }}</md-switch>
+      <v-switch v-model="rawValue" :label='attribute.getLabel()'></v-switch>
   </div>
 </template>
 <script>
@@ -17,21 +17,9 @@ export default {
       rawValue: false
     }
   },
-  mounted () {
-
-    if (this.errors) {
-      this.error = this.errors.find((error) => {
-        return error.label === this.attribute.name;
-      });
-    }
-  },
   created () {
-    if (!this.attribute.label) {
-      this.attribute.label = this.$t(this.attribute.name);
-    }
-
     var option = this.attribute.extractValue(this.value);
-    this.rawValue = option.value;
+    this.rawValue = option ? option.value : null;
   },
   methods: {
     onChange: function () {
@@ -41,15 +29,7 @@ export default {
       this.$emit('input', this.value);
       this.$forceUpdate();
     }
-
   }
 }
 
 </script>
-<style scoped>
-.container-switch {
-  padding-top: 10px;
-  padding-left: 5px;
-  position: relative;
-}
-</style>
