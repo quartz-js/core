@@ -1,19 +1,29 @@
 <template>
   <div>
-    <v-autocomplete
-        :loading="loading"
-        :items="items"
-        item-text="label"
-        :label="attribute.getLabel()"
-        v-model="rawValue"
-        @change="onChange()"
-        :search-input="search"
-        :search-input.sync="search"
-        return-object
-      ></v-autocomplete>
-    <div
-      v-if="error"
-      class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
+    <v-layout row wrap align-center>
+      <v-autocomplete
+          :loading="loading"
+          :items="items"
+          item-text="label"
+          :label="attribute.getLabel()"
+          v-model="rawValue"
+          @change="onChange()"
+          :search-input="search"
+          :search-input.sync="search"
+          return-object
+        ></v-autocomplete>
+
+
+      <v-btn flat  small icon color="info" class="mx-1" @click.stop="create()" v-if="!rawValue && attribute.getCreateComponent()"><v-icon>create</v-icon></v-btn>
+      <v-btn flat  small icon color="info" class="mx-1" @click.stop="update()" v-if="rawValue && attribute.getUpdateComponent()"><v-icon>edit</v-icon></v-btn>
+      <v-btn flat  small icon color="info" class="mx-1" @click.stop="rawValue = null;" v-if="rawValue"><v-icon>clear</v-icon></v-btn>
+    </v-layout>
+
+    <v-navigation-drawer v-model="extraDrawer" fixed temporary app right width='800'>
+      <component v-if="extraComponent" v-bind:is="extraComponent" :config="extraConfig" flat type='wrap'></component>
+    </v-navigation-drawer>
+    
+    <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
 <script>
@@ -29,6 +39,9 @@ export default {
       loading: false,
       search: '',
       items: [],
+      extraDrawer: false,
+      extraComponent: null,
+      extraConfig: {},
     }
   },
   created () {
@@ -36,13 +49,11 @@ export default {
     var val = this.attribute.extractValue(this.value);
 
     if (val) {
-      val.label = this.attribute.getLabelByResource(val);
-      this.items = [val];
-      this.rawValue = val;
-      this.search = this.attribute.mutator(this.attribute.extractValue(this.value));
+      this.loadByVal(val);
     } else {
       this.querySelections();
     }
+
   },
   watch: {
     search (newVal) {
@@ -50,7 +61,34 @@ export default {
     }
   },
   methods: {
-
+    create() {
+      this.extraComponent = this.attribute.getCreateComponent().component;
+      this.extraConfig = this.attribute.getCreateComponent().config;
+      this.extraConfig.onCreateSuccess = (vue, response) => {
+        this.loadByVal(response.body.data);
+        this.extraDrawer = false;
+        this.onChange();
+        this.extraComponent = null;
+      }
+      this.extraDrawer = true;
+    },
+    update() {
+      this.extraComponent = this.attribute.getUpdateComponent().component;
+      this.extraConfig = this.attribute.getUpdateComponent().config;
+      this.extraConfig.onUpdateSuccess = ($router, response) => {
+        this.loadByVal(response.body.data);
+        this.extraDrawer = false;
+        this.onChange();
+        this.extraComponent = null;
+      }
+      this.extraConfig.show = false;
+      this.extraDrawer = true;
+    },
+    loadByVal (val) {
+      val.label = this.attribute.getLabelByResource(val);
+      this.items.push(val);
+      this.rawValue = val;
+    },
     querySelections (v) {
       this.loading = true;
 
@@ -65,10 +103,12 @@ export default {
         })
         .finally(() => { this.loading = false});
     },
-    onChange: function (newVal, oldVal) {
-      this.query = this.attribute.mutator(this.rawValue);
-      this.attribute.injectValue(this.value, this.rawValue.id);
+    onChange: function () {
 
+      this.query = this.attribute.mutator(this.rawValue);
+
+      this.attribute.injectValue(this.value, this.rawValue ? this.rawValue.id : null);
+  
       this.$emit('input', this.rawValue);
 
     },
@@ -77,3 +117,8 @@ export default {
 }
 
 </script>
+<style scoped>
+.layout > * {
+  margin: 0;
+}
+</style>

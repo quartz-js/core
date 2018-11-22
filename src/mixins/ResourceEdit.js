@@ -80,10 +80,13 @@ export var ResourceEdit = {
       var params = {};
 
       this.manager.update(this.id, this.resource).then(response => {
+
         this.syncing = false
         this.errors = [];
         this.editing = false;
         this.handleResponse(response);
+
+        this.config.onUpdateSuccess(this, response);
       }).catch(response => {
         this.syncing = false;
         this.errors = response.body.errors

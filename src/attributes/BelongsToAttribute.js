@@ -28,6 +28,44 @@ export class BelongsToAttribute extends BaseAttribute {
   }
 
   /**
+   * @param {string} component
+   *
+   * @return this
+   */
+  setCreateComponent(component) {
+    this.createComponent = component;
+
+    return this;
+  }
+
+  /**
+   * @return {string}
+   */
+  getCreateComponent() {
+    return this.createComponent;
+  }
+
+  /**
+   * @param {string} component
+   *
+   * @return this
+   */
+  setUpdateComponent(component) {
+    this.updateComponent = component;
+
+    return this;
+  }
+
+  /**
+   * @return {string}
+   */
+  getUpdateComponent() {
+    return this.updateComponent;
+  }
+
+
+
+  /**
    * @param {string} name
    *
    * @return this

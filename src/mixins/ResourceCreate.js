@@ -30,7 +30,7 @@ export var ResourceCreate = {
     */
     create () {
       this.manager.create(this.resource).then(response => {
-        this.$router.push(this.config.getRouteShow(response.body.data))
+        this.config.onCreateSuccess(this, response);
       }).catch(response => {
         this.errors = response.body.errors
       });

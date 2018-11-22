@@ -30,6 +30,17 @@ export class ResourceConfig {
 
     };
 
+    this.onCreateSuccess = function (vue, response) {
+        vue.$router.push(this.config.getRouteShow(response.body.data));
+    }
+
+    this.onUpdateSuccess = function (vue, response) {
+        vue.syncing = false
+        vue.errors = [];
+        vue.editing = false;
+        vue.handleResponse(response);
+    }
+
     for (var i in params) {
       this[i] = params[i];
     }

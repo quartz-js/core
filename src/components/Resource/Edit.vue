@@ -4,13 +4,13 @@
     <div v-if="resource !== 0 && resource !== null">
       <div>
         <slot :resource="resource" name="main">
-          <v-container grid-list-md text-xs-center>
+          <v-container grid-list-md text-xs-center v-if="!type || type === 'page'">
             <v-layout row wrap>
               <v-flex xs9>
-                <v-card :class="{ 'container-fields-editing': editing}" class="content">
+                <v-card :class="{ 'container-fields-editing': editing}" class="content" :flat="flat">
                   <div>
                     <v-card-title><h3 class='title'>{{ config.title }} #{{ resource.id }}</h3></v-card-title>
-                    <v-divider class='mb-4'></v-divider>
+                    <v-divider class='mb-5'></v-divider>
                     <errors :errors='errors' />
                     <div v-if="!shouldEdit()" >
                       <slot :getAttribute="getAttribute":resource="resource" :errors="errors" name="show"></slot>
@@ -22,7 +22,7 @@
                 </v-card>
               </v-flex>
               <v-flex xs3>
-                <v-card class="content">
+                <v-card class="content" :flat="flat">
                   <div>
                     <v-list>
                       <v-list-tile @click="$router.push({name: config.route + '.index'})">
@@ -52,6 +52,20 @@
                 </v-card>
               </v-flex>
             </v-layout>
+          </v-container>
+          <v-container v-if="type === 'wrap'">
+            <v-card class="content" :flat="flat">
+              <div>
+                <v-card-title><h3 class='title'>{{ config.title }} #{{ resource.id }}</h3></v-card-title>
+                <v-divider class='mb-5'></v-divider>
+                <errors :errors='errors' />
+
+                <slot :getAttribute="getAttribute" :resource="resource" :errors="errors" name="edit"></slot>
+              </div>
+              <div class='text-xs-right mt-5'>
+                <v-btn color="primary"  @click="save()">Save</v-btn>
+              </div>
+            </v-card>
           </v-container>
         </slot>
         <slot :resource="resource" name="extra"/>
@@ -91,7 +105,7 @@ export default {
     Errors
   },
   mixins: [ ResourceEdit ],
-  props: ['config'],
+  props: ['config', 'flat', 'type'],
   created () {
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
