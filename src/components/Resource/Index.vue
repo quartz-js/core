@@ -173,7 +173,7 @@ export default {
 
     }
 
-    if (cols.length === 0 || cols[0].label) {
+    if (!cols || cols.length === 0 || cols[0].label) {
       cols = this.config.listable;
     }
 

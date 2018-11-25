@@ -42,10 +42,6 @@ export class ResourceConfig {
         vue.$router.push(this.getRouteShow(response.body.data));
     }
 
-    this.onCreateSuccess = function (vue, response) {
-        vue.$router.push(this.getRouteIndex(response.body.data));
-    }
-
     this.onUpdateSuccess = function (vue, response) {
         vue.syncing = false
         vue.errors = [];
