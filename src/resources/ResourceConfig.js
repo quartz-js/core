@@ -19,7 +19,7 @@ export class ResourceConfig {
     };
 
     this.getRouteIndex = function(resource) {
-      return {name: this.config.route + '.index'};
+      return {name: this.route + '.index'};
     }
 
     this.getKeyByRoute = function (params) {
@@ -40,14 +40,46 @@ export class ResourceConfig {
 
     this.onCreateSuccess = function (vue, response) {
         vue.$router.push(this.getRouteShow(response.body.data));
-    }
+    };
 
     this.onUpdateSuccess = function (vue, response) {
-        vue.syncing = false
-        vue.errors = [];
-        vue.editing = false;
-        vue.handleResponse(response);
+    };
+    
+    this.onRemoveSuccess = function (vue, response) {
+    };
+
+
+
+    /**
+     * Get attribute by name
+     *
+     * @param {string} name
+     *
+     * @return {BaseAttribute}
+     */
+    this.getAttribute = function (name) {
+      return this.attributes.find(function (attribute) {
+        return attribute.name === name;
+      });
+    };
+
+    /**
+     * Get attributes by names
+     *
+     * @param {string} name
+     *
+     * @return {BaseAttribute}
+     */
+    this.getAttributes = function(names) {
+      return this.attributes.filter(function (attribute) {
+        return names.indexOf(attribute.name) !== -1;
+      });
+    };
+
+    this.resourceEvent = function(label) {
+      return this.title + ":" + label;
     }
+
 
     for (var i in params) {
       this[i] = params[i];

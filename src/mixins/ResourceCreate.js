@@ -1,10 +1,7 @@
-import { ResourceBase } from './ResourceBase'
+
 
 export var ResourceCreate = {
   props: ['value'],
-  mixins: [
-    ResourceBase
-  ],
   data () {
     return {
       attributes: [],
@@ -16,12 +13,6 @@ export var ResourceCreate = {
     }
   },
   methods: {
-
-    getAttribute (name) {
-      return this.attributes.find(function (attribute) {
-        return attribute.name === name;
-      });
-    },
 
     /**
     * Save data

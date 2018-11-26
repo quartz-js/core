@@ -19,7 +19,7 @@ export class BelongsToAttribute extends BaseAttribute {
     };
 
     this.extractor = resource => {
-      return typeof resource[this.getRelationName()] !== 'undefined' ? resource[this.getRelationName()] : null;
+      return resource && typeof resource[this.getRelationName()] !== 'undefined' ? resource[this.getRelationName()] : null;
     };
   }
 
@@ -103,11 +103,12 @@ export class BelongsToAttribute extends BaseAttribute {
 
   /**
    * @param {string} key
+   * @param {object} resource
    *
    * @return this
    */
-  executeQuery (key) {
-    return this.query(key);
+  executeQuery (key, resource) {
+    return this.query(key, resource);
   }
 
   getLabelByResource (resource) {
@@ -119,6 +120,7 @@ export class BelongsToAttribute extends BaseAttribute {
    */
   load (resources) {
     var ids = resources.filter(resource => { return resource[this.column]; }).map(resource => { return resource[this.column] }).join(',');
+
     return this.api.index({query: ids ? 'id in (' + ids + ')' : ''}).then(response => {
       resources.map(resource => {
         resource[this.getRelationName()] = response.body.data.find(b_resource => { return b_resource.id == resource[this.column] });

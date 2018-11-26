@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field v-model="rawValue" :label="attribute.label" @input="onChange()"></v-text-field>
+    <v-text-field v-model="rawValue" :label="attribute.getLabel()" @input="onChange()"></v-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
@@ -8,9 +8,14 @@
 
 export default {
   props: ['value', 'error', 'attribute', 'errors'],
-  data () {
-    return {
-      rawValue: null
+  computed: {
+    rawValue: {
+      get: function () {
+        return this.attribute.extractValue(this.value);
+      },
+      set: function(newValue) {
+        this.attribute.injectValue(this.value, newValue);
+      }
     }
   },
   mounted () {
@@ -22,15 +27,13 @@ export default {
   },
   created () {
     this.rawValue = this.attribute.extractValue(this.value);
-
-    if (!this.attribute.label) {
-      this.attribute.label = this.$t(this.attribute.name);
-    }
   },
   methods: {
     onChange: function () {
-      this.attribute.injectValue(this.value, this.rawValue);
-      this.$emit('input', this.rawValue);
+      var val = this.rawValue !== "" ? this.rawValue : null;
+
+      this.attribute.injectValue(this.value, val);
+      this.$emit('input', val);
     }
 
   }

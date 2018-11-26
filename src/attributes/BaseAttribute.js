@@ -6,6 +6,9 @@ export class BaseAttribute {
     this.name = name;
     this.label = name;
     this.column = name;
+    this.default = () => {
+      return null;
+    };
 
     if (options && options.column) {
       this.column = options.column;
@@ -23,6 +26,28 @@ export class BaseAttribute {
       return resource;
     };
   }
+
+  /**
+   * @param {Closure} callback
+   *
+   * @return this
+   */
+  setDefault (callback) {
+    this.default = callback;
+
+    return this;
+  }
+
+  /**
+   * @return {Closure}
+   */
+  getDefault () {
+    var d = this.default;
+
+    return d();
+  }
+
+
 
   /**
    * @param {string} description
@@ -165,4 +190,6 @@ export class BaseAttribute {
   load (resources) {
     return null;
   }
+
+
 }

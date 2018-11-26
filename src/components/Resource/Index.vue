@@ -5,10 +5,10 @@
         <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
       </div>
       <v-spacer></v-spacer>
-      <v-text-field v-model="query" append-icon="search" label="Search" single-line hide-details></v-text-field>
+      <v-text-field v-model="query" append-icon="search" class="search" label="Search" single-line hide-details></v-text-field>
       <v-dialog v-model="settingsActive" width="500">
 
-        <v-btn color="primary" @click="settingsActive = true" slot="activator">Settings</v-btn>
+        <v-btn color="primary" flat icon @click="settingsActive = true" slot="activator"><v-icon>settings</v-icon></v-btn>
         <v-card>
           <v-card-title class="headline grey lighten-2" primary-title>
             Columns Settings
@@ -20,13 +20,13 @@
         </v-card>
       </v-dialog>
 
-      <v-btn v-if="config.create" color="primary" :to="{ name: config.route + '.create' }">Create</v-btn>
+      <slot name="top" :config="config"></slot>
 
     </v-layout>
       <v-data-table
         v-model="selected"
         :headers="getHeaders()"
-        :items="getData()"
+        :items="data"
         select-all
         item-key="id"
         v-if="response"
@@ -77,8 +77,9 @@
             </td>
 
             <td class="justify-center align-center layout px-0">
-              <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon> edit </v-icon></v-btn>
-              <!--<v-icon small @click="deleteItem(props.item)">delete</v-icon>-->
+              <remove :resource="props.item" :config="config"/>
+              <slot name="actions_t" :resource="props.item"></slot>
+              <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
             </td>
 
           </tr>
@@ -90,12 +91,16 @@
 
 <script>
 
-import { ResourceBase } from '../../mixins/ResourceBase'
+import { utils } from '../../mixins/utils'
+import Remove from '@railken/vue-admin-core/src/components/Resource/Remove'
 
 export default {
   mixins: [
-    ResourceBase
+    utils,
   ],
+  components: {
+    Remove
+  },
   props: ['config'],
   data: function () {
     return {
@@ -123,13 +128,21 @@ export default {
         search: null
       },
       timeout: null,
-      loading: false
+      loading: true
     }
   },
   computed: {
     compoundProperty () {
       return [this.query].join()
     },
+    data: {
+      get: function() {
+        return this.response.data;
+      }, 
+      set: function(val) {
+        this.response.data = val;
+      }
+    }
   },
   watch: {
     pagination: {
@@ -180,11 +193,36 @@ export default {
     this.cols = cols;
   },
   created () {
-    this.initConfig();
     this.reload();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
     this.listable = this.config.listable;
+
+    bus.$on(this.config.resourceEvent("updated"), data => {
+
+      var index = this.data.findIndex(function(record) {
+        return record.id === data.id;
+      })
+
+      if (index !== false) {
+        this.data[index] = data;
+      }
+
+      this.$forceUpdate();
+    });
+
+    bus.$on(this.config.resourceEvent("removed"), data => {
+
+      var index = this.data.findIndex(function(record) {
+        return record.id === data.id;
+      })
+
+      if (index !== false) {
+        this.data.splice(index, 1);
+      }
+
+      this.$forceUpdate();
+    });
   },
   methods: {
      onChangeQuery: function (query) {
@@ -254,10 +292,6 @@ export default {
       var manager = this.config.manager;
       this.params = params;
 
-      if (this.loading) {
-        return;
-      }
-
       this.loading = true;
 
       this.selected = [];
@@ -276,6 +310,7 @@ export default {
 
         this.loading = false;
 
+        
         var promises = this.attributes.map(attribute => {
           return attribute.load(response.body.data);
         });
@@ -284,7 +319,9 @@ export default {
           this.response = response.body;
         }).catch(response => {
           this.$notify(response.message, 'error')
-        });
+        })
+
+        this.response = response.body;
 
       }).catch(response => {
 
@@ -302,6 +339,7 @@ export default {
 
     removeSelected: function () {
 
+      /*
       var promises = this.selected.map((value, key) => {
         return this.manager.remove(this.response.data[key].id);
       });
@@ -312,11 +350,11 @@ export default {
         this.load(null);
       }).catch(response => {
         this.$notify(response.message, 'error')
-      });
+      });*/
     },
 
     toggleAll () {
-      this.selected = this.selected.length ? [] : this.getData().slice();
+      this.selected = this.selected.length ? [] : this.data.slice();
     },
     changeSort (column) {
       if (this.pagination.sortBy === column) {
@@ -338,9 +376,6 @@ export default {
         };
       });
     },
-    getData() {
-      return this.response.data;
-    },
     getAlternateLabel (count) {
         let plural = ''
 
@@ -353,3 +388,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .search {
+    padding-top:0;
+    margin-right: 40px;
+  }
+</style>

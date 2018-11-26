@@ -9,13 +9,10 @@
 
 export default {
   props: ['resource', 'value', 'error', 'attribute', 'errors'],
-  data() {
-    return {
-      html: null,
+  computed: {
+    html: function () {
+      return this.attribute.extractReadableValue(this.resource);
     }
-  },
-  created () {
-    this.html = this.attribute.extractReadableValue(this.resource);
   }
 }
 

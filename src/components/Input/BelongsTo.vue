@@ -13,10 +13,9 @@
           return-object
         ></v-autocomplete>
 
-
-      <v-btn flat  small icon color="info" class="mx-1" @click.stop="create()" v-if="!rawValue && attribute.getCreateComponent()"><v-icon>add</v-icon></v-btn>
-      <v-btn flat  small icon color="info" class="mx-1" @click.stop="update()" v-if="rawValue && attribute.getUpdateComponent()"><v-icon>edit</v-icon></v-btn>
-      <v-btn flat  small icon color="info" class="mx-1" @click.stop="rawValue = null;" v-if="rawValue"><v-icon>clear</v-icon></v-btn>
+      <v-btn flat small icon color="info" class="mx-1" @click.stop="create()" v-if="!rawValue && attribute.getCreateComponent()"><v-icon>add</v-icon></v-btn>
+      <v-btn flat small icon color="info" class="mx-1" @click.stop="update()" v-if="rawValue && attribute.getUpdateComponent()"><v-icon>edit</v-icon></v-btn>
+      <v-btn flat small icon color="info" class="mx-1" @click.stop="rawValue = null;" v-if="rawValue"><v-icon>clear</v-icon></v-btn>
     </v-layout>
 
     <v-navigation-drawer v-model="extraDrawer" fixed temporary app right width='800'>
@@ -100,7 +99,7 @@ export default {
     querySelections (v) {
       this.loading = true;
 
-      v = v ? this.attribute.executeQuery(v) : '';
+      v = v ? this.attribute.executeQuery(v, this.rawValue) : '';
 
       this.attribute.api.index({show: 5, query: v})
         .then(response => {
