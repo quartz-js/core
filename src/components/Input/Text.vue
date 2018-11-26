@@ -6,8 +6,26 @@
 </template>
 <script>
 
+import { BaseAttribute } from '@railken/vue-admin-core/src/attributes/BaseAttribute'
+
 export default {
-  props: ['value', 'error', 'attribute', 'errors'],
+  props: {
+    value: {
+      required: true,
+    },
+    attribute: {
+      type: BaseAttribute,
+      required: true
+    },
+    errors: {
+      required: true
+    }
+  },
+  data() {
+    return {
+      error: null
+    }
+  },
   computed: {
     rawValue: {
       get: function () {

@@ -1,0 +1,19 @@
+<template>
+  <div class="text-xs-left my-3">
+    <label class="label-show">{{ attribute.getLabel() }}</label>
+    <form-html v-model="rawValue" />
+  </div>
+</template>
+<script>
+
+import Text from './Text';
+import FormHtml from '@railken/vue-admin-core/src/components/Form/FormHtml'
+
+export default {
+  extends: Text,
+  components: {
+    FormHtml
+  }
+}
+
+</script>

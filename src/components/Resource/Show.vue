@@ -8,7 +8,7 @@
         <v-spacer></v-spacer>
         <v-flex align-items class="text-xs-right" >
           <remove :resource="data" :config="config" />
-          <slot :resource="data" name="actions"/>
+          <slot :resource="data" :config="config" name="actions"/>
         </v-flex>
       </v-layout>
 

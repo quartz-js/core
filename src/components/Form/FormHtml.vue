@@ -61,11 +61,6 @@ export default {
 
     onInput ($event) {
       this.$emit('input', $event);
-      // $event = this.beautify($event);
-
-      var pos_original = this.doc.getCursor();
-
-      //
     }
   }
 }
