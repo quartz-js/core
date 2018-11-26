@@ -33,7 +33,7 @@ export var LoadResource = {
       if (this.resource) {
         this.setData(this.resource);
       } else if (this.id) {
-        this.loadDataById(id);
+        this.loadDataById(this.id);
       } else {
         throw new Error("Nor resource object or id has been sent");
       }

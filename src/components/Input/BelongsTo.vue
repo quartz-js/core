@@ -19,7 +19,7 @@
     </v-layout>
 
     <v-navigation-drawer v-model="extraDrawer" fixed temporary app right width='800'>
-      <component v-if="extraComponent" v-bind:is="extraComponent" :config="extraConfig" flat type='wrap'></component>
+      <component v-if="extraComponent" v-bind:is="extraComponent" :config="extraConfig" :resource="rawValue" flat type='wrap' :activator="false"></component>
     </v-navigation-drawer>
     
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>

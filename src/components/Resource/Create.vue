@@ -1,10 +1,10 @@
 <template>
   <div v-if="config.create === true" class="create">
-    <slot name="activator">
+    <slot name="activator" v-if="activator">
       <v-btn small flat icon  color="primary" @click="drawer = true"><v-icon>add</v-icon></v-btn>
     </slot>
     <slot :resource="data" name="main">
-      <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
+      <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
         <div class="content">
           <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
           <p class='mt-3'>{{ config.description }}</p>
@@ -33,10 +33,28 @@ export default {
   ],
   components: { 'errors': Errors },
   props: {
+    activator: {
+      type: Boolean,
+      default: true
+    },
     config: {
       type: Object,
       required: true,
     },
+  },
+  computed: {
+    drawable: {
+      get: function() {
+        if (!this.activator) {
+          return true;
+        }
+
+        return this.drawer;
+      },
+      set: function(val) {
+        this.drawer = val;
+      }
+    }
   },
   data() {
     return {

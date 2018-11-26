@@ -1,10 +1,10 @@
 <template>
   <div v-if="data !== 0 && data !== null && config.update === true" class="edit">
-    <slot name="activator">
+    <slot name="activator" v-if="activator">
       <v-btn  small flat icon  color="primary" @click="drawer = true"><v-icon>edit</v-icon></v-btn>
     </slot>
     <slot :resource="data" name="main">
-      <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
+      <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
         <div class="content">
           <h3 class='title'>{{ string(config.title+ " - #"+data.id).humanize().toString() }}</h3>
           <p class='mt-3'>{{ config.description }}</p>
@@ -37,6 +37,20 @@ export default {
     LoadResource, 
     utils
   ],
+  computed: {
+    drawable: {
+      get: function() {
+        if (!this.activator) {
+          return true;
+        }
+
+        return this.drawer;
+      },
+      set: function(val) {
+        this.drawer = val;
+      }
+    }
+  },
   data() {
     return {
       drawer: false,
@@ -46,6 +60,10 @@ export default {
     }
   },
   props: {
+    activator: {
+      type: Boolean,
+      default: true
+    },
     config: {
       type: Object,
       required: true,

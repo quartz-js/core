@@ -8,7 +8,7 @@
         <slot :resource="data" name="body"></slot>
       </div>
     </v-card>
-    <slot :resource="data" name="extra"/>
+    <slot :resource="data" :config="config" name="extra"/>
   </div>
 </template>
 
