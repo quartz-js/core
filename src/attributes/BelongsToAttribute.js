@@ -13,7 +13,8 @@ export class BelongsToAttribute extends BaseAttribute {
     };
 
     this.injector = (resource, value) => {
-      resource[this.name] = value;
+      resource[this.getRelationName()] = value;
+      resource[this.name] = value ? value.id : null;
 
       return resource;
     };
