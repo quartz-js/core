@@ -9,7 +9,7 @@ export class BelongsToAttribute extends BaseAttribute {
       return "name ct '" + key + "'";
     };
     this.mutator = (value) => {
-      return value ? value.name : null;
+        return value ? this.getLabelByResource(value) : null;
     };
 
     this.injector = (resource, value) => {

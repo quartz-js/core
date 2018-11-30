@@ -23,17 +23,8 @@ export default {
   },
   data() {
     return {
+    	rawValue: null,
       error: null
-    }
-  },
-  computed: {
-    rawValue: {
-      get: function () {
-        return this.attribute.extractValue(this.value);
-      },
-      set: function(newValue) {
-        this.attribute.injectValue(this.value, newValue);
-      }
     }
   },
   mounted () {
@@ -42,12 +33,19 @@ export default {
         return error.label === this.attribute.name;
       });
     }
+    
+    this.reloadRawValue();
   },
-  created () {
-    this.rawValue = this.attribute.extractValue(this.value);
+  watch: {
+  	value: function (){
+    	this.reloadRawValue();
+  	}
   },
   methods: {
-    onChange: function () {
+  	reloadRawValue() {
+    	this.rawValue = this.attribute.extractValue(this.value);
+  	},
+    onChange () {
       var val = this.rawValue !== "" ? this.rawValue : null;
 
       this.attribute.injectValue(this.value, val);

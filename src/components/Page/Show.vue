@@ -28,12 +28,6 @@ export default {
     LoadResource, 
     utils
   ],
-  props: {
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
   mounted () {
     bus.$on(this.config.resourceEvent("removed"), data => {
       if (data.id === this.data.id) {
@@ -41,11 +35,15 @@ export default {
       }
     });
 
+
+    this.config.onCreateSuccess = (vue, response) => {
+        vue.$router.push(this.config.getRouteShow(response.body.data));
+    };
+
     this.listenResourceEvents();
   },
   created() {
     this.loadDataByUrl();
-
   },
 }
 </script>

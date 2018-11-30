@@ -37,21 +37,8 @@ export default {
     LoadResource, 
     utils
   ],
-  props: {
-    config: {
-      type: Object,
-      required: true,
-    },
-    resource: {
-      type: Object
-    },
-    id: {
-      type: Number
-    }
-  },
   created() {
     this.loadDataByProps();
-    this.listenResourceEvents();
   },
 }
 </script>

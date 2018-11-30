@@ -2,9 +2,11 @@
   <div v-if="data !== 0 && data !== null && config.update === true" class="edit">
     <slot name="activator" :drawer="drawer">
       <v-btn  small flat icon color="primary" @click="drawer = true"><v-icon>edit</v-icon></v-btn>
+      
     </slot>
     <slot :resource="data" name="main">
       <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
+
         <div class="content">
           <h3 class='title'>{{ string(config.title+ " - #"+data.id).humanize().toString() }}</h3>
           <p class='mt-3'>{{ config.description }}</p>
@@ -50,16 +52,6 @@ export default {
       type: Boolean,
       default: true
     },
-    config: {
-      type: Object,
-      required: true,
-    },
-    resource: {
-      type: Object
-    },
-    id: {
-      type: Number
-    }
   },
   created() {
     this.loadDataByProps();
@@ -71,6 +63,8 @@ export default {
   watch: {
     drawer: function (val) {
       if (!val) {
+
+        console.log('You should reset the data');
         this.resetData();
       }
     }
@@ -89,9 +83,10 @@ export default {
 
         this.errors = [];
         this.config.onUpdateSuccess(this, response);
-        bus.$emit(this.config.resourceEvent("updated"), response.body.data);
-        this.$emit('update:resource', response.body.data);
-        this.$emit('change', response.body.data);
+        // bus.$emit(this.config.resourceEvent("updated"), response.body.data);
+        // this.$emit('update:resource', response.body.data);
+        
+        this.$emit('update', this.data);
 
         this.drawer = false;
 

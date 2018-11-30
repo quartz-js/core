@@ -15,15 +15,15 @@
           clearable
         ></v-autocomplete>
 
-      {{ rawValue }}
-      <component v-if="!rawValue && components.create.is" v-bind:is="components.create.is" :config="components.create.config" flat type='wrap'  >
+      <component v-if="!rawValue && components.create.is" v-bind:is="components.create.is" :config="components.create.config" flat type='wrap'>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
         </template>
       </component>
 
-      <component v-if="rawValue && components.update.is" v-bind:is="components.update.is" :config="components.update.config" :resource="rawValue" flat type='wrap'  >
+
+      <component v-if="rawValue && components.update.is" v-bind:is="components.update.is" :config="components.update.config" :resource="rawValue" flat type='wrap'>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
@@ -44,6 +44,7 @@ export default {
   props: ['value', 'attribute', 'error', 'errors'],
   data: function () {
     return {
+      rawValue: null,
       loading: false,
       search: '',
       items: [],
@@ -72,39 +73,21 @@ export default {
     if (this.attribute.getCreateComponent()) {
       this.components.create.is = this.attribute.getCreateComponent().component;
       this.components.create.config = this.attribute.getCreateComponent().config;
-      this.components.create.config.onCreateSuccess = (vue, response) => {
-        console.log(response);
-        this.unload(response.body.data);
-      };
     }
 
     if (this.attribute.getUpdateComponent()) {
       this.components.update.is = this.attribute.getUpdateComponent().component;
       this.components.update.config = this.attribute.getUpdateComponent().config;
-      this.components.update.config.onUpdateSuccess = ($router, response) => {
-        console.log(response);
-        this.unload(response.body.data);
-      }
-      this.components.update.config.onRemoveSuccess = ($router, response) => {
-        this.unload(null);
-      }
     }
 
   },
-  computed: {
-    rawValue: {
-      get: function () {
-        return this.attribute.extractValue(this.value);
-      },
-      set: function(newValue) {
-        this.attribute.injectValue(this.value, newValue);
-      }
-    }
-  },
   watch: {
+    value: function (){
+      this.rawValue = this.attribute.extractValue(this.value);
+    },
     search (newVal) {
       newVal !== this.rawValue && this.querySelections(newVal)
-    }
+    },
   },
   methods: {
     unload(data) {

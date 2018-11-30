@@ -72,10 +72,10 @@ export default {
      */
     create () {
       this.config.manager.create(this.data).then(response => {
-        console.log('created');
         this.config.onCreateSuccess(this, response);
         this.drawer = false;
       }).catch(response => {
+        console.log(response);
         this.errors = response.body.errors
       });
     }

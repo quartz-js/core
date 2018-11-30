@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-switch v-model="rawValue" :label='attribute.getLabel()'></v-switch>
+      <v-switch v-model="rawValue" :label='attribute.getLabel()' @change="onChange"></v-switch>
   </div>
 </template>
 <script>
@@ -18,10 +18,19 @@ export default {
     }
   },
   created () {
-    var option = this.attribute.extractValue(this.value);
-    this.rawValue = option ? option.value : null;
+    this.reloadRawValue();
+  },
+  watch: {
+    value: function (){
+      this.reloadRawValue();
+    }
   },
   methods: {
+    reloadRawValue() {
+      var option = this.attribute.extractValue(this.value);
+
+      this.rawValue = option ? option : null;
+    },
     onChange: function () {
       var index = this.rawValue ? 1 : 0;
       this.attribute.injectValue(this.value, index);

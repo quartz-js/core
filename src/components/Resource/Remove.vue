@@ -31,18 +31,6 @@ export default {
   mixins: [
     LoadResource
   ],
-  props: {
-    config: {
-      type: Object,
-      required: true,
-    },
-    resource: {
-      type: Object
-    },
-    id: {
-      type: Number
-    }
-  },
   data() {
     return {
       showRemoveDialog: false,
