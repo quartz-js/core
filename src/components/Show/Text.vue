@@ -1,8 +1,9 @@
 <template>
   <p>
       <label class="label-show">{{ attribute.getLabel() }}</label>
-      <span v-if="html" class="show-value" v-html="html"/>
-      <span v-if="!html" class="show-value font-italic " v-html="'No information available'"/>
+
+      <span v-if="html !== null" class="show-value" v-html="html"/>
+      <span v-if="html === null" class="show-value font-italic " v-html="'No information available'"/>
   </p>
 </template>
 <script>

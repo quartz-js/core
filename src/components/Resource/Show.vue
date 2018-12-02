@@ -16,6 +16,7 @@
       <v-divider class='mb-5'></v-divider>
       <div>
         <slot :resource="data" name="show" :config="config"></slot>
+        
       </div>
     </div>
   </v-card>
@@ -39,6 +40,7 @@ export default {
   ],
   created() {
     this.loadDataByProps();
+    this.listenResourceEvents();
   },
 }
 </script>

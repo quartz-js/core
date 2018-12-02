@@ -15,7 +15,7 @@
           clearable
         ></v-autocomplete>
 
-      <component v-if="!rawValue && components.create.is" v-bind:is="components.create.is" :config="components.create.config" flat type='wrap'>
+      <component v-if="!rawValue && components.create.is" v-bind:is="components.create.is" :config="components.create.config" flat type='wrap' >
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
@@ -73,13 +73,27 @@ export default {
     if (this.attribute.getCreateComponent()) {
       this.components.create.is = this.attribute.getCreateComponent().component;
       this.components.create.config = this.attribute.getCreateComponent().config;
+
+      bus.$on(this.components.create.config.resourceEvent("created"), data => {
+
+        if (data.id === this.rawValue.id) {
+          this.unload(data);
+        }
+      });
+
     }
 
     if (this.attribute.getUpdateComponent()) {
       this.components.update.is = this.attribute.getUpdateComponent().component;
       this.components.update.config = this.attribute.getUpdateComponent().config;
-    }
+      
+      bus.$on(this.components.update.config.resourceEvent("updated"), data => {
 
+        if (data.id === this.rawValue.id) {
+          this.unload(data);
+        }
+      });
+    }
   },
   watch: {
     value: function (){

@@ -63,9 +63,9 @@ export default {
   watch: {
     drawer: function (val) {
       if (!val) {
-
-        console.log('You should reset the data');
         this.resetData();
+        this.$emit('update', this.data);
+        bus.$emit(this.config.resourceEvent("updated"), this.data);
       }
     }
   },
@@ -83,7 +83,7 @@ export default {
 
         this.errors = [];
         this.config.onUpdateSuccess(this, response);
-        // bus.$emit(this.config.resourceEvent("updated"), response.body.data);
+        bus.$emit(this.config.resourceEvent("updated"), this.data);
         // this.$emit('update:resource', response.body.data);
         
         this.$emit('update', this.data);

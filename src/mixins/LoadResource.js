@@ -26,10 +26,10 @@ export var LoadResource = {
   },
   methods: {
     resetData () {
-      this.setData(JSON.parse(JSON.stringify(this.resource)));
+      this.setData(this.resource);
     },
     setData (object) {
-      this.data = object;;
+      this.data = JSON.parse(JSON.stringify(object));
     },
     loadDataById (id) {
       this.config.manager.show(id).then(response => {
@@ -62,6 +62,11 @@ export var LoadResource = {
       return this.loadDataById(this.config.getId(this));
     },
     listenResourceEvents() {
+      bus.$on(this.config.resourceEvent("updated"), data => {
+        if (data.id === this.data.id) {
+          this.data = data;
+        }
+      });
       bus.$on(this.config.resourceEvent("removed"), data => {
         if (data.id === this.data.id) {
           // this.data = null;

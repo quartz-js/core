@@ -39,8 +39,6 @@ export default {
     this.config.onCreateSuccess = (vue, response) => {
         vue.$router.push(this.config.getRouteShow(response.body.data));
     };
-
-    this.listenResourceEvents();
   },
   created() {
     this.loadDataByUrl();
