@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="show">
     <v-layout row wrap align-center>
       <v-autocomplete
           :loading="loading"
@@ -22,7 +22,6 @@
         </template>
       </component>
 
-
       <component v-if="rawValue && components.update.is" v-bind:is="components.update.is" :config="components.update.config" :resource="rawValue" flat type='wrap'>
         
         <template slot="activator" slot-scope="scope">
@@ -37,11 +36,25 @@
 </template>
 <script>
 
-import { mixin as clickaway } from 'vue-clickaway';
+import { BelongsToAttribute } from '@railken/vue-admin-core/src/attributes/BelongsToAttribute'
+import { AttributePreMount } from '@railken/vue-admin-core/src/mixins/AttributePreMount'
 
 export default {
-  mixins: [ clickaway ],
-  props: ['value', 'attribute', 'error', 'errors'],
+  mixins: [
+    AttributePreMount
+  ],
+  props: {
+    value: {
+      required: true,
+    },
+    attribute: {
+      type: BelongsToAttribute,
+      required: true
+    },
+    errors: {
+      required: true
+    }
+  },
   data: function () {
     return {
       rawValue: null,
@@ -62,9 +75,19 @@ export default {
   },
   mounted () {
 
+    if (!this.canMount()) {
+      return;
+    }
+    
     var val = this.attribute.extractValue(this.value);
 
-    if (val) {
+    if (val === null && this.value[this.name] !== null) {
+      this.loading = true;
+      this.attribute.load([this.value]).then((data) => {
+        this.loading = false;
+        this.loadByVal(this.attribute.extractValue(this.value));
+      });
+    }else if (val) {
       this.loadByVal(val);
     } else {
       this.querySelections();
@@ -74,12 +97,14 @@ export default {
       this.components.create.is = this.attribute.getCreateComponent().component;
       this.components.create.config = this.attribute.getCreateComponent().config;
 
-      bus.$on(this.components.create.config.resourceEvent("created"), data => {
+      if (this.components.create.config) {
+        bus.$on(this.components.create.config.resourceEvent("created"), data => {
 
-        if (data.id === this.rawValue.id) {
-          this.unload(data);
-        }
-      });
+          if (this.rawValue === null) {
+            this.unload(data);
+          }
+        });
+      }
 
     }
 
@@ -87,20 +112,26 @@ export default {
       this.components.update.is = this.attribute.getUpdateComponent().component;
       this.components.update.config = this.attribute.getUpdateComponent().config;
       
-      bus.$on(this.components.update.config.resourceEvent("updated"), data => {
 
-        if (data.id === this.rawValue.id) {
-          this.unload(data);
-        }
-      });
+      if (this.components.update.config) {
+        bus.$on(this.components.update.config.resourceEvent("updated"), data => {
+
+          if (this.rawValue && data.id === this.rawValue.id) {
+            this.unload(data);
+          }
+        });
+      }
     }
   },
   watch: {
     value: function (){
       this.rawValue = this.attribute.extractValue(this.value);
+      if (this.rawValue) {
+        this.rawValue.label = this.attribute.getLabelByResource(this.rawValue);
+      }
     },
     search (newVal) {
-      newVal !== this.rawValue && this.querySelections(newVal)
+      (!this.rawValue || (this.rawValue && newVal !== this.rawValue.label)) && this.querySelections(newVal)
     },
   },
   methods: {

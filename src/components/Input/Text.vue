@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="show">
     <v-text-field v-model="rawValue" :label="attribute.getLabel()" @input="onChange()"></v-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
@@ -7,8 +7,12 @@
 <script>
 
 import { BaseAttribute } from '@railken/vue-admin-core/src/attributes/BaseAttribute'
+import { AttributePreMount } from '@railken/vue-admin-core/src/mixins/AttributePreMount'
 
 export default {
+  mixins: [
+    AttributePreMount
+  ],
   props: {
     value: {
       required: true,
@@ -24,14 +28,12 @@ export default {
   data() {
     return {
     	rawValue: null,
-      error: null
     }
   },
   mounted () {
-    if (this.errors) {
-      this.error = this.errors.find((error) => {
-        return error.label === this.attribute.name;
-      });
+
+    if (!this.canMount()) {
+      return;
     }
     
     this.reloadRawValue();

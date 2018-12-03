@@ -46,9 +46,6 @@ export class ResourceConfig {
     
     this.onRemoveSuccess = function (vue, response) {
     };
-
-
-
     /**
      * Get attribute by name
      *

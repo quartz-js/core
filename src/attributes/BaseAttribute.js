@@ -25,8 +25,11 @@ export class BaseAttribute {
 
       return resource;
     };
-  }
 
+    this.fixed = (resource) => {
+      
+    }
+  }
   /**
    * @param {Closure} callback
    *

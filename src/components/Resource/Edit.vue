@@ -63,9 +63,17 @@ export default {
   watch: {
     drawer: function (val) {
       if (!val) {
+        
+        var dt = JSON.stringify(this.data);
+
         this.resetData();
-        this.$emit('update', this.data);
-        bus.$emit(this.config.resourceEvent("updated"), this.data);
+
+        //if (dt !== JSON.stringify(this.data)) {
+
+          this.$emit('update', this.data);
+          bus.$emit(this.config.resourceEvent("updated"), this.data);
+        
+        // }
       }
     }
   },
