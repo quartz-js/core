@@ -25,7 +25,7 @@ export class ResourceApi {
   }
 
   getFullParams (params) {
-    return Object.assign(this.params, params);
+    return Object.assign({}, this.params, params);
   }
 
   setFilterQuery (filterQuery) {

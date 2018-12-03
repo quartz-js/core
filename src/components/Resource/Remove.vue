@@ -52,6 +52,7 @@ export default {
     },
   },
   created () {
+    this.config.ini();
     this.loadDataByProps();
   },
 }

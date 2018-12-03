@@ -7,7 +7,7 @@
     <slot :resource="data" name="main">
       <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
 
-        <div class="content">
+        <div class="content"  v-if="drawer">
           <h3 class='title'>{{ string(config.title+ " - #"+data.id).humanize().toString() }}</h3>
           <p class='mt-3'>{{ config.description }}</p>
           <v-divider class='mb-5'></v-divider>
@@ -54,6 +54,7 @@ export default {
     },
   },
   created() {
+    this.config.ini();
     this.loadDataByProps();
 
     if (!this.activator) {

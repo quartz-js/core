@@ -15,14 +15,14 @@
           clearable
         ></v-autocomplete>
 
-      <component v-if="!rawValue && components.create.is" v-bind:is="components.create.is" :config="components.create.config" flat type='wrap' >
+      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attribute.resourceConfig()" flat type='wrap' >
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
         </template>
       </component>
 
-      <component v-if="rawValue && components.update.is" v-bind:is="components.update.is" :config="components.update.config" :resource="rawValue" flat type='wrap'>
+      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attribute.resourceConfig()" :resource="rawValue" flat type='wrap'>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
@@ -62,14 +62,8 @@ export default {
       search: '',
       items: [],
       components: {
-        create: {
-          is: null,
-          config: null,
-        },
-        update: {
-          is: null,
-          config: null,
-        }
+        create: null,
+        update: null
       }
     }
   },
@@ -92,36 +86,29 @@ export default {
     } else {
       this.querySelections();
     }
-
     if (this.attribute.getCreateComponent()) {
-      this.components.create.is = this.attribute.getCreateComponent().component;
-      this.components.create.config = this.attribute.getCreateComponent().config;
-
-      if (this.components.create.config) {
-        bus.$on(this.components.create.config.resourceEvent("created"), data => {
-
-          if (this.rawValue === null) {
-            this.unload(data);
-          }
-        });
-      }
+      this.components.create = this.attribute.getCreateComponent().component;
 
     }
 
     if (this.attribute.getUpdateComponent()) {
-      this.components.update.is = this.attribute.getUpdateComponent().component;
-      this.components.update.config = this.attribute.getUpdateComponent().config;
-      
-
-      if (this.components.update.config) {
-        bus.$on(this.components.update.config.resourceEvent("updated"), data => {
-
-          if (this.rawValue && data.id === this.rawValue.id) {
-            this.unload(data);
-          }
-        });
-      }
+      this.components.update = this.attribute.getUpdateComponent().component;
     }
+
+    bus.$on(this.attribute.resourceConfig().resourceEvent("updated"), data => {
+
+      if (this.rawValue && data.id === this.rawValue.id) {
+        this.unload(data);
+      }
+    });
+
+    bus.$on(this.attribute.resourceConfig().resourceEvent("created"), data => {
+
+      if (this.rawValue === null) {
+        this.unload(data);
+      }
+    });
+
   },
   watch: {
     value: function (){
@@ -152,7 +139,7 @@ export default {
 
       this.lastRawValue = this.rawValue;
 
-      v = v ? this.attribute.executeQuery(v, this.rawValue) : '';
+      v = this.attribute.executeQuery(v ? v : '', this.value);
 
       this.attribute.api.index({show: 5, query: v})
         .then(response => {

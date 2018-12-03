@@ -5,7 +5,7 @@
     </slot>
     <slot :resource="data" name="main">
       <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
-        <div class="content">
+        <div class="content" v-if="drawer">
           <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
           <p class='mt-3'>{{ config.description }}</p>
           <v-divider class='mb-45'></v-divider>
@@ -83,6 +83,8 @@ export default {
   },
   created() {
     var data = {};
+
+    this.config.ini();
     this.config.attributes.map(attribute => {
       data[attribute.getName()] = attribute.getDefault();
     });

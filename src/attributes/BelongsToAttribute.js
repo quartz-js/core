@@ -122,9 +122,11 @@ export class BelongsToAttribute extends BaseAttribute {
   load (resources) {
     var ids = resources.filter(resource => { return resource[this.column]; }).map(resource => { return resource[this.column] }).join(',');
 
-    return this.api.index({query: ids ? 'id in (' + ids + ')' : ''}).then(response => {
+    return this.api.index({query: ids ? 'id in (' + ids + ')' : ''}).then(responseR => {;
       resources.map(resource => {
-        resource[this.getRelationName()] = response.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
+        resource[this.getRelationName()] = responseR.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
+
+        return resource;
       });
     });
   }

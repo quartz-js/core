@@ -78,7 +78,7 @@
 
             <td class="justify-center align-center layout px-0">
               <remove :resource="props.item" :config="config"/>
-              <slot name="actions_t" :resource="props.item"></slot>
+              <slot name="actions" :resource="props.item"></slot>
               <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
             </td>
 
@@ -93,15 +93,25 @@
 
 import { utils } from '../../mixins/utils'
 import Remove from '@railken/vue-admin-core/src/components/Resource/Remove'
+var qs = require('qs');
 
 export default {
   mixins: [
     utils,
   ],
   components: {
-    Remove
+    Remove,
   },
-  props: ['config'],
+  props: {
+    config: {
+      type: Object,
+      required: true,
+    },
+    url: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: function () {
     return {
       query: '',
@@ -193,35 +203,22 @@ export default {
     this.cols = cols;
   },
   created () {
+    this.config.ini();
     this.reload();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
     this.listable = this.config.listable;
 
     bus.$on(this.config.resourceEvent("updated"), data => {
+      this.load();
+    });
 
-      var index = this.data.findIndex(function(record) {
-        return record.id === data.id;
-      })
-
-      if (index !== false) {
-        this.data[index] = data;
-      }
-
-      this.$forceUpdate();
+    bus.$on(this.config.resourceEvent("created"), data => {
+      this.load();
     });
 
     bus.$on(this.config.resourceEvent("removed"), data => {
-
-      var index = this.data.findIndex(function(record) {
-        return record.id === data.id;
-      })
-
-      if (index !== false) {
-        this.data.splice(index, 1);
-      }
-
-      this.$forceUpdate();
+      this.load();
     });
   },
   methods: {
@@ -250,42 +247,40 @@ export default {
       }
       this.$router.push(this.config.getRouteShow(resource));
     },
-
     reload(){ 
 
-      this.query = this.$route.query.query ? this.$route.query.query : '';
-      this.pagination.rowsPerPage = this.$route.query.show ? parseInt(this.$route.query.show) : 25;
-      this.pagination.descending = this.$route.query.sort_direction === 'desc';
-      this.pagination.sortBy  = this.$route.query.sort_field ? this.$route.query.sort_field : 'id';
+      var route = this.$route.query[this.config.title];
+
+      if (!route) {
+        route = JSON.stringify({
+          query: null,
+          pagination:  this.pagination
+        })
+      }
+      route = JSON.parse(route);
+
+      this.query = route.query;
+      this.pagination = route.pagination;
     },
     updateUrl() {
 
-      var currentQuery = this.$route.query.query;
-      var currentPage = this.$route.query.page ? this.$route.query.page : 1;
-      var currentShow = this.$route.query.show ? this.$route.query.show : 25;
-      var currentSortDirection = this.$route.query.sort_direction === 'desc';
-      var currentSortKey = this.$route.query.sort_field ? this.$route.query.sort_field : 'id';
+      var route = this.$route.query[this.config.title];
 
-      if (this.query === currentQuery && 
-          this.pagination.page == currentPage && 
-          this.pagination.rowsPerPage == currentShow && 
-          this.pagination.sortBy  == currentSortKey &&
-          this.pagination.descending == currentSortDirection
-        ) {
-        return;
+      if (!route || route !== JSON.stringify({query: this.query, pagination: this.pagination})) {
+
+        var push = {};
+
+        push[this.config.title] = JSON.stringify({
+            query: this.query,
+            pagination: this.pagination
+        });
+
+        this.$router.push({query: push});
+
+        this.$forceUpdate();
       }
 
-      this.$router.push({
-        query: {
-          query: this.query,
-          page: this.pagination.page,
-          show: this.pagination.rowsPerPage,
-          sort_direction: this.pagination.descending ? 'desc' : 'asc',
-          sort_field: this.pagination.sortBy ,
-        }
-      });
 
-      this.$forceUpdate();
 
     },
     load: function (params) {
@@ -308,20 +303,19 @@ export default {
         this.pagination.totalItems = response.body.meta.pagination.total;
         this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
 
-        this.loading = false;
 
-        
+
         var promises = this.attributes.map(attribute => {
           return attribute.load(response.body.data);
         });
 
         Promise.all(promises).then(() => {
+          this.loading = false;
           this.response = response.body;
         }).catch(response => {
           this.$notify(response.message, 'error')
         })
 
-        this.response = response.body;
 
       }).catch(response => {
 

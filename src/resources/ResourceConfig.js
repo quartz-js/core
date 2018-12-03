@@ -6,6 +6,14 @@ export class ResourceConfig {
     this.remove = true;
     this.show = true;
 
+    this.ini = function() {
+      return;
+      
+      this.attributes.map((attribute) => {
+        attribute.resourceConfig = this;
+      });
+    };
+
     this.getParamsShow = function (resource) {
       return { id: resource.id };
     };

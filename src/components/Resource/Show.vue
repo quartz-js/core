@@ -39,6 +39,7 @@ export default {
     utils
   ],
   created() {
+    this.config.ini();
     this.loadDataByProps();
     this.listenResourceEvents();
   },
