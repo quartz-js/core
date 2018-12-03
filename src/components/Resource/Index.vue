@@ -57,7 +57,7 @@
             {{ header.text }}
             <v-icon small>arrow_upward</v-icon>
           </th>
-          <th class="column sortable">
+          <th class="column sortable text-xs-right">
             actions
           </th>
         </tr>
@@ -76,7 +76,7 @@
               {{ attribute.extractReadableValue(props.item) }}
             </td>
 
-            <td class="justify-center align-center layout px-0">
+            <td class="justify-end align-center layout px-2 text-xs-right">
               <remove :resource="props.item" :config="config"/>
               <slot name="actions" :resource="props.item"></slot>
               <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
@@ -268,7 +268,7 @@ export default {
 
       if (!route || route !== JSON.stringify({query: this.query, pagination: this.pagination})) {
 
-        var push = {};
+        var push = this.$route.query;
 
         push[this.config.title] = JSON.stringify({
             query: this.query,
