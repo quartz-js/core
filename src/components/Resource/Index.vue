@@ -268,7 +268,7 @@ export default {
 
       if (!route || route !== JSON.stringify({query: this.query, pagination: this.pagination})) {
 
-        var push = this.$route.query;
+        var push = Object.assign({}, this.$route.query);
 
         push[this.config.title] = JSON.stringify({
             query: this.query,
