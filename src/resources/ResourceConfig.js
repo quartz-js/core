@@ -1,3 +1,5 @@
+var clone = require('clone');
+
 export class ResourceConfig {
   constructor (params) {
 
@@ -88,5 +90,8 @@ export class ResourceConfig {
     for (var i in params) {
       this[i] = params[i];
     }
+  }
+  clone () {
+    return clone(this);
   }
 };

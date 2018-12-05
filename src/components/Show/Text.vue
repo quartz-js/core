@@ -3,7 +3,7 @@
       <label class="label-show">{{ attribute.getLabel() }}</label>
 
 
-      <span v-if="attribute.resourceConfig">
+      <span v-if="attribute.resourceConfig && attribute.extractValue(resource)">
         <router-link :to="attribute.resourceConfig().getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value">Show</router-link>
       </span>
       <span v-else>

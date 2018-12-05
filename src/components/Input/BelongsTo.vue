@@ -15,14 +15,14 @@
           clearable
         ></v-autocomplete>
 
-      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attribute.resourceConfig()" flat type='wrap' >
+      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" flat type='wrap'>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
         </template>
       </component>
 
-      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attribute.resourceConfig()" :resource="rawValue" flat type='wrap'>
+      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat type='wrap'>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
@@ -95,20 +95,6 @@ export default {
       this.components.update = this.attribute.getUpdateComponent().component;
     }
 
-    bus.$on(this.attribute.resourceConfig().resourceEvent("updated"), data => {
-
-      if (this.rawValue && data.id === this.rawValue.id) {
-        this.unload(data);
-      }
-    });
-
-    bus.$on(this.attribute.resourceConfig().resourceEvent("created"), data => {
-
-      if (this.rawValue === null) {
-        this.unload(data);
-      }
-    });
-
   },
   watch: {
     value: function (){
@@ -122,6 +108,17 @@ export default {
     },
   },
   methods: {
+
+    attributeConfig() {
+      var t = this.attribute.resourceConfig().clone();
+      t.onUpdateSuccess = (vue, response) => {
+        this.unload(response.body.data);
+      }
+      t.onCreateSuccess = (vue, response) => {
+        this.unload(response.body.data);
+      }
+      return t;
+    },
     unload(data) {
       this.loadByVal(data);
       this.onChange();

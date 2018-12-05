@@ -95,7 +95,7 @@ export default {
         bus.$emit(this.config.resourceEvent("updated"), this.data);
         // this.$emit('update:resource', response.body.data);
         
-        this.$emit('update', this.data);
+        this.$emit('fresh', this.data);
 
         this.drawer = false;
 

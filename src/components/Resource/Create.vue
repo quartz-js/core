@@ -74,7 +74,7 @@ export default {
       this.config.manager.create(this.data).then(response => {
         this.config.onCreateSuccess(this, response);
         this.drawer = false;
-        bus.$emit(this.config.resourceEvent("created"), this.data);
+        bus.$emit(this.config.resourceEvent("created"), response.body.data);
       }).catch(response => {
         console.log(response);
         this.errors = response.body.errors
