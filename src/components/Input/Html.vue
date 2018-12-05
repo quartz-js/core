@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-left my-3">
     <label class="label-show">{{ attribute.getLabel() }}</label>
-    <form-html v-model="rawValue" />
+    <form-html v-model="rawValue" @input="onChange()" />
   </div>
 </template>
 <script>
