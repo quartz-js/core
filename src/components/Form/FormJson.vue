@@ -47,12 +47,19 @@ export default {
       }
     }
   },
-  created () {
-    this.rawValue = JSON.stringify(this.value);
-    this.rawValue = this.beautify(this.rawValue);
+  watch: {
+    value: function (){
+      this.reloadRawValue();
+    }
   },
-
+  mounted () {
+    this.reloadRawValue();
+  },
   methods: {
+    reloadRawValue() {
+      this.rawValue = JSON.stringify(this.value);
+      this.rawValue = this.beautify(this.rawValue);
+    },
 
     isJson (test) {
 
