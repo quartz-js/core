@@ -41,11 +41,19 @@ export default {
       }
     }
   },
-  created () {
+  watch: {
+    value: function (){
+      this.reloadRawValue();
+    }
+  },
+  mounted () {
     this.rawValue = this.beautify(this.value);
   },
 
   methods: {
+    reloadRawValue() {
+      this.rawValue = this.beautify(this.value);
+    },
 
     fix () {
       this.rawValue = this.rawValue;
