@@ -6,8 +6,8 @@
 </template>
 <script>
 
-import { BaseAttribute } from '@railken/vue-admin-core/src/attributes/BaseAttribute'
-import { AttributePreMount } from '@railken/vue-admin-core/src/mixins/AttributePreMount'
+import { BaseAttribute } from '@railken/quartz-core/src/attributes/BaseAttribute'
+import { AttributePreMount } from '@railken/quartz-core/src/mixins/AttributePreMount'
 
 export default {
   mixins: [

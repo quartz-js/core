@@ -1,5 +1,5 @@
 {
-  "name": "@railken/vue-admin-core",
+  "name": "@railken/quartz-core",
   "version": "1.0.8",
   "description": "",
   "main": "index.js",
@@ -39,10 +39,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/railken/vue-admin-core.git"
+    "url": "git+https://github.com/railken/quartz-core.git"
   },
   "bugs": {
-    "url": "https://github.com/railken/vue-admin-core/issues"
+    "url": "https://github.com/railken/quartz-core/issues"
   },
-  "homepage": "https://github.com/railken/vue-admin-core#readme"
+  "homepage": "https://github.com/railken/quartz-core#readme"
 }

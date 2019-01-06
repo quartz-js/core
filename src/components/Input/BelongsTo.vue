@@ -36,8 +36,8 @@
 </template>
 <script>
 
-import { BelongsToAttribute } from '@railken/vue-admin-core/src/attributes/BelongsToAttribute'
-import { AttributePreMount } from '@railken/vue-admin-core/src/mixins/AttributePreMount'
+import { BelongsToAttribute } from '@railken/quartz-core/src/attributes/BelongsToAttribute'
+import { AttributePreMount } from '@railken/quartz-core/src/mixins/AttributePreMount'
 
 export default {
   mixins: [

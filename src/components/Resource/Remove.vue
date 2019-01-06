@@ -25,7 +25,7 @@
 
 <script>
 
-import { LoadResource } from '@railken/vue-admin-core/src/mixins/LoadResource'
+import { LoadResource } from '@railken/quartz-core/src/mixins/LoadResource'
 
 export default {
   mixins: [

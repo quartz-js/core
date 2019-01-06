@@ -92,7 +92,7 @@
 <script>
 
 import { utils } from '../../mixins/utils'
-import Remove from '@railken/vue-admin-core/src/components/Resource/Remove'
+import Remove from '@railken/quartz-core/src/components/Resource/Remove'
 var qs = require('qs');
 
 export default {
