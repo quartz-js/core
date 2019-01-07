@@ -1,6 +1,12 @@
 <template>
   <div v-if="show">
-    <v-text-field v-model="rawValue" :label="attribute.getLabel()" @input="onChange()"></v-text-field>
+    <v-text-field 
+      v-model="rawValue" 
+      :label="attribute.getLabel()" 
+      @input="onChange()"
+      :hint="attribute.getDescription()"
+      persistent-hint
+    ></v-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
@@ -58,3 +64,8 @@ export default {
 }
 
 </script>
+<style scoped>
+  .v-messages__message {
+    line-height: inherit !important;
+  }
+</style>

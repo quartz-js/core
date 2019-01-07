@@ -78,3 +78,24 @@ html {
 a {
   text-decoration: none;
 }
+
+.resource-card {
+  box-shadow: none !important;
+  border: 2px solid #f1f1f1 !important;
+  margin-top: 40px !important;
+}
+
+.v-card {
+  box-shadow: none !important;
+}
+.v-btn {
+    box-shadow: none !important;
+}
+
+.theme--light.v-table tbody tr:not(:last-child), .theme--light.v-table thead tr:first-child {
+  border-bottom: 2px solid #f1f1f1 !important;
+}
+
+.theme--light.v-datatable .v-datatable__actions {
+  border-top: 2px solid #f1f1f1 !important;
+}
