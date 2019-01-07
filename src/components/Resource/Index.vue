@@ -1,28 +1,27 @@
 <template>
-  <v-card >
-    <v-layout align-center class='content'>
-      <div>
-        <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
-      </div>
-      <v-spacer></v-spacer>
-      <v-text-field v-model="query" append-icon="search" class="search" label="Search" single-line hide-details></v-text-field>
-      <v-dialog v-model="settingsActive" width="500">
+  <div>
+    <div class='mt-5'>
+      <h2 class='display-1 font-weight-thin'>{{ string(config.title).humanize().toString() }}</h2>
+    </div>
+    <v-card class="resource-card" v-if="pagination && pagination.totalItems !== 0 && !query">
+      <v-layout align-center class='content'>
+        <v-text-field v-model="query" append-icon="search" class="search" label="Search" single-line hide-details></v-text-field>
+        <v-dialog v-model="settingsActive" width="500">
+          <v-btn color="primary" flat icon @click="settingsActive = true" slot="activator"><v-icon>settings</v-icon></v-btn>
+          <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+              Columns Settings
+            </v-card-title>
+            <v-card-text>
+              <v-select :items="config.listable" v-model="cols" :menu-props="{ maxHeight: '400' }" label="Columns" multiple persistent-hint
+              ></v-select>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
 
-        <v-btn color="primary" flat icon @click="settingsActive = true" slot="activator"><v-icon>settings</v-icon></v-btn>
-        <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>
-            Columns Settings
-          </v-card-title>
-          <v-card-text>
-            <v-select :items="config.listable" v-model="cols" :menu-props="{ maxHeight: '400' }" label="Columns" multiple persistent-hint
-            ></v-select>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+        <slot name="top" :config="config"></slot>
 
-      <slot name="top" :config="config"></slot>
-
-    </v-layout>
+      </v-layout>
       <v-data-table
         v-model="selected"
         :headers="getHeaders()"
@@ -36,33 +35,32 @@
         :rowsPerPageItems="rowsPerPageItems"
         flat
       >
-      <template slot="headers" slot-scope="props">
-        <tr>
-          <th>
-            <v-checkbox
-              :input-value="props.all"
-              :indeterminate="props.indeterminate"
-              primary
-              hide-details
-              @click.native="toggleAll"
-            ></v-checkbox>
-          </th>
-          <th
-            v-for="header in props.headers"
-            :key="header.text"
-             class="text-xs-left"
-            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-            @click="changeSort(header.value)"
-          >
-            {{ header.text }}
-            <v-icon small>arrow_upward</v-icon>
-          </th>
-          <th class="column sortable text-xs-right">
-            actions
-          </th>
-        </tr>
-      </template>
-
+        <template slot="headers" slot-scope="props">
+          <tr>
+            <th>
+              <v-checkbox
+                :input-value="props.all"
+                :indeterminate="props.indeterminate"
+                primary
+                hide-details
+                @click.native="toggleAll"
+              ></v-checkbox>
+            </th>
+            <th
+              v-for="header in props.headers"
+              :key="header.text"
+               class="text-xs-left"
+              :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+              @click="changeSort(header.value)"
+            >
+              {{ header.text }}
+              <v-icon small>arrow_upward</v-icon>
+            </th>
+            <th class="column sortable text-xs-right">
+              actions
+            </th>
+          </tr>
+        </template>
         <template slot="items" slot-scope="props">
           <tr :active="props.selected">
             <td>
@@ -86,7 +84,16 @@
 
         </template>
       </v-data-table>
-  </v-card>
+    </v-card>
+    <v-card class='resource-card' v-else>
+       <div class='content text-md-center'>
+          <img :src='config.icon ? config.icon : require("@railken/quartz-core/src/assets/empty-storage.svg")' width='218' class='my-3'>
+          <h3 class='title my-3'>Looks like you don't have any records here.</h3>
+          <p class='my-4'>{{ string(config.description).toString() }}</p>
+          <slot name="top" :config="config" :big="true"></slot>
+      </div>
+    </v-card>
+  </div>
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
   <div v-if="config.create === true" class="create">
     <slot name="activator" v-if="activator">
-      <v-btn small flat icon  color="primary" @click="drawer = true"><v-icon>add</v-icon></v-btn>
+      <v-btn color="primary" @click="drawer = true">create record</v-btn>
     </slot>
     <slot :resource="data" name="main">
       <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
-        <div class="content" v-if="drawer">
+        <div class="content text-xs-left" v-if="drawer">
           <h3 class='title'>{{ string(config.title).humanize().toString() }}</h3>
           <p class='mt-3'>{{ config.description }}</p>
           <v-divider class='mb-45'></v-divider>

@@ -6,6 +6,8 @@
         :label="attribute.getLabel()"
         v-model="rawValue"
         @change="onChange()"
+      :hint="attribute.getDescription()"
+      persistent-hint
       ></v-autocomplete>
     <div
       v-if="error"
