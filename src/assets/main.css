@@ -99,3 +99,11 @@ a {
 .theme--light.v-datatable .v-datatable__actions {
   border-top: 2px solid #f1f1f1 !important;
 }
+
+.v-navigation-drawer .v-list__tile--active {
+  background: #083c8c;
+}
+
+.v-navigation-drawer .v-list__tile__content, .v-navigation-drawer .v-list__tile__action {
+  color: white
+}
