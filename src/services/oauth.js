@@ -25,12 +25,16 @@ export class OAuth {
     window.location.href = provider.getAuthorizeUrl();
   }
 
-  setCookieToken (token) {
-    container.get('services.cookies').set('token', token);
+  removeToken() {
+    localStorage.removeItem('access_token');
+  }
+
+  setToken (token) {
+    localStorage.setItem('access_token', token);
   }
 
   getToken () {
-    return container.get('services.cookies').get('token');
+    return localStorage.getItem('access_token');
   }
 
   providerSignInCode (provider_name, params) {
@@ -39,16 +43,16 @@ export class OAuth {
 
     return !params.access_token
       ? this.api.oauthProviderRequestToken(provider_name, params).then(response => {
-        this.setCookieToken(response.body.access_token);
+        this.setToken(response.body.access_token);
       })
       : this.api.oauthProviderExchangeToken(provider_name, params).then(response => {
-        this.setCookieToken(response.body.access_token);
+        this.setToken(response.body.access_token);
       });
   }
 
   signIn (params) {
     return this.api.signIn(params).then(response => {
-      this.setCookieToken(response.body.data.access_token);
+      this.setToken(response.body.data.access_token);
     });
   }
 
@@ -57,7 +61,7 @@ export class OAuth {
   }
 
   authenticate (vars) {
-    var access_token = container.get('services.cookies').get('token');
+    var access_token = this.getToken();
 
     return this.api.getUser(access_token).then(response => {
       return response;
@@ -76,14 +80,14 @@ export class OAuth {
   }
 
   getUser (vars) {
-    var access_token = container.get('services.cookies').get('token');
+    var access_token = this.getToken();
 
     return this.api.getUser(access_token);
   }
 
   confirmEmail (params) {
     return this.api.confirmEmail(params).then(response => {
-      this.setCookieToken(response.body.access_token);
+      this.setToken(response.body.access_token);
     });
   }
 
@@ -92,6 +96,6 @@ export class OAuth {
   }
 
   logout () {
-    container.get('services.cookies').remove('token');
+    removeToken();
   }
 }
