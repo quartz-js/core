@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="response">
     <div class='mt-5'>
       <h2 class='display-1 font-weight-thin'>{{ string(config.title).humanize().toString() }}</h2>
     </div>
@@ -28,7 +28,6 @@
         :items="data"
         select-all
         item-key="id"
-        v-if="response"
         :pagination.sync="pagination"
         :total-items="pagination.totalItems"
         :loading="loading"
