@@ -7,7 +7,7 @@ export class BaseAttribute {
     this.label = name;
     this.column = name;
     this.default = () => {
-      return null;
+      return undefined;
     };
 
     if (options && options.column) {
