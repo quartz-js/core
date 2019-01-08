@@ -65,11 +65,6 @@ export default {
     }
   },
   methods: {
-    /**
-     * Save data
-     *
-     * @return void
-     */
     create () {
       this.config.manager.create(this.data).then(response => {
         this.config.onCreateSuccess(this, response);
