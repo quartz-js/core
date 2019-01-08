@@ -6,18 +6,27 @@
 <script>
 
 import Switches from 'vue-switches';
+import { AttributePreMount } from '@railken/quartz-core/src/mixins/AttributePreMount'
 
 export default {
   components: {
     Switches
   },
+  mixins: [
+    AttributePreMount
+  ],
   props: ['value', 'error', 'attribute', 'errors'],
   data () {
     return {
       rawValue: false
     }
   },
-  created () {
+  mounted () {
+
+    if (!this.canMount()) {
+      return;
+    }
+    
     this.reloadRawValue();
   },
   watch: {
@@ -27,12 +36,15 @@ export default {
   },
   methods: {
     reloadRawValue() {
+
       var option = this.attribute.extractValue(this.value);
 
       this.rawValue = option ? option : null;
     },
     onChange: function () {
-      var index = this.rawValue ? 1 : 0;
+
+      console.log(index);
+
       this.attribute.injectValue(this.value, index);
 
       this.$emit('input', this.value);

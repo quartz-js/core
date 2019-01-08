@@ -3,7 +3,7 @@ import { SelectAttribute } from './SelectAttribute'
 export class SwitchAttribute extends SelectAttribute {
   getOptionByValue (value) {
     return this.options.find(function (option) {
-      return option.value === value;
+      return option.value == value;
     });
   }
   constructor (name) {
