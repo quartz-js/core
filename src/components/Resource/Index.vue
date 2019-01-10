@@ -1,11 +1,11 @@
 <template>
-  <div v-if="response">
+  <div>
     <div class='mt-5'>
       <h2 class='display-1 font-weight-thin'>{{ string(config.title).humanize().toString() }}</h2>
     </div>
-    <v-card class="resource-card" v-if="pagination && pagination.totalItems !== 0 && !query">
+    <v-card class="resource-card" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-center class='content'>
-        <v-text-field v-model="query" append-icon="search" class="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field v-model="query" append-icon="search" class="search" label="Search" :error="errors.search" single-line hide-details></v-text-field>
         <v-dialog v-model="settingsActive" width="500">
           <v-btn color="primary" flat icon @click="settingsActive = true" slot="activator"><v-icon>settings</v-icon></v-btn>
           <v-card>
@@ -28,6 +28,7 @@
         :items="data"
         select-all
         item-key="id"
+        v-if="response"
         :pagination.sync="pagination"
         :total-items="pagination.totalItems"
         :loading="loading"
@@ -100,6 +101,7 @@
 import { utils } from '../../mixins/utils'
 import Remove from '@railken/quartz-core/src/components/Resource/Remove'
 var qs = require('qs');
+import _ from 'lodash'
 
 export default {
   mixins: [
@@ -180,8 +182,10 @@ export default {
     },
 
     '$route.query'() {
-        this.reload();
-        this.load(null);
+        console.log(this.hasChanged());
+        if (this.hasChanged()) {
+          this.load(null);
+        }
     },
     cols: {
       handler: function (val, oldVal) {
@@ -205,6 +209,8 @@ export default {
     if (!cols || cols.length === 0 || cols[0].label) {
       cols = this.config.listable;
     }
+
+    console.log('Mounted');
 
     this.cols = cols;
   },
@@ -254,40 +260,61 @@ export default {
       this.$router.push(this.config.getRouteShow(resource));
     },
     reload(){ 
+      var route = this.getEncodedParamsFromUrl();
 
-      var route = this.$route.query[this.config.title];
-
-      if (!route) {
-        route = JSON.stringify({
-          query: null,
-          pagination:  this.pagination
-        })
-      }
-      route = JSON.parse(route);
+      route = this.decodeParams(route);
 
       this.query = route.query;
       this.pagination = route.pagination;
     },
+    encodeParams (params) {
+      return btoa(JSON.stringify(params));
+    },
+    decodeParams (string) {
+      return JSON.parse(atob(string))
+    },
+    getEncodedParamsFromUrl (def) {
+      var string = this.$route.query[this.config.title];
+
+      if (!string) {
+        string = this.encodeParams(def ? def : this.paramsToUrl())
+      }
+
+      return string;
+
+    },
+    paramsToUrl() {
+      return {query: this.query, pagination: this.filterPaginationUrl(this.pagination)};
+    },
+    hasChanged () {
+
+      var route = this.getEncodedParamsFromUrl({
+        query: '',
+        pagination: {
+          sortBy: "updated_at",
+          descending: true,
+          page: 1
+      }});
+      console.log(this.decodeParams(route).pagination);
+
+      return route !== this.encodeParams(this.paramsToUrl())
+    },
     updateUrl() {
 
-      var route = this.$route.query[this.config.title];
-
-      if (!route || route !== JSON.stringify({query: this.query, pagination: this.pagination})) {
-
+      if (this.hasChanged()) {
         var push = Object.assign({}, this.$route.query);
 
-        push[this.config.title] = JSON.stringify({
-            query: this.query,
-            pagination: this.pagination
-        });
+        push[this.config.title] = this.encodeParams(this.paramsToUrl());
 
         this.$router.push({query: push});
 
-        this.$forceUpdate();
+        console.log('Updated');
+
+        this.load(null)
       }
-
-
-
+    },
+    filterPaginationUrl(pagination) {
+      return _.pick(pagination, ['sortBy', 'descending', 'page']);
     },
     load: function (params) {
       var manager = this.config.manager;
