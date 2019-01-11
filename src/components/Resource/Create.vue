@@ -43,6 +43,15 @@ export default {
       required: true,
     },
   },
+  watch: {
+    drawer: function (val) {
+      if (!val) {
+        
+        this.data = {};
+        
+      }
+    }
+  },
   computed: {
     drawable: {
       get: function() {
