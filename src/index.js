@@ -36,6 +36,7 @@ module.exports = {
     	Vue.component("QBelongsTo", require('./components/Input/BelongsTo').default)
     	Vue.component("QHtml", require('./components/Input/Html').default)
         Vue.component("QYaml", require('./components/Input/Yaml').default)
+        Vue.component("QDatetime", require('./components/Input/DateTime').default)
     	Vue.component("QJson", require('./components/Input/Json').default)
     	Vue.component("QSecret", require('./components/Input/Secret').default)
     	Vue.component("QSelect", require('./components/Input/Select').default)
