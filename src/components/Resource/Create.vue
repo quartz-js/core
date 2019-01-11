@@ -14,6 +14,7 @@
             <slot :resource="data" :errors="errors" :config="config" name="create"/>
           </div>
           <div class='text-xs-right mt-5'>
+            <v-btn @click="drawer = false">Cancel</v-btn>
             <v-btn color="primary"  @click="create()">Create</v-btn>
           </div>
         </div>
