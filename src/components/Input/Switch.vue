@@ -6,6 +6,7 @@
 <script>
 
 import Switches from 'vue-switches';
+import { BaseAttribute } from '@railken/quartz-core/src/attributes/BaseAttribute'
 import { AttributePreMount } from '@railken/quartz-core/src/mixins/AttributePreMount'
 
 export default {
@@ -15,7 +16,18 @@ export default {
   mixins: [
     AttributePreMount
   ],
-  props: ['value', 'error', 'attribute', 'errors'],
+  props: {
+    value: {
+      required: true,
+    },
+    attribute: {
+      type: BaseAttribute,
+      required: true
+    },
+    errors: {
+      required: true
+    }
+  },
   data () {
     return {
       rawValue: false
@@ -39,11 +51,10 @@ export default {
 
       var option = this.attribute.extractValue(this.value);
 
-      this.rawValue = option ? option : null;
+      this.rawValue = option ? option.value : null;
     },
     onChange: function () {
-
-      console.log(index);
+      var index = this.rawValue ? 1 : 0;
 
       this.attribute.injectValue(this.value, index);
 
