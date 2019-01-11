@@ -96,6 +96,6 @@ export class OAuth {
   }
 
   logout () {
-    removeToken();
+    this.removeToken();
   }
 }
