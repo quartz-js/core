@@ -1,8 +1,8 @@
 <template>
   <div v-if="data">
-    <div class='mb-3'>
+    <v-card class='content'>
       <router-link :to="config.getRouteIndex(data)">To index</router-link>
-    </div>
+    </v-card>
     <v-card>
       <div>
         <slot :resource="data" name="body"></slot>
