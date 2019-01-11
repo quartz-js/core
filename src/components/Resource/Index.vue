@@ -138,7 +138,7 @@ export default {
       settingsActive: false,
       manager: null,
       cols: [],
-      response: null,
+      response: {},
       form: {},
       params: null,
       errors: {
@@ -182,7 +182,6 @@ export default {
     },
 
     '$route.query'() {
-        console.log(this.hasChanged());
         if (this.hasChanged()) {
           this.load(null);
         }
@@ -209,8 +208,6 @@ export default {
     if (!cols || cols.length === 0 || cols[0].label) {
       cols = this.config.listable;
     }
-
-    console.log('Mounted');
 
     this.cols = cols;
   },
@@ -295,7 +292,6 @@ export default {
           descending: true,
           page: 1
       }});
-      console.log(this.decodeParams(route).pagination);
 
       return route !== this.encodeParams(this.paramsToUrl())
     },
@@ -307,8 +303,6 @@ export default {
         push[this.config.title] = this.encodeParams(this.paramsToUrl());
 
         this.$router.push({query: push});
-
-        console.log('Updated');
 
         this.load(null)
       }
@@ -335,7 +329,6 @@ export default {
         this.pagination.page = response.body.meta.pagination.current_page;
         this.pagination.totalItems = response.body.meta.pagination.total;
         this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
-
 
 
         var promises = this.attributes.map(attribute => {

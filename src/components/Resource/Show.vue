@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="data" class="content">
+  <v-card v-if="data" class="content resource-card">
     <div>
       <v-layout row wrap>
         <v-flex align-items>
@@ -8,7 +8,7 @@
         <v-spacer></v-spacer>
         <v-flex align-items class="text-xs-right" >
           <remove :resource="data" :config="config" />
-          <slot :resource="data" :config="config" name="actions"/>
+          <slot :resource="data" :config="config" name="actions" />
         </v-flex>
       </v-layout>
 
@@ -16,7 +16,6 @@
       <v-divider class='mb-5'></v-divider>
       <div>
         <slot :resource="data" name="show" :config="config"></slot>
-        
       </div>
     </div>
   </v-card>
