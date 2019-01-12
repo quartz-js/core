@@ -1,32 +1,33 @@
 var path = require('path')
 var webpack = require('webpack')
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var fs = require('fs')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   entry: './src/index.js',
+  mode: 'production',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'index.js',
-    library:'index',
-    libraryTarget: 'umd'
+    filename: 'index.min.js',
   },
-  
+  externals: fs.readdirSync("node_modules"),
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            'scss': 'vue-style-loader!css-loader!sass-loader'
-          }
-        }
+        loader: 'vue-loader'
       },
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+        test: /\.m?js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-object-rest-spread']
+          }
+        }
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -43,28 +44,18 @@ module.exports = {
       },
     ]
   },
-  externals: {
-    vue: 'vue'
-  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
       '@': path.resolve(__dirname, './src'),
     }
   },
-  performance: {
-    hints: false
-  },
-  devtool: '#source-map',
   plugins: [
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    }),
-    new OptimizeCSSPlugin({
-      cssProcessorOptions: {
-        safe: true
-      }
+    new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '\'' + process.env.NODE_ENV + '\'',
+      },
     })
   ]
 }
