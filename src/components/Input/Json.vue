@@ -7,7 +7,7 @@
 <script>
 
 import Text from './Text';
-import FormJson from '@railken/quartz-core/src/components/Form/FormJson'
+import FormJson from '@/components/Form/FormJson'
 
 export default {
   extends: Text,

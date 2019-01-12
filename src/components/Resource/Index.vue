@@ -87,7 +87,7 @@
     </v-card>
     <v-card class='resource-card' v-else>
        <div class='content text-md-center'>
-          <img :src='config.icon ? config.icon : require("@railken/quartz-core/src/assets/empty-storage.svg")' width='218' class='my-3'>
+          <img :src='config.icon ? config.icon : require("@/assets/empty-storage.svg")' width='218' class='my-3'>
           <h3 class='title my-3'>Looks like you don't have any records here.</h3>
           <p class='my-4'>{{ string(config.description).toString() }}</p>
           <slot name="top" :config="config" :big="true"></slot>
@@ -99,7 +99,7 @@
 <script>
 
 import { utils } from '../../mixins/utils'
-import Remove from '@railken/quartz-core/src/components/Resource/Remove'
+import Remove from '@/components/Resource/Remove'
 var qs = require('qs');
 import _ from 'lodash'
 

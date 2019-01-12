@@ -6,8 +6,8 @@
 <script>
 
 import Switches from 'vue-switches';
-import { BaseAttribute } from '@railken/quartz-core/src/attributes/BaseAttribute'
-import { AttributePreMount } from '@railken/quartz-core/src/mixins/AttributePreMount'
+import { BaseAttribute } from '@/attributes/BaseAttribute'
+import { AttributePreMount } from '@/mixins/AttributePreMount'
 
 export default {
   components: {

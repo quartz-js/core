@@ -7,7 +7,7 @@
 <script>
 
 import Text from './Text';
-import Yaml from '@railken/quartz-core/src/components/Form/Yaml'
+import Yaml from '@/components/Form/Yaml'
 
 export default {
   extends: Text,

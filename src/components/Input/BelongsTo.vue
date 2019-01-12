@@ -36,8 +36,8 @@
 </template>
 <script>
 
-import { BelongsToAttribute } from '@railken/quartz-core/src/attributes/BelongsToAttribute'
-import { AttributePreMount } from '@railken/quartz-core/src/mixins/AttributePreMount'
+import { BelongsToAttribute } from '@/attributes/BelongsToAttribute'
+import { AttributePreMount } from '@/mixins/AttributePreMount'
 
 export default {
   mixins: [
