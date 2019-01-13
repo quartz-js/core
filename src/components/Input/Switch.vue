@@ -1,18 +1,19 @@
 <template>
   <div>
-      <v-switch v-model="rawValue" :label='attribute.getLabel()' @change="onChange"></v-switch>
+      <toggle-button v-model="rawValue" :label='attribute.getLabel()' @change="onChange"></toggle-button>
   </div>
 </template>
 <script>
 
-import Switches from 'vue-switches';
 import { BaseAttribute } from '@/attributes/BaseAttribute'
 import { AttributePreMount } from '@/mixins/AttributePreMount'
+import Vue from 'vue'
+
+import ToggleButton from 'vue-js-toggle-button'
+Vue.use(ToggleButton)
+
 
 export default {
-  components: {
-    Switches
-  },
   mixins: [
     AttributePreMount
   ],

@@ -14,10 +14,10 @@
 <script>
 
 import { codemirror } from 'vue-codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/material.css'
-import 'codemirror/addon/edit/matchbrackets.js'
-import 'codemirror/mode/yaml/yaml.js'
+require('codemirror/lib/codemirror.css')
+require('codemirror/theme/material.css')
+require('codemirror/addon/edit/matchbrackets.js')
+require('codemirror/mode/yaml/yaml.js')
 
 export default {
   components: {

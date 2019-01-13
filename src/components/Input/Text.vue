@@ -12,8 +12,8 @@
 </template>
 <script>
 
-import { BaseAttribute } from '@/attributes/BaseAttribute'
-import { AttributePreMount } from '@/mixins/AttributePreMount'
+import { BaseAttribute } from '../../attributes/BaseAttribute'
+import { AttributePreMount } from '../../mixins/AttributePreMount'
 
 export default {
   mixins: [
