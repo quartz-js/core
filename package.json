@@ -6,7 +6,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress",
     "test": "./node_modules/.bin/jest",
     "commit": "npx git-cz",
-    "release": "semantic-release --debug --no-ci"
+    "release": "npm run test && npm run build && semantic-release"
   },
   "author": "railken@protonmail.ch",
   "license": "MIT",
