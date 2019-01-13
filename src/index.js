@@ -12,8 +12,6 @@ module.exports = {
 	ResourceConfig: require('./resources/ResourceConfig').ResourceConfig,
 	ResourceApi: require('./api/ResourceApi').ResourceApi,
 	container: require('./services/container').container,
-    OAuth: require('./services/oauth').OAuth,
-    Guard: require('./middlewares/Guard').default,
     mixins: {
         utils: require('./mixins/utils').utils,
     },
