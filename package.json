@@ -7,7 +7,8 @@
     "build": "npm run build:lib",
     "lint": "vue-cli-service lint",
     "build:lib": "vue-cli-service build --target lib --name index src/index.js",
-    "test:unit": "vue-cli-service test:unit  --no-cache"
+    "test:unit": "vue-cli-service test:unit  --no-cache",
+    "release": "npm run publish --access=public"
   },
   "dependencies": {
     "js-beautify": "^1.8.9",
