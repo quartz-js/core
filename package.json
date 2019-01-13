@@ -62,6 +62,18 @@
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
   },
+  "babel": {
+    "presets": ["@babel/preset-env"],
+    "plugins": [
+      "@babel/plugin-transform-runtime"
+    ],
+    "comments": false,
+    "env": {
+      "test": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      }
+    }
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",
@@ -76,10 +88,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ],
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  ]
 }
