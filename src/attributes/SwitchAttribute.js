@@ -8,5 +8,13 @@ export class SwitchAttribute extends SelectAttribute {
   }
   constructor (name) {
     super(name);
+
+    this.setOptions([{
+      value: 0,
+      label: "No"
+    },{
+      value: 1,
+      label: "Yes",
+    }]);
   }
 }
