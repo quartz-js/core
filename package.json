@@ -1,7 +1,6 @@
 {
   "name": "@railken/quartz-core",
   "version": "0.0.0-development",
-  "description": "",
   "main": "dist/index.min.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --progress",
