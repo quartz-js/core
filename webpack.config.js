@@ -10,6 +10,9 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'index.min.js',
+    library: 'index',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   externals: fs.readdirSync("node_modules"),
   module: {
