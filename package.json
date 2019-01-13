@@ -20,18 +20,19 @@
   "homepage": "https://github.com/railken/quartz-core#readme",
   "dependencies": {
     "@babel/runtime": "^7.2.0",
-    "cm-show-invisibles": "^2.0.2",
     "json-formatter-js": "^2.2.0",
     "less": "^2.7.2",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
     "string": "^3.3.3",
-    "vue": "^2.5.22",
     "vue-clickaway": "^2.2.2",
     "vue-codemirror": "^4.0.6",
     "vue-resource": "^1.2.1",
     "vue-switches": "^2.0.1",
-    "vuex": "^2.2.1"
+    "vue": "^2.5.22"
+  },
+  "peerDependencies": {
+    "vue-template-compiler": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -45,11 +46,11 @@
     "babel-loader": "^8.0.5",
     "commitizen": "^3.0.5",
     "cross-env": "^5.2.0",
-    "css-loader": "^0.25.0",
     "cz-conventional-changelog": "^2.1.0",
     "file-loader": "^3.0.1",
     "install": "^0.12.2",
     "jest": "^23.6.0",
+    "css-loader": "*",
     "node-sass": "^4.5.0",
     "npm": "^6.5.0",
     "optimize-css-assets-webpack-plugin": "^3.1.1",
@@ -58,9 +59,9 @@
     "style-loader": "^0.23.1",
     "vue-jest": "^3.0.2",
     "vue-loader": "^15.5.1",
-    "vue-template-compiler": "^2.0.0",
     "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1"
+    "webpack-cli": "^3.2.1",
+    "vue-template-compiler": "^2.0.0"
   },
   "babel": {
     "presets": [
