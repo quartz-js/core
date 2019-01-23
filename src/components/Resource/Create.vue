@@ -1,7 +1,7 @@
 <template>
   <div v-if="config.create === true" class="create">
     <slot name="activator" v-if="activator">
-      <v-btn color="primary" @click="drawer = true">create record</v-btn>
+      <v-btn color="primary" @click="drawer = true">{{ $t('$quartz.core.create') }}</v-btn>
     </slot>
     <slot :resource="data" name="main">
       <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
@@ -14,8 +14,8 @@
             <slot :resource="data" :errors="errors" :config="config" name="create"/>
           </div>
           <div class='text-xs-right mt-5'>
-            <v-btn @click="drawer = false">Cancel</v-btn>
-            <v-btn color="primary"  @click="create()">Create</v-btn>
+            <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
+            <v-btn color="primary"  @click="create()">{{ $t('$quartz.core.create') }}</v-btn>
           </div>
         </div>
        </v-navigation-drawer>

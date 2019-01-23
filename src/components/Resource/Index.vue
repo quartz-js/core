@@ -5,15 +5,15 @@
     </div>
     <v-card class="resource-card" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-center class='content'>
-        <v-text-field v-model="query" append-icon="search" class="search" label="Search" :error="errors.search" single-line hide-details></v-text-field>
+        <v-text-field v-model="query" append-icon="search" class="search" :label="$t('$quartz.core.search')" :error="errors.search" single-line hide-details></v-text-field>
         <v-dialog v-model="settingsActive" width="500">
           <v-btn color="primary" flat icon @click="settingsActive = true" slot="activator"><v-icon>settings</v-icon></v-btn>
           <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
-              Columns Settings
+              {{ $t('$quartz.core.settings') }}
             </v-card-title>
             <v-card-text>
-              <v-select :items="config.listable" v-model="cols" :menu-props="{ maxHeight: '400' }" label="Columns" multiple persistent-hint
+              <v-select :items="config.listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint
               ></v-select>
             </v-card-text>
           </v-card>
@@ -57,7 +57,7 @@
               <v-icon small>arrow_upward</v-icon>
             </th>
             <th class="column sortable text-xs-right">
-              actions
+              {{ $t('$quartz.core.actions') }}
             </th>
           </tr>
         </template>
@@ -88,7 +88,7 @@
     <v-card class='resource-card' v-else>
        <div class='content text-md-center'>
           <img :src='config.icon ? config.icon : require("@railken/quartz-core/assets/empty-storage.svg")' width='218' class='my-3'>
-          <h3 class='title my-3'>Looks like you don't have any records here.</h3>
+          <h3 class='title my-3'>{{ $t('$quartz.core.no-results.message') }}</h3>
           <p class='my-4'>{{ string(config.description).toString() }}</p>
           <slot name="top" :config="config" :big="true"></slot>
       </div>

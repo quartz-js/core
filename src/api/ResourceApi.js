@@ -72,6 +72,18 @@ export class ResourceApi {
   }
 
   /**
+   * Store
+   *
+   * @param {Object} params
+   *
+   * @return {Promise}
+   */
+  store (params) {
+    params.query = this.filterQuery(params.query);
+    return Vue.http.put(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+  }
+
+  /**
    * Create
    *
    * @param {Object} params

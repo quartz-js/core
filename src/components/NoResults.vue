@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="ct">
-      <h4>There's nothing here!</h4>
-      <p>No results found</p>
+      <h4>{{ $t('$quartz.no-results.title') }}</h4>
+      <p>{{ $t('$quartz.no-results.message') }}</p>
       <img src="https://cdn.dribbble.com/users/37530/screenshots/2485318/no-results.png">
     </div>
   </div>
