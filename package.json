@@ -65,7 +65,7 @@
   },
   "homepage": "https://github.com/railken/quartz-core#readme",
   "license": "MIT",
-  "main": "dist/index.umd.min.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/railken/quartz-core.git"

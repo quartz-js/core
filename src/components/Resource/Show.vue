@@ -23,10 +23,10 @@
 
 <script>
 
-import { LoadResource } from '@/mixins/LoadResource'
-import { utils } from '@/mixins/utils'
-import Errors from '@/components/Errors'
-import Remove from '@/components/Resource/Remove'
+import { LoadResource } from '@railken/quartz-core/mixins/LoadResource'
+import { utils } from '@railken/quartz-core/mixins/utils'
+import Errors from '@railken/quartz-core/components/Errors'
+import Remove from '@railken/quartz-core/components/Resource/Remove'
 
 export default {
   components: {

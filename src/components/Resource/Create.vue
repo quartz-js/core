@@ -26,7 +26,7 @@
 <script>
 
 import { utils } from '../../mixins/utils'
-import Errors from '@/components/Errors'
+import Errors from '@railken/quartz-core/components/Errors'
 
 export default {
   mixins: [ 

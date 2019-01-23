@@ -1,0 +1,1 @@
+module.exports = process.env.NODE_ENV === 'development' ? require('./src/index.js') : require('./dist/index.umd.min.js')

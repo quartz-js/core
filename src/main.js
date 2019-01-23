@@ -10,8 +10,8 @@ Vue.config.productionTip = false
 
 import 'vuetify/dist/vuetify.min.css'
 
-require('@/assets/main.css')
-require('@/assets/fluid.css')
+require('@railken/quartz-core/assets/main.css')
+require('@railken/quartz-core/assets/fluid.css')
 
 new Vue({
   render: h => h(App),

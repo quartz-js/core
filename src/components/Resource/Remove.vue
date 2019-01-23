@@ -25,7 +25,7 @@
 
 <script>
 
-import { LoadResource } from '@/mixins/LoadResource'
+import { LoadResource } from '@railken/quartz-core/mixins/LoadResource'
 
 export default {
   mixins: [

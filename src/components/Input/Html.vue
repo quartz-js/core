@@ -6,8 +6,8 @@
 </template>
 <script>
 
-import Text from '@/components/Input/Text';
-import FormHtml from '@/components/Form/FormHtml'
+import Text from '@railken/quartz-core/components/Input/Text';
+import FormHtml from '@railken/quartz-core/components/Form/FormHtml'
 
 export default {
   extends: Text,
