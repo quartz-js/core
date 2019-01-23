@@ -290,6 +290,7 @@ export default {
         pagination: {
           sortBy: "updated_at",
           descending: true,
+          rowsPerPage: 10,
           page: 1
       }});
 
@@ -308,7 +309,7 @@ export default {
       }
     },
     filterPaginationUrl(pagination) {
-      return _.pick(pagination, ['sortBy', 'descending', 'page']);
+      return _.pick(pagination, ['sortBy', 'descending', 'page', 'rowsPerPage']);
     },
     load: function (params) {
       var manager = this.config.manager;
