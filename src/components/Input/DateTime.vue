@@ -72,7 +72,7 @@ export default {
       var val = this.rawValue !== "" ? this.rawValue : null;
 
       this.attribute.injectValue(this.value, val);
-      this.$emit('input', val);
+      this.$emit('input', this.value);
     }
 
   }

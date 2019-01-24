@@ -44,7 +44,7 @@ export default {
 
       this.attribute.injectValue(this.value, option.value);
 
-      this.$emit('input', this.rawValue);
+      this.$emit('input', this.value);
 
     },
 
