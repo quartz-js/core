@@ -1,7 +1,7 @@
 {
   "name": "@railken/quartz-core",
   "description": "A Vue.js 2.0 library project",
-  "version": "0.0.0-development",
+  "version": "2.0.1",
   "license": "MIT",
   "main": "dist/@railken/quartz-core.common.js",
   "module": "dist/@railken/quartz-core.esm.js",
