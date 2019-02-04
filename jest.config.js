@@ -1,23 +1,20 @@
+const path = require("path");
+
 module.exports = {
-  moduleFileExtensions: [
-    'js',
-    'jsx',
-    'json',
-    'vue'
-  ],
+  rootDir: path.resolve(__dirname, "./"),
+  moduleFileExtensions: ["js", "json", "vue"],
   transform: {
-    '^.+\\.vue$': 'vue-jest',
-    '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
-    '^.+\\.jsx?$': 'babel-jest'
+    ".*\\.js$": "<rootDir>/node_modules/babel-jest",
+    ".*\\.vue$": "<rootDir>/node_modules/vue-jest"
   },
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
-  },
-  snapshotSerializers: [
-    'jest-serializer-vue'
+  snapshotSerializers: ["<rootDir>/node_modules/jest-serializer-vue"],
+  setupFiles: ["<rootDir>/jest.setup"],
+  coverageDirectory: "<rootDir>/coverage",
+  collectCoverageFrom: [
+    "src/**/*.{js,vue}",
+    "!src/index.umd.js",
+    "!**/node_modules/**"
   ],
-  testMatch: [
-    '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'
-  ],
-  testURL: 'http://localhost/'
-}
+  testURL: "http://localhost/",
+  testMatch: ["<rootDir>/test/**/*.js"]
+};

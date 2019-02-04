@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import lodash from 'lodash';
 
 export class BaseAttribute {
   constructor (name, options) {
@@ -18,10 +18,10 @@ export class BaseAttribute {
       return value;
     };
     this.extractor = (resource) => {
-      return _.get(resource, this.column);
+      return lodash.get(resource, this.column);
     };
     this.injector = (resource, value) => {
-      _.set(resource, this.column, value);
+      lodash.set(resource, this.column, value);
 
       return resource;
     };

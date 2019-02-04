@@ -5,8 +5,8 @@
 </template>
 <script>
 
-import { BaseAttribute } from '@railken/quartz-core/attributes/BaseAttribute'
-import { AttributePreMount } from '@railken/quartz-core/mixins/AttributePreMount'
+import { BaseAttribute } from '../../attributes/BaseAttribute'
+import { AttributePreMount } from '../../mixins/AttributePreMount'
 import Vue from 'vue'
 
 import ToggleButton from 'vue-js-toggle-button'
