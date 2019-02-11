@@ -1,8 +1,10 @@
 import lodash from 'lodash';
+var clone = require('clone');
 
 export class BaseAttribute {
   constructor (name, options) {
 
+    this.hooks = [];
     this.name = name;
     this.label = name;
     this.column = name;
@@ -26,10 +28,19 @@ export class BaseAttribute {
       return resource;
     };
 
+    this.listable = true;
+    
     this.fixed = (resource) => {
-      
+      return undefined;
     }
   }
+
+  set (name, value) {
+    this[name] = value
+
+    return this
+  }
+  
   /**
    * @param {Closure} callback
    *
@@ -50,6 +61,20 @@ export class BaseAttribute {
     return d();
   }
 
+  addHook($event, callback) {
+    if (typeof this.hooks[$event] === "undefined") {
+      this.hooks[$event] = [];
+    }
+
+    this.hooks[$event].push(callback)
+
+  }
+
+  getHooks($event){
+    var hooks = typeof this.hooks[$event] !== "undefined" ? this.hooks[$event] : [];
+
+    return hooks
+  }
 
 
   /**
@@ -194,5 +219,14 @@ export class BaseAttribute {
     return null;
   }
 
+  /**
+   * @return {Callable}
+   */
+  persist (id, data) {
+    return null;
+  }
+  clone () {
+    return clone(this);
+  }
 
 }

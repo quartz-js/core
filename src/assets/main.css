@@ -1,4 +1,4 @@
-   *{
+*{
   box-sizing:border-box;
   -moz-box-sizing:border-box;
 }
@@ -73,7 +73,7 @@ iframe html,body{
 }
 
 html {
-  overflow-y: auto;
+  overflow-y: auto !important;
 }
 a {
   text-decoration: none;

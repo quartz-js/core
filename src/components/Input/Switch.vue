@@ -1,19 +1,20 @@
 <template>
   <div>
-      <toggle-button v-model="rawValue" :label='attribute.getLabel()' @change="onChange"></toggle-button>
+      <span>{{ attribute.getLabel() }}</span>
+      <toggle-button :value="rawValue" @change="onChange($event)" :height='28' :width="60" :sync="true" color="#1976d2"></toggle-button>
   </div>
 </template>
 <script>
 
 import { BaseAttribute } from '../../attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
-import Vue from 'vue'
 
-import ToggleButton from 'vue-js-toggle-button'
-Vue.use(ToggleButton)
-
+import { ToggleButton } from 'vue-js-toggle-button'
 
 export default {
+  components: {
+    ToggleButton
+  },
   mixins: [
     AttributePreMount
   ],
@@ -52,11 +53,16 @@ export default {
 
       var option = this.attribute.extractValue(this.value);
 
-      this.rawValue = option ? option.value : null;
-    },
-    onChange: function () {
-      var index = this.rawValue ? 1 : 0;
 
+      this.rawValue = option ? !!option.value : false;
+      console.log(this.rawValue);
+    },
+    onChange: function (e) {
+      console.log(e.value)
+      var index = e.value ? 1 : 0;
+      this.rawValue = e.value
+
+      console.log(index);
       this.attribute.injectValue(this.value, index);
 
       this.$emit('input', this.value);
@@ -66,3 +72,10 @@ export default {
 }
 
 </script>
+<style scoped>
+  span {
+    color: rgba(0,0,0,0.54);
+    font-size: 16px;
+    margin-right: 5px;
+  }
+</style>

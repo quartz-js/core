@@ -1,88 +1,54 @@
-import { BaseAttribute } from './attributes/BaseAttribute'
-import { BelongsToAttribute } from './attributes/BelongsToAttribute'
-import { DateTimeAttribute } from './attributes/DateTimeAttribute'
-import { IdAttribute } from './attributes/IdAttribute'
-import { ImageAttribute } from './attributes/ImageAttribute'
-import { SelectAttribute } from './attributes/SelectAttribute'
-import { SwitchAttribute } from './attributes/SwitchAttribute'
-import { UrlAttribute } from './attributes/UrlAttribute'
-
-import { ResourceConfig } from './resources/ResourceConfig'
-import { ResourceApi } from './api/ResourceApi'
-
-import { container } from './services/container'
-import { utils } from './mixins/utils'
-
-
-import QResourceCreate from './components/Resource/Create'
-import QResourceEdit from './components/Resource/Edit'
-import QResourceIndex from './components/Resource/Index'
-import QResourceRemove from './components/Resource/Remove'
-import QResourceShow from './components/Resource/Show'
-
-import QPageIndex from './components/Page/Index'
-import QPageShow from './components/Page/Show'
-
-import QShowJson from './components/Show/Json'
-import QShowText from './components/Show/Text'
-
-import QFormJson from './components/Form/FormJson'
-import QFormHtml from './components/Form/FormHtml'
-
-import QBelongsTo from './components/Input/BelongsTo'
-import QHtml from './components/Input/Html'
-import QYaml from './components/Input/Yaml'
-import QDatetime from './components/Input/DateTime'
-import QSecret from './components/Input/Secret'
-import QSelect from './components/Input/Select'
-import QSwitch from './components/Input/Switch'
-import QText from './components/Input/Text'
-import QTextarea from './components/Input/Textarea'
-
-const LibraryModule = {
+module.exports = {
     Attributes: {
-        Base: BaseAttribute,
-        BelongsTo: BelongsToAttribute,
-        DateTime: DateTimeAttribute,
-        Id: IdAttribute,
-        Image: ImageAttribute,
-        Select: SelectAttribute,
-        Switch: SwitchAttribute,
-        Url: UrlAttribute,
+        Base: require('./attributes/BaseAttribute').BaseAttribute,
+        BelongsTo: require('./attributes/BelongsToAttribute').BelongsToAttribute,
+        DateTime: require('./attributes/DateTimeAttribute').DateTimeAttribute,
+        Id: require('./attributes/IdAttribute').IdAttribute,
+        Image: require('./attributes/ImageAttribute').ImageAttribute,
+        Select: require('./attributes/SelectAttribute').SelectAttribute,
+        Switch: require('./attributes/SwitchAttribute').SwitchAttribute,
+        Url: require('./attributes/UrlAttribute').UrlAttribute,
     },
-    ResourceConfig: ResourceConfig,
-    ResourceApi: ResourceApi,
-    container: container,
+    Relations: {
+        MorphThrough: require('./relations/MorphThrough').MorphThrough,
+        Matrix: require('./relations/Matrix').Matrix,
+    },
+    ResourceConfig: require('./resources/ResourceConfig').ResourceConfig,
+    ResourceApi: require('./api/ResourceApi').ResourceApi,
+    container: require('./services/container').container,
     mixins: {
-        utils: utils,
+        utils: require('./mixins/utils').utils,
     },
     install: function (Vue, options) {
-        Vue.component("QResourceCreate", QResourceCreate)
-        Vue.component("QResourceEdit", QResourceEdit)
-        Vue.component("QResourceIndex", QResourceIndex)
-        Vue.component("QResourceRemove", QResourceRemove)
-        Vue.component("QResourceShow", QResourceShow)
 
-        Vue.component("QPageIndex", QPageIndex)
-        Vue.component("QPageShow", QPageShow)
 
-        Vue.component("QShowJson", QShowJson)
-        Vue.component("QShowText", QShowText)
+        Vue.component("QResourceCreate", require('./components/Resource/Create').default)
+        Vue.component("QResourceEdit", require('./components/Resource/Edit').default)
+        Vue.component("QResourceIndex", require('./components/Resource/Index').default)
+        Vue.component("QResourceRemove", require('./components/Resource/Remove').default)
+        Vue.component("QResourceShow", require('./components/Resource/Show').default)
 
-        Vue.component("QFormJson", QFormJson)
-        Vue.component("QFormHtml", QFormHtml)
+        Vue.component("QPageIndex", require('./components/Page/Index').default)
+        Vue.component("QPageShow", require('./components/Page/Show').default)
 
-        Vue.component("QBelongsTo", QBelongsTo)
-        Vue.component("QHtml", QHtml)
-        Vue.component("QYaml", QYaml)
-        Vue.component("QDatetime", QDatetime)
-        Vue.component("QSecret", QSecret)
-        Vue.component("QSelect", QSelect)
-        Vue.component("QSwitch", QSwitch)
-        Vue.component("QText", QText)
-        Vue.component("QTextarea", QTextarea)
+        Vue.component("QShowJson", require('./components/Show/Json').default)
+        Vue.component("QShowText", require('./components/Show/Text').default)
+
+        Vue.component("QFormJson", require('./components/Form/FormJson').default)
+        Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
+
+        Vue.component("QMorphThrough", require('./components/Input/MorphThrough').default)
+        Vue.component("QBelongsTo", require('./components/Input/BelongsTo').default)
+        Vue.component("QBelongsToOne", require('./components/Input/BelongsToOne').default)
+        Vue.component("QHtml", require('./components/Input/Html').default)
+        Vue.component("QYaml", require('./components/Input/Yaml').default)
+        Vue.component("QDatetime", require('./components/Input/DateTime').default)
+        Vue.component("QJson", require('./components/Input/Json').default)
+        Vue.component("QSecret", require('./components/Input/Secret').default)
+        Vue.component("QSelect", require('./components/Input/Select').default)
+        Vue.component("QSwitch", require('./components/Input/Switch').default)
+        Vue.component("QText", require('./components/Input/Text').default)
+        Vue.component("QTextarea", require('./components/Input/Textarea').default)
+        Vue.component("QMatrix", require('./components/Input/Matrix').default)
     }
 };
-
-// Export library
-export default LibraryModule;

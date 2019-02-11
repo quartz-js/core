@@ -12,31 +12,28 @@
           :search-input.sync="search"
           return-object
           editable
+          multiple
+          hide
           clearable
-        ></v-autocomplete>
-
-      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" flat type='wrap'>
-        
-        <template slot="activator" slot-scope="scope">
-          <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
+        >
+        <template
+            slot="selection"
+            slot-scope="data"
+          >
         </template>
-      </component>
-
-      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat type='wrap'>
-        
-        <template slot="activator" slot-scope="scope">
-          <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
-        </template>
-      </component>
-
+      </v-autocomplete>
     </v-layout>
+    <div >
+      <v-chip  color="primary" text-color="white" v-for="item in rawValue" close @input="remove(item)"> {{ item.id }} {{ item.label }} </v-chip>
+    </div>
         
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
 <script>
 
-import { BelongsToAttribute } from '../../attributes/BelongsToAttribute'
+import _ from 'lodash'
+import { MorphThrough } from '../../relations/MorphThrough'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 
 export default {
@@ -48,7 +45,7 @@ export default {
       required: true,
     },
     attribute: {
-      type: BelongsToAttribute,
+      type: MorphThrough,
       required: true
     },
     errors: {
@@ -81,26 +78,21 @@ export default {
         this.loading = false;
         this.loadByVal(this.attribute.extractValue(this.value));
       });
-    }else if (val) {
+    } else if (val) {
       this.loadByVal(val);
     } else {
       this.querySelections();
     }
-    if (this.attribute.getCreateComponent()) {
-      this.components.create = this.attribute.getCreateComponent().component;
-
-    }
-
-    if (this.attribute.getUpdateComponent()) {
-      this.components.update = this.attribute.getUpdateComponent().component;
-    }
-
   },
   watch: {
     value: function (){
       this.rawValue = this.attribute.extractValue(this.value);
-      if (this.rawValue) {
-        this.rawValue.label = this.attribute.getLabelByResource(this.rawValue);
+
+
+      if (this.rawValue.length > 0) {
+        this.rawValue.map(resource => {
+          return resource.label = this.attribute.getLabelByResource(resource)
+        });
       }
     },
     search (newVal) {
@@ -108,7 +100,15 @@ export default {
     },
   },
   methods: {
+    remove (item) {
+      const index = this.rawValue.findIndex(r => {
+        return item.id = r.id;
+      });
 
+      if (index >= 0) {
+        this.rawValue.splice(index, 1)
+      }
+    },
     attributeConfig() {
       var t = this.attribute.resourceConfig().clone();
       t.onUpdateSuccess = (vue, response) => {
@@ -125,8 +125,10 @@ export default {
     },
     loadByVal (val) {
       if (val) {
-        val.label = this.attribute.getLabelByResource(val);
-        this.items.push(val);
+        val.map(resource => {
+          resource.label = this.attribute.getLabelByResource(resource)
+          this.items.push(resource);
+        })
       }
 
       this.rawValue = val;
@@ -138,7 +140,7 @@ export default {
 
       v = this.attribute.executeQuery(v ? v : '', this.value);
 
-      this.attribute.api.index({show: 5, query: v})
+      this.attribute.indexerApi.index({show: 5, query: v})
         .then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);
@@ -152,7 +154,7 @@ export default {
       this.query = this.attribute.mutator(this.rawValue);
 
       this.attribute.injectValue(this.value, this.rawValue);
-  
+
       this.$emit('input', this.rawValue);
 
     },

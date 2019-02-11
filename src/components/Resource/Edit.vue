@@ -1,24 +1,36 @@
 <template>
-  <div v-if="data !== 0 && data !== null && config.update === true" class="edit">
-    <slot name="activator" :drawer="drawer">
-      <v-btn small flat icon color="primary" @click="drawer = true"><v-icon>edit</v-icon></v-btn>
-    </slot>
-    <slot :resource="data" name="main">
-      <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
-        <div class="content"  v-if="drawer">
-          <h3 class='title'>{{ string(config.title+ " - #"+data.id).humanize().toString() }}</h3>
-          <p class='mt-3'>{{ config.description }}</p>
-          <v-divider class='mb-5'></v-divider>
-          <errors :errors="errors" />
-          <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
-        </div>
-        <div class='content text-xs-right mt-5'>
-          <v-btn @click="drawer = false">Cancel</v-btn>
-          <v-btn @click="save()" color="primary" :loading="loading" :disabled="loading">Save</v-btn>
-        </div>
-    </v-navigation-drawer>
-    </slot>
-    <slot :resource="data" name="extra"/>
+  <div v-if="data !== 0 && data !== null && config.update === true" class='text-xs-left'>
+    <div v-if="type === 'button-navigator'"  style='display:inline-block'>
+      <slot name="activator" :drawer="drawer">
+        <v-btn small flat icon color="primary" @click="drawer = true"><v-icon>edit</v-icon></v-btn>
+      </slot>
+      <slot :resource="data" name="main">
+        <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
+          <div class="content"  v-if="drawer">
+            <h3 class='title'>{{ $t('data.' + config.title + '.name') }} - #{{ data.id }}</h3>
+            <p class='mt-3'>{{ config.description }}</p>
+            <v-divider class='mb-5'></v-divider>
+            <errors :errors="errors" />
+            <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
+          </div>
+          <div class='content text-xs-right mt-5'>
+            <v-btn @click="drawer = false">Cancel</v-btn>
+            <v-btn @click="save()" color="primary" :loading="loading" :disabled="loading">Save</v-btn>
+          </div>
+        </v-navigation-drawer>
+      </slot>
+      <slot :resource="data" name="extra"/>
+    </div>
+    <div v-if="type === 'direct'">
+      <div>
+        <h3 class='title'>{{ $t('data.' + config.title + '.name') }} - #{{ data.id }}</h3>
+        <p class='mt-3'>{{ config.description }}</p>
+        <v-divider class='mb-5'></v-divider>
+        <errors :errors="errors" />
+        <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
+      </div>
+      <slot :resource="data" name="extra"/>
+    </div>
   </div>
 </template>
 
@@ -26,6 +38,7 @@
 
 import { LoadResource } from '../../mixins/LoadResource'
 import { utils } from '../../mixins/utils'
+import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
 
 
@@ -35,7 +48,8 @@ export default {
   },
   mixins: [ 
     LoadResource, 
-    utils
+    utils,
+    hooks
   ],
   data() {
     return {
@@ -50,6 +64,13 @@ export default {
       type: Boolean,
       default: true
     },
+    type: {
+      type: String,
+      default: 'button-navigator'
+    },
+    hooks: {
+      type: Object
+    }
   },
   created() {
     this.config.ini();
@@ -60,6 +81,18 @@ export default {
     }
   },
   watch: {
+    data: {
+      handler: function (val) {
+        if (this.type === 'direct') {
+
+          let promise = this.getHooks('OnChange', {
+            resource: this.data
+          });
+
+        }
+      },
+      deep: true
+    },
     drawer: function (val) {
       if (!val) {
         
@@ -86,15 +119,13 @@ export default {
 
       this.loading = true;
 
-      this.config.manager.update(this.data.id, this.data).then(response => {
-
+      this.executeHooks('BeforeCreate', {id: this.data.id, resource: this.data}).then((data) => {
+        return this.config.updateResource(data.id, data.resource);
+      }).then(response => {
         this.errors = [];
-        this.config.onUpdateSuccess(this, response);
-        bus.$emit(this.config.resourceEvent("updated"), this.data);
-        // this.$emit('update:resource', response.body.data);
         this.drawer = false;
-
       }).catch(response => {
+        console.log(response);
         this.errors = response.body.errors || response.body.message
       }).finally(response => {
         this.loading = false;
@@ -104,8 +135,3 @@ export default {
 }
 
 </script>
-<style scoped>
-  .edit {
-    display: inline-block;
-  }
-</style>

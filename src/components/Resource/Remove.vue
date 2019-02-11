@@ -1,5 +1,5 @@
 <template>
-  <div class="remove">
+  <div class="remove" style='display:inline-block'>
     <v-btn v-if="config.remove === true" small flat icon @click="showRemoveDialog = true" color="error"><v-icon>delete</v-icon></v-btn>
     <v-dialog v-model="showRemoveDialog" width='400'>
       <v-card>
@@ -37,18 +37,8 @@ export default {
     }
   },
   methods: {
-    /**
-     * Remove resource
-     *
-     * @return void
-     */
     remove: function () {
-      this.config.manager.remove(this.data.id).then(response => {
-        this.config.onRemoveSuccess(this, response);
-        bus.$emit(this.config.resourceEvent("removed"), this.data);
-      }).catch(response => {
-        console.log(response);
-      });
+      return this.config.removeResource(this.data.id);
     },
   },
   created () {
@@ -58,8 +48,3 @@ export default {
 }
 
 </script>
-<style scoped>
-  .remove {
-    display: inline-block;
-  }
-</style>

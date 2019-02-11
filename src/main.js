@@ -10,8 +10,6 @@ Vue.config.productionTip = false
 
 import 'vuetify/dist/vuetify.min.css'
 
-require('./assets/main.css')
-require('./assets/fluid.css')
 
 new Vue({
   render: h => h(App),

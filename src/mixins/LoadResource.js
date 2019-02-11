@@ -33,20 +33,20 @@ export var LoadResource = {
     },
     loadDataById (id) {
       this.config.manager.show(id).then(response => {
-          var resource = response.body;
-          var promises = this.config.attributes.map(attribute => {
-              return attribute.load([resource.data]);
-          });
-           
-          Promise.all(promises).then(() =>  {
-            this.setData(response.body.data);
-          }).catch(response => {
-            this.setData(null);
-          });
-
+        var resource = response.body;
+        var promises = this.config.attributes.map(attribute => {
+            return attribute.load([resource.data]);
+        });
+         
+        Promise.all(promises).then(() =>  {
+          this.setData(resource.data);
         }).catch(response => {
           this.setData(null);
         });
+
+      }).catch(response => {
+        this.setData(null);
+      });
     },
 
     loadDataByProps () {

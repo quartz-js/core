@@ -10,6 +10,11 @@ export class ResourceApi {
     this.access_token = container.get('services.oauth') ? container.get('services.oauth').getToken() : null;
     this.params = {};
     this.filterQuery = function (query) {
+
+      if (query) {
+        query = query.replace(/\\/g, "\\\\");
+      }
+
       return query;
     }
   }
@@ -127,5 +132,17 @@ export class ResourceApi {
    */
   remove (id) {
     return Vue.http.delete(this.getFullUrl() + '/' + id, { headers: { Authorization: 'Bearer ' + this.access_token }});
+  }
+
+  /**
+   * Erase
+   *
+   * @param {Object} params
+   *
+   * @return {Promise}
+   */
+  erase (params) {
+    params.query = this.filterQuery(params.query);
+    return Vue.http.delete(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
   }
 };

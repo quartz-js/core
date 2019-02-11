@@ -8,9 +8,7 @@ export var AttributePreMount = {
   methods: {
     canMount() {
 
-
-
-      if (this.attribute.fixed(this.value)) {
+      if (this.attribute && this.attribute.fixed(this.value) !== undefined) {
         this.attribute.injectValue(this.value, this.attribute.fixed(this.value));
     
         this.$emit('input', this.attribute.fixed(this.value));

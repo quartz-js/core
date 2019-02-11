@@ -1,19 +1,23 @@
 <template>
-  <v-card v-if="data" class="content resource-card">
-    <div>
-      <v-layout row wrap>
-        <v-flex align-items>
-          <h3 class='title'>{{ string(config.title+ " - #" + data.id).humanize().toString() }}</h3>
-        </v-flex>
-        <v-spacer></v-spacer>
-        <v-flex align-items class="text-xs-right" >
-          <remove :resource="data" :config="config" />
-          <slot :resource="data" :config="config" name="actions" />
-        </v-flex>
-      </v-layout>
+  <v-card v-if="data" class="resource-card">
+    <v-container fluid style='background:#f5f5f5; height: 64px; padding: 0 10px' align-center>
+      <v-btn flat icon @click="showContent = !showContent"><v-icon>menu</v-icon></v-btn>
+      <div class='v-toolbar__title'>{{ $t('data.' + config.title + '.name') }} - #{{ data.id }}</div>
+      <v-spacer></v-spacer>
+      <remove :resource="data" :config="config" />
+      <slot :resource="data" :config="config" name="actions" />
+      <v-menu>
+        <v-btn icon slot="activator">
+          <v-icon>more_vert</v-icon>
+        </v-btn>
+        <v-list>
+          <slot :resource="data" :config="config" name="actions-extra" />
+        </v-list>
+      </v-menu>
+    </v-container>
 
-      <p class='mt-3'>{{ config.description }}</p>
-      <v-divider class='mb-5'></v-divider>
+    <div v-if="showContent" class="content">
+      <p class='mt-3'>{{ $t('data.' + config.title + '.description') }}</p>
       <div>
         <slot :resource="data" name="show" :config="config"></slot>
       </div>
@@ -37,6 +41,11 @@ export default {
     LoadResource, 
     utils
   ],
+  data() {
+    return {
+      showContent: true
+    }
+  },
   created() {
     this.config.ini();
     this.loadDataByProps();

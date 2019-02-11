@@ -1,13 +1,11 @@
 <template>
   <div v-if="data">
-    <v-card class='content'>
+    <v-card class='mt-4'>
       <router-link :to="config.getRouteIndex(data)">To index</router-link>
     </v-card>
-    <v-card>
-      <div>
-        <slot :resource="data" name="body"></slot>
-      </div>
-    </v-card>
+    <div style='margin-top: -20px'>
+      <slot :resource="data" name="body"></slot>
+    </div>
     <slot :resource="data" :config="config" name="extra"/>
   </div>
 </template>
@@ -28,18 +26,6 @@ export default {
     LoadResource, 
     utils
   ],
-  mounted () {
-    bus.$on(this.config.resourceEvent("removed"), data => {
-      if (data.id === this.data.id) {
-        this.$router.push(this.config.getRouteIndex(data));
-      }
-    });
-
-
-    this.config.onCreateSuccess = (vue, response) => {
-        vue.$router.push(this.config.getRouteShow(response.body.data));
-    };
-  },
   created() {
     this.loadDataByUrl();
   },

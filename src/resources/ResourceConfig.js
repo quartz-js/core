@@ -8,6 +8,10 @@ export class ResourceConfig {
     this.remove = true;
     this.show = true;
 
+    this.rowEnabled = (resource) => {
+      return undefined;
+    }
+
     this.ini = function() {
       return;
       
@@ -56,6 +60,18 @@ export class ResourceConfig {
     
     this.onRemoveSuccess = function (vue, response) {
     };
+
+    this.showRow = function (resource) {
+
+      var result = this.rowEnabled(resource);
+
+      if (result !== undefined) {
+        return result;
+      }
+
+      return true
+    }
+
     /**
      * Get attribute by name
      *
@@ -86,12 +102,97 @@ export class ResourceConfig {
       return this.title + ":" + label;
     }
 
+    this.getListableAttributes = function() {
+      return this.attributes.filter((attribute) => {
+        return attribute.listable;
+      }).map((attribute) => {
+        return attribute.getName()
+      });
+    }
 
     for (var i in params) {
       this[i] = params[i];
     }
   }
+  getHooks($event, data){ 
+    var hooks = [];
+
+    this.attributes.map(attribute => {
+      hooks = hooks.concat(attribute.getHooks($event, data))
+    });
+
+    return hooks;
+  }
+
+  executeHooks($event, data) {
+
+    var hooks = this.getHooks($event, data);
+
+    return hooks.reduce(function (prev, curr) {
+      return prev.then((data) => {
+        return curr(data);
+      });
+    }, Promise.resolve(data));
+
+  }
+
   clone () {
     return clone(this);
+  }
+
+  removeResource (data) {
+
+    return this.manager.remove(id).then(response => {
+      this.onRemoveSuccess(this, response);
+      bus.$emit(this.resourceEvent("removed"), id);
+    })
+  }
+
+  createResource (data) {
+
+    return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
+      return this.manager.create(data.resource);
+    }).then(response => {
+
+      let promises = this.attributes.map(attribute => {
+        return attribute.persist(response.body.data.id, data);
+      });
+
+      return Promise.all(promises).then(() => {
+        this.onCreateSuccess(this, response);
+        bus.$emit(this.resourceEvent("created"), response.body.data);
+
+        return response;
+      });
+    }).catch(error => {
+      console.log(error);
+      return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
+        throw error
+      })
+    })
+  }
+
+  updateResource (id, data) {
+    
+    return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
+      return this.manager.update(id, data.resource);
+    }).then(response => {
+
+      let promises = this.attributes.map(attribute => {
+        return attribute.persist(response.body.data.id, data);
+      });
+
+      return Promise.all(promises).then(() => {
+        this.onUpdateSuccess(this, response);
+        bus.$emit(this.resourceEvent("updated"), response.body.data);
+
+        return response;
+      });
+    }).catch(error => {
+      console.log(error);
+      return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
+        throw error
+      })
+    })
   }
 };

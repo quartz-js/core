@@ -1,96 +1,108 @@
 <template>
   <div>
-    <div class='mt-5'>
-      <h2 class='display-1 font-weight-thin'>{{ string(config.title).humanize().toString() }}</h2>
-    </div>
-    <v-card class="resource-card" v-if="(pagination && pagination.totalItems !== 0) || query">
-      <v-layout align-center class='content'>
-        <v-text-field v-model="query" append-icon="search" class="search" :label="$t('$quartz.core.search')" :error="errors.search" single-line hide-details></v-text-field>
-        <v-dialog v-model="settingsActive" width="500">
-          <v-btn color="primary" flat icon @click="settingsActive = true" slot="activator"><v-icon>settings</v-icon></v-btn>
-          <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-              {{ $t('$quartz.core.settings') }}
-            </v-card-title>
-            <v-card-text>
-              <v-select :items="config.listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint
-              ></v-select>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+    <v-card class="resource-card">
+      <v-dialog v-model="settingsActive" width="500">
+        <v-card>
+          <v-card-title class="headline grey lighten-2" primary-title>
+            {{ $t('$quartz.core.settings') }}
+          </v-card-title>
+          <v-card-text>
+            <v-select :items="listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint
+            ></v-select>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
 
-        <slot name="top" :config="config"></slot>
+      <v-container fluid style='background:#f5f5f5; height: 64px; padding: 0 10px' align-center>
+        <v-btn flat icon @click="showContent = !showContent"><v-icon>menu</v-icon></v-btn>
+        <div class='v-toolbar__title'>{{ $t('data.' + config.title + '.name') }}</div>
+        <v-spacer></v-spacer>
+        <div>
+          <v-btn icon flat @click="settingsActive = true"><v-icon>settings</v-icon></v-btn>
+        </div>
+      </v-container>
 
-      </v-layout>
-      <v-data-table
-        v-model="selected"
-        :headers="getHeaders()"
-        :items="data"
-        select-all
-        item-key="id"
-        v-if="response"
-        :pagination.sync="pagination"
-        :total-items="pagination.totalItems"
-        :loading="loading"
-        :rowsPerPageItems="rowsPerPageItems"
-        flat
-      >
-        <template slot="headers" slot-scope="props">
-          <tr>
-            <th>
-              <v-checkbox
-                :input-value="props.all"
-                :indeterminate="props.indeterminate"
-                primary
-                hide-details
-                @click.native="toggleAll"
-              ></v-checkbox>
-            </th>
-            <th
-              v-for="header in props.headers"
-              :key="header.text"
-               class="text-xs-left"
-              :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-              @click="changeSort(header.value)"
-            >
-              {{ header.text }}
-              <v-icon small>arrow_upward</v-icon>
-            </th>
-            <th class="column sortable text-xs-right">
-              {{ $t('$quartz.core.actions') }}
-            </th>
-          </tr>
-        </template>
-        <template slot="items" slot-scope="props">
-          <tr :active="props.selected">
-            <td>
-              <v-checkbox @change="props.selected = !props.selected"
-                :input-value="props.selected"
-                primary
-                hide-details
-              ></v-checkbox>
-            </td>
-            <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
-              {{ attribute.extractReadableValue(props.item) }}
-            </td>
 
-            <td class="justify-end align-center layout px-2 text-xs-right">
-              <remove :resource="props.item" :config="config"/>
-              <slot name="actions" :resource="props.item"></slot>
-              <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
-            </td>
+      <div v-if="showContent">
+        <div v-if="(pagination && pagination.totalItems !== 0) || query">
 
-          </tr>
+        <v-layout align-center class='content'>
+          <v-text-field v-model="query" append-icon="search" class="search" :label="$t('$quartz.core.search')" :error="errors.search" single-line hide-details></v-text-field>
+          <slot name="top" :config="config"></slot>
+        </v-layout>
 
-        </template>
-      </v-data-table>
-    </v-card>
-    <v-card class='resource-card' v-else>
-       <div class='content text-md-center'>
-          <img :src='config.icon ? config.icon : require("../../assets/icons8-house-lannister.svg")' width='218' class='my-3'>
-          <h3 class='title my-3'>{{ $t('$quartz.core.no-results.message') }}</h3>
-          <p class='my-4'>{{ string(config.description).toString() }}</p>
-          <slot name="top" :config="config" :big="true"></slot>
+        <v-data-table
+          v-model="selected"
+          :headers="getHeaders()"
+          :items="data"
+          select-all
+          item-key="id"
+          v-if="response"
+          :pagination.sync="pagination"
+          :total-items="pagination.totalItems"
+          :loading="loading"
+          :headers-length="countColumns()"
+          :rowsPerPageItems="rowsPerPageItems"
+          flat
+        >
+          <v-progress-linear slot="progress" color="blue" indeterminate style='margin-top: -1px; height: 3px'></v-progress-linear>
+          <template slot="headers" slot-scope="props">
+            <tr>
+              <th>
+                <v-checkbox
+                  :input-value="props.all"
+                  :indeterminate="props.indeterminate"
+                  primary
+                  hide-details
+                  @click.native="toggleAll"
+                ></v-checkbox>
+              </th>
+              <th
+                v-for="header in props.headers"
+                :key="header.text"
+                 class="text-xs-left"
+                :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+                @click="changeSort(header.value)"
+              >
+                {{ header.text }}
+                <v-icon small>arrow_upward</v-icon>
+              </th>
+              <th class="column sortable text-xs-right">
+                {{ $t('$quartz.core.actions') }}
+              </th>
+            </tr>
+          </template>
+          <template slot="items" slot-scope="props" >
+            <tr :active="props.selected" :class="{'disable': !config.showRow(props.item)}">
+              <td>
+                <v-checkbox @change="props.selected = !props.selected"
+                  :input-value="props.selected"
+                  primary
+                  hide-details
+                ></v-checkbox>
+              </td>
+              <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
+                {{ attribute.extractReadableValue(props.item) }}
+              </td>
+              <td>
+                <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
+                  <remove :resource="props.item" :config="config"/>
+                  <slot name="actions" :resource="props.item"></slot>
+                  <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </div>
+      <div v-else>
+         <div class='content text-md-center'>
+            <img :src='config.icon ? config.icon : "https://image.flaticon.com/icons/svg/1055/1055645.svg"' width='218' class='my-3'>
+            <h3 class='title my-3'>{{ $t('$quartz.core.no-results.message') }}</h3>
+            <p class='my-4'>{{ string(config.description).toString() }}</p>
+            <slot name="top" :config="config" :big="true"></slot>
+          </div>
+        </div>
       </div>
     </v-card>
   </div>
@@ -122,6 +134,7 @@ export default {
   },
   data: function () {
     return {
+      showContent: true,
       query: '',
       rowsPerPageItems: [
         10, 25, 50, 100, 250, 500
@@ -206,7 +219,7 @@ export default {
     }
 
     if (!cols || cols.length === 0 || cols[0].label) {
-      cols = this.config.listable;
+      cols = this.listable;
     }
 
     this.cols = cols;
@@ -216,7 +229,8 @@ export default {
     this.reload();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
-    this.listable = this.config.listable;
+
+    this.listable = this.config.getListableAttributes();
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load();
@@ -231,7 +245,13 @@ export default {
     });
   },
   methods: {
-     onChangeQuery: function (query) {
+    countColumns () {
+
+      return this.attributes.filter((attribute) => {
+        return this.showAttribute(attribute)
+      }).length+2;
+    },
+    onChangeQuery: function (query) {
       if (this.query == query) {
         return
       }
@@ -331,30 +351,30 @@ export default {
         this.pagination.totalItems = response.body.meta.pagination.total;
         this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
 
-
         var promises = this.attributes.map(attribute => {
           return attribute.load(response.body.data);
         });
 
-        Promise.all(promises).then(() => {
+        return Promise.all(promises).then(() => {
           this.loading = false;
           this.response = response.body;
-        }).catch(response => {
-          this.$notify(response.message, 'error')
         })
-
 
       }).catch(response => {
 
+        console.log(response);
+        
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;
         }
         
+
         this.pagination.totalPages = 0;
-        this.pagination.page = 0;
+        this.pagination.page = 1;
         this.response = response.body;
         this.response.data = [];
         this.loading = false;
+        
       });
     },
 
