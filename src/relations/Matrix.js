@@ -134,8 +134,8 @@ export class Matrix extends Base {
     return this.explode(result)
   }
 
-  primaryKeys () {
-    var row = this.row(null)[0];
+  primaryKeys (resource) {
+    var row = this.row(resource)[0];
 
 
     row = _.pickBy(row, field => {
@@ -171,13 +171,13 @@ export class Matrix extends Base {
     return value;
   }
 
-  subsetByPrimaryKeys(arr) {
+  subsetByPrimaryKeys(arr, resource) {
 
     arr = _.clone(arr)
 
     var ret = {};
 
-    this.primaryKeys().map(primaryKey => {
+    this.primaryKeys(resource).map(primaryKey => {
       ret[primaryKey] = arr[primaryKey]
     })
 
@@ -198,7 +198,7 @@ export class Matrix extends Base {
       return this.api.index({query: ids ? this.searchQuery(ids) : '', show: 999}).then(responseR => {
         resources.map(resource => {
 
-          let value = this.combinedRow()
+          let value = this.combinedRow(resource)
 
           let apiValue = responseR.body.data.filter((b_resource) => { return this.comparatorByApi(b_resource, resource)});
 
@@ -206,7 +206,7 @@ export class Matrix extends Base {
           apiValue.map((resource) => {
 
             var index = value.findIndex(valueToFind => {
-              var result = _.isEqual(this.subsetByPrimaryKeys(valueToFind), this.subsetByPrimaryKeys(resource)) === true
+              var result = _.isEqual(this.subsetByPrimaryKeys(valueToFind, resource), this.subsetByPrimaryKeys(resource, resource)) === true
 
 
               return result;
@@ -224,9 +224,9 @@ export class Matrix extends Base {
     })
   }
 
-  getIndexByRow(row)
+  getIndexByRow(row, resource)
   {
-    row = this.subsetByPrimaryKeys(row);
+    row = this.subsetByPrimaryKeys(row, resource);
 
     return row.map((row, rowKey) => {
       return rowKey + "-" + row;

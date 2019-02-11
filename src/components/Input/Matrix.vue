@@ -79,7 +79,6 @@ export default {
         });
       })
 
-      console.log(items);
 
       this.items = items;
     })
@@ -104,7 +103,7 @@ export default {
       var index = this.rawValue.findIndex(valueToFind => {
 
 
-        var result = _.isEqual(this.attribute.subsetByPrimaryKeys(valueToFind), this.attribute.subsetByPrimaryKeys(resource)) === true
+        var result = _.isEqual(this.attribute.subsetByPrimaryKeys(valueToFind, this.rawValue), this.attribute.subsetByPrimaryKeys(resource, resource)) === true
 
         return result;
       })

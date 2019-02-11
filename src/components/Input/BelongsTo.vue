@@ -15,14 +15,14 @@
           clearable
         ></v-autocomplete>
 
-      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" flat type='wrap'>
+      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" flat>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
         </template>
       </component>
 
-      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat type='wrap'>
+      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
