@@ -13,7 +13,9 @@ module.exports = {
         MorphThrough: require('./relations/MorphThrough').MorphThrough,
         Matrix: require('./relations/Matrix').Matrix,
     },
+    ServiceProvider: require('./app/Providers/ServiceProvider').ServiceProvider,
     ResourceConfig: require('./resources/ResourceConfig').ResourceConfig,
+    Manager: require('./app/Managers/Manager').Manager,
     ResourceApi: require('./api/ResourceApi').ResourceApi,
     container: require('./services/container').container,
     mixins: {

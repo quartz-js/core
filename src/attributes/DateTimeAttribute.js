@@ -1,4 +1,5 @@
 import { BaseAttribute } from './BaseAttribute'
+import moment from 'moment'
 
 export class DateTimeAttribute extends BaseAttribute {
   constructor (name, options) {

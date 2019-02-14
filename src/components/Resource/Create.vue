@@ -7,8 +7,8 @@
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
           <div class="content text-xs-left" v-if="drawer">
-            <h3 class='title'>{{ $t('data.' + config.title + '.name') }}</h3>
-            <p class='mt-3'>{{ config.description }}</p>
+            <h3 class='title'>{{ this.getResourceTitle(config) }}</h3>
+            <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
             <v-divider class='mb-45'></v-divider>
             <errors :errors='errors' />
             <div>
@@ -24,8 +24,8 @@
     </div>
     <div v-if="type === 'direct'">
       <div class="text-xs-left">
-        <h3 class='title'>{{ $t('data.' + config.title + '.name') }}</h3>
-        <p class='mt-3'>{{ config.description }}</p>
+        <h3 class='title'>{{ this.getResourceTitle(config) }}</h3>
+        <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
         <v-divider class='mb-45'></v-divider>
         <errors :errors='errors' />
         <div>
@@ -39,12 +39,14 @@
 <script>
 
 import { utils } from '../../mixins/utils'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
 
 export default {
   mixins: [ 
     utils,
+    ResourceLocalization,
     hooks
   ],
   components: { 'errors': Errors },

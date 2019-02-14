@@ -7,8 +7,8 @@
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>
           <div class="content"  v-if="drawer">
-            <h3 class='title'>{{ $t('data.' + config.title + '.name') }} - #{{ data.id }}</h3>
-            <p class='mt-3'>{{ config.description }}</p>
+            <h3 class='title'>{{ this.getResourceTitle(config) }} - #{{ data.id }}</h3>
+            <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
             <v-divider class='mb-5'></v-divider>
             <errors :errors="errors" />
             <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
@@ -23,8 +23,8 @@
     </div>
     <div v-if="type === 'direct'">
       <div>
-        <h3 class='title'>{{ $t('data.' + config.title + '.name') }} - #{{ data.id }}</h3>
-        <p class='mt-3'>{{ config.description }}</p>
+        <h3 class='title'>{{ this.getResourceTitle(config) }} - #{{ data.id }}</h3>
+        <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
         <v-divider class='mb-5'></v-divider>
         <errors :errors="errors" />
         <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
@@ -37,6 +37,7 @@
 <script>
 
 import { LoadResource } from '../../mixins/LoadResource'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { utils } from '../../mixins/utils'
 import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
@@ -47,7 +48,8 @@ export default {
     Errors
   },
   mixins: [ 
-    LoadResource, 
+    LoadResource,
+    ResourceLocalization,
     utils,
     hooks
   ],

@@ -3,10 +3,10 @@
     <v-autocomplete
         :items="attribute.options"
         item-text="label"
-        :label="attribute.getLabel()"
+        :label="getAttributeLabel(attribute)"
         v-model="rawValue"
         @change="onChange()"
-      :hint="attribute.getDescription()"
+      :hint="getAttributeDescription(attribute)"
       persistent-hint
       ></v-autocomplete>
     <div
@@ -16,10 +16,12 @@
 </template>
 <script>
 
-import { mixin as clickaway } from 'vue-clickaway';
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 export default {
-  mixins: [ clickaway ],
+  mixins: [
+    ResourceLocalization
+  ],
   props: ['value', 'attribute', 'error', 'errors'],
   data: function () {
     return {

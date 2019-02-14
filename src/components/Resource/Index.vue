@@ -15,7 +15,7 @@
 
       <v-container fluid style='background:#f5f5f5; height: 64px; padding: 0 10px' align-center>
         <v-btn flat icon @click="showContent = !showContent"><v-icon>menu</v-icon></v-btn>
-        <div class='v-toolbar__title'>{{ $t('data.' + config.title + '.name') }}</div>
+        <div class='v-toolbar__title'>{{ this.getResourceTitle(config) }}</div>
         <v-spacer></v-spacer>
         <div>
           <v-btn icon flat @click="settingsActive = true"><v-icon>settings</v-icon></v-btn>
@@ -64,7 +64,7 @@
                 :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
                 @click="changeSort(header.value)"
               >
-                {{ header.text }}
+                {{ getAttributeLabel(header.attribute) }}
                 <v-icon small>arrow_upward</v-icon>
               </th>
               <th class="column sortable text-xs-right">
@@ -112,12 +112,14 @@
 
 import { utils } from '../../mixins/utils'
 import Remove from '../../components/Resource/Remove'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 var qs = require('qs');
 import _ from 'lodash'
 
 export default {
   mixins: [
     utils,
+    ResourceLocalization,
   ],
   components: {
     Remove,
@@ -291,7 +293,7 @@ export default {
       return JSON.parse(atob(string))
     },
     getEncodedParamsFromUrl (def) {
-      var string = this.$route.query[this.config.title];
+      var string = this.$route.query[this.config.name];
 
       if (!string) {
         string = this.encodeParams(def ? def : this.paramsToUrl())
@@ -321,7 +323,7 @@ export default {
       if (this.hasChanged()) {
         var push = Object.assign({}, this.$route.query);
 
-        push[this.config.title] = this.encodeParams(this.paramsToUrl());
+        push[this.config.name] = this.encodeParams(this.paramsToUrl());
 
         this.$router.push({query: push});
 
@@ -410,6 +412,7 @@ export default {
         return this.showAttribute(attribute);
       }).map((attribute) => {
         return {
+          attribute: attribute,
           value: attribute.getName(),
           text: attribute.getLabel(),
           align: 'left',

@@ -2,9 +2,9 @@
   <div v-if="show">
     <v-text-field 
       v-model="rawValue" 
-      :label="attribute.getLabel()" 
+      :label="getAttributeLabel(attribute)" 
       @input="onChange()"
-      :hint="attribute.getDescription()"
+      :hint="getAttributeDescription(attribute)"
       persistent-hint
     ></v-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
@@ -14,10 +14,12 @@
 
 import { BaseAttribute } from '../../attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 export default {
   mixins: [
-    AttributePreMount
+    AttributePreMount,
+    ResourceLocalization
   ],
   props: {
     value: {
