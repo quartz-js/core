@@ -5,7 +5,7 @@ Vue.use(VueResource);
 export class ResourceManyToManyApi {
   constructor () {
     this.url = container.get('config').API_URL;
-    this.access_token = container.get('services.oauth') ? container.get('services.oauth').getToken() : null;
+    this.access_token = container.get('oauth').getToken();
   }
 
   getFullUrl (container_id, resource_id) {

@@ -8,7 +8,7 @@ Vue.use(VueResource);
 export class ResourceApi {
   constructor () {
     this.url = container.get('config').app.api.url;
-    this.access_token = container.get('services.oauth') ? container.get('services.oauth').getToken() : null;
+    this.access_token = container.get('oauth').getToken();
     this.params = {};
     this.filterQuery = function (query) {
 
