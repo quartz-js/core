@@ -21,7 +21,7 @@
         "message": "Looks like you don't have any records here"
       },
       "header": {
-        "services": "Service"
+        "services": "Services"
       },
       "irreversible_operation": {
         "title": "Confirmation requested",
