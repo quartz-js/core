@@ -110,7 +110,7 @@ export default {
   methods: {
 
     attributeConfig() {
-      var t = this.attribute.resourceConfig().clone();
+      var t = this.attribute.resourceConfig.clone();
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }

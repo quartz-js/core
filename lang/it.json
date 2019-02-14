@@ -1,0 +1,67 @@
+{
+  "$quartz": {
+    "core": {
+      "create": "Crea",
+      "search": "Ricerca",
+      "settings": "Impostazioni",
+      "columns": "Colonne",
+      "actions": "Azioni",
+      "save": "Salva",
+      "error": "E' stato riscontrato un errore",
+      "cancel": "Annulla",
+      "show": "Mostra",
+      "no-results": {
+        "title": "Non c'è niente qui!",
+        "message": "Sembra che non ci sia niente qui"
+      },
+      "header": {
+        "services": "Servizi"
+      },
+      "irreversible_operation": {
+        "title": "Conferma necessaria",
+        "message": "Questa azione è irreversibile",
+        "question": "Sei sicuro?"
+      }
+    },
+    "data": {
+      "__common": {
+        "attributes": {
+          "id": {
+            "label": "ID",
+            "description": "A unique identifier"
+          },
+          "name": {
+            "label": "name",
+            "description": "Identify the record by a human-readable string"
+          },
+          "created_at": {
+            "label": "Created At",
+            "description": null
+          },
+          "updated_at": {
+            "label": "Updated At",
+            "description": null
+          },
+          "deleated_at": {
+            "label": "Deleted At",
+            "description": null
+          }
+        }
+      }
+    }
+  },
+  "$vuetify": {
+    "dataIterator": {
+      "rowsPerPageText": "Items per page:",
+      "rowsPerPageAll": "All",
+      "pageText": "{0}-{1} of {2}",
+      "noResultsText": "No matching records found",
+      "nextPage": "Next page",
+      "prevPage": "Previous page"
+    },
+    "dataTable": {
+      "rowsPerPageText": "Rows per page:"
+    },
+    "noDataText": "No data available"
+  }
+}

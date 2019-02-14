@@ -1,16 +1,35 @@
+import VueI18n from 'vue-i18n'
+
 export var ResourceLocalization = {
   methods: {
+
+    getLocalizationPrefixData() {
+      return '$quartz.data.'
+    },
     getResourceTitle(resource) {
-      return this.$t('$quartz.data.' + resource.name + '.name')
+      return this.$t(this.getLocalizationPrefixData() + resource.name + '.name')
     },
     getResourceDescription(resource) {
-      return this.$t('$quartz.data.' + resource.name + '.description')
+      return this.$t(this.getLocalizationPrefixData() + resource.name + '.description')
+    },
+    getLocalizationKeyAttribute (resource, attribute, suffix) {
+      return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.getName() + suffix;
     },
     getAttributeLabel(attribute) {
-      return this.$t('$quartz.data.' + attribute.resourceConfig.name + '.attributes.' + attribute.getName() + '.label')
+
+      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.label'))) {
+        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.label'))
+      }
+
+      return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
     },
     getAttributeDescription(attribute) {
-      return this.$t('$quartz.data.' + attribute.resourceConfig.name + '.attributes.' + attribute.getName() + '.description')
+
+      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.description'))) {
+        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.description'))
+      }
+
+      return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.description'))
     },
   }
 }

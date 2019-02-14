@@ -15,7 +15,6 @@ export class ServiceProvider {
 
     	route.children = route.children.concat(routes);
     } else {
-      console.log(container.get('$vue.routes'));
       container.set('$vue.routes', container.get('$vue.routes').concat(routes))
     }
   }
@@ -25,7 +24,6 @@ export class ServiceProvider {
   }
 
   addLang(lang) {
-  	console.log(lang)
   	var obj = container.get('$quartz.lang');
   	_.merge(obj, lang);
   	container.set('$quartz.lang', obj)

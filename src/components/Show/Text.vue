@@ -4,7 +4,7 @@
 
 
       <span v-if="attribute.resourceConfig && attribute.extractValue(resource)">
-        <router-link :to="attribute.resourceConfig().getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value">Show</router-link>
+        <router-link :to="attribute.resourceConfig.getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value">Show</router-link>
       </span>
       <span v-else>
         <span v-if="html !== null" class="show-value" v-html="html"/>

@@ -99,7 +99,7 @@
          <div class='content text-md-center'>
             <img :src='config.icon ? config.icon : "https://image.flaticon.com/icons/svg/1055/1055645.svg"' width='218' class='my-3'>
             <h3 class='title my-3'>{{ $t('$quartz.core.no-results.message') }}</h3>
-            <p class='my-4'>{{ string(config.description).toString() }}</p>
+            <p class='my-4'>{{ getResourceDescription(config) }}</p>
             <slot name="top" :config="config" :big="true"></slot>
           </div>
         </div>
