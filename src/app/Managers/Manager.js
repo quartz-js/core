@@ -142,7 +142,7 @@ export class Manager {
     return clone(this);
   }
 
-  removeResource (data) {
+  removeResource (id) {
 
     return this.manager.remove(id).then(response => {
       this.onRemoveSuccess(this, response);
