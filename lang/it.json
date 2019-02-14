@@ -1,5 +1,11 @@
 {
   "$quartz": {
+    "tags": {
+      "app": "Application",
+      "data": "Buisiness Core",
+      "system": "System",
+      "log": "Logs"
+    },
     "core": {
       "create": "Crea",
       "search": "Ricerca",
