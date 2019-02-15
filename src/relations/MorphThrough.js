@@ -147,9 +147,9 @@ export class MorphThrough extends Base {
         return parseInt(resource[`${this.name}_id`])
       });
         
-      var idsDefined = data[this.name].map(resource => {
+      var idsDefined = typeof data[this.name] !== "undefined" ? data[this.name].map(resource => {
         return parseInt(resource.id)
-      });
+      }) : [];
       
       var idsToAdd = idsDefined.filter(rId => {
           return idsOriginal.indexOf(rId) < 0;
