@@ -8,8 +8,8 @@ export class QuartzServiceProvider extends ServiceProvider {
     container.set('$quartz.data', [])
 
     this.addLang({
-      'en': require('../../../lang/en.json'),
-      'it': require('../../../lang/it.json')
+      'en': require('../../lang/en.json'),
+      'it': require('../../lang/it.json')
     })
   }
 }
