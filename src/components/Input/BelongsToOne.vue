@@ -70,7 +70,7 @@ export default {
     this.attribute.addHook('BeforeCreate', (data) => {
 
       if (!this.finalValue || !this.finalValue.id) {
-        return this.attribute.resourceConfig.createResource(this.finalValue)
+        return this.attribute.resourceConfig().createResource(this.finalValue)
           .then(response => {
 
             data.resource[this.attribute.name] = response.body.data.id
@@ -79,7 +79,7 @@ export default {
             return data
           })
       } else {
-        return this.attribute.resourceConfig.updateResource(this.finalValue.id, this.finalValue)
+        return this.attribute.resourceConfig().updateResource(this.finalValue.id, this.finalValue)
           .then(response => {
 
             data.resource[this.attribute.name] = response.body.data.id
@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     attributeConfig() {
-      return this.attribute.resourceConfig;
+      return this.attribute.resourceConfig();
     },
     loadByVal (val) {
       this.rawValue = val;

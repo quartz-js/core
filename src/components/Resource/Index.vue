@@ -231,8 +231,8 @@ export default {
     this.reload();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
-
     this.listable = this.config.getListableAttributes();
+
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load();

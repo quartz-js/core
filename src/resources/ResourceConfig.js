@@ -1,6 +1,6 @@
 var clone = require('clone');
 
-export class Manager {
+export class ResourceConfig {
   constructor (params) {
 
     this.create = true;
@@ -8,9 +8,9 @@ export class Manager {
     this.remove = true;
     this.show = true;
     
-    if (!this.name) {
-      this.name = this.title;
-    }
+
+    this.name = params.title;
+
 
     this.rowEnabled = (resource) => {
       return undefined;
@@ -18,7 +18,7 @@ export class Manager {
 
     this.ini = function() {
       this.attributes.map((attribute) => {
-        attribute.resourceConfig = this;
+        attribute.resourceConfig = () => { return this };
       });
     };
 

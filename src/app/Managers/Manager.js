@@ -18,7 +18,7 @@ export class Manager {
 
     this.ini = function() {
       this.attributes.map((attribute) => {
-        attribute.resourceConfig = this;
+        attribute.resourceConfig = () => { return this };
       });
     };
 

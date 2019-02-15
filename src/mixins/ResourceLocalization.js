@@ -17,19 +17,27 @@ export var ResourceLocalization = {
     },
     getAttributeLabel(attribute) {
 
-      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.label'))) {
-        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.label'))
+      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.label'))) {
+        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.label'))
       }
 
-      return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
+      if (this.$te(this.getLocalizationKeyAttribute('__common', attribute, '.label'))) {
+        return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
+      }
+
+      return attribute.getName();
     },
     getAttributeDescription(attribute) {
 
-      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.description'))) {
-        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig.name, attribute, '.description'))
+      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.description'))) {
+        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.description'))
       }
 
-      return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.description'))
+      if (this.$te(this.getLocalizationKeyAttribute('__common', attribute, '.description'))) {
+        return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.description'))
+      }
+
+      return null;
     },
   }
 }
