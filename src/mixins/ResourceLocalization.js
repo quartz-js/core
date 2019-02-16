@@ -17,8 +17,8 @@ export var ResourceLocalization = {
     },
     getAttributeLabel(attribute) {
 
-      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.label'))) {
-        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.label'))
+      if (this.$te(this.getLocalizationKeyAttribute(attribute.manager().name, attribute, '.label'))) {
+        return this.$t(this.getLocalizationKeyAttribute(attribute.manager().name, attribute, '.label'))
       }
 
       if (this.$te(this.getLocalizationKeyAttribute('__common', attribute, '.label'))) {
@@ -29,8 +29,8 @@ export var ResourceLocalization = {
     },
     getAttributeDescription(attribute) {
 
-      if (this.$te(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.description'))) {
-        return this.$t(this.getLocalizationKeyAttribute(attribute.resourceConfig().name, attribute, '.description'))
+      if (this.$te(this.getLocalizationKeyAttribute(attribute.manager().name, attribute, '.description'))) {
+        return this.$t(this.getLocalizationKeyAttribute(attribute.manager().name, attribute, '.description'))
       }
 
       if (this.$te(this.getLocalizationKeyAttribute('__common', attribute, '.description'))) {

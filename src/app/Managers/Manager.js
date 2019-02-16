@@ -18,7 +18,7 @@ export class Manager {
 
     this.ini = function() {
       this.attributes.map((attribute) => {
-        attribute.resourceConfig = () => { return this };
+        attribute.manager = () => { return this };
       });
     };
 
@@ -82,9 +82,15 @@ export class Manager {
      * @return {BaseAttribute}
      */
     this.getAttribute = function (name) {
-      return this.attributes.find(function (attribute) {
+      let attr = this.attributes.find(function (attribute) {
         return attribute.name === name;
       });
+
+      if (!attr) {
+        throw "Cannot find attribute called " + this.name + ":" + name
+      }
+
+      return attr
     };
 
     /**
