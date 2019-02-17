@@ -1,12 +1,21 @@
+var set = require('set-value');
+const get = require('get-value');
+
 export const container =
 {
   vars: [],
-  set: function (name, value) {
-    window['service'][name] = value;
+  __getStorage: function () {
+  	return window['service'];
   },
 
-  get: function (name) {
-    return typeof window['service'][name] !== 'undefined' ? window['service'][name] : null;
+  set: function (name, value) {
+  	set(this.__getStorage(), name, value);
+  	console.log(window['service']);
+  },
+
+  get: function (name, def) {
+  	console.log(name);
+  	return get(this.__getStorage(), name, { default: def })
   }
 }
 
