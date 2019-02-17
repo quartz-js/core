@@ -16,11 +16,13 @@ export class Manager {
       return undefined;
     }
 
-    this.ini = function() {
-      this.attributes.map((attribute) => {
-        attribute.manager = () => { return this };
-      });
-    };
+    params.attributes.map((attribute) => {
+      attribute.manager = () => { return this };
+    });
+
+    this.ini = () => {
+      
+    }
 
     this.getParamsShow = function (resource) {
       return { id: resource.id };
