@@ -24,6 +24,35 @@ export class BelongsToAttribute extends BaseAttribute {
     };
   }
 
+  addBeforeCreateHook () {
+    this.addHook('BeforeCreate', (data) => {
+
+      let finalValue = data.resource[this.getRelationName()];
+
+      if (!finalValue || !finalValue.id) {
+        return this.resourceConfig().createResource(finalValue)
+          .then(response => {
+
+            data.resource[this.name] = response.body.data.id
+            finalValue.id = response.body.data.id;
+
+            return data
+          })
+      } else {
+        return this.resourceConfig().updateResource(finalValue.id, finalValue)
+          .then(response => {
+
+            data.resource[this.name] = response.body.data.id
+            finalValue.id = response.body.data.id;
+
+            return data
+          })
+      }
+    });
+
+    return this;
+  }
+
   getRelationName () {
     return this.name + '_relation';
   }

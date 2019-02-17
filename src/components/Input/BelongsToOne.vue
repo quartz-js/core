@@ -67,34 +67,13 @@ export default {
       this.components.update = this.attribute.getUpdateComponent().component;
     }
 
-    this.attribute.addHook('BeforeCreate', (data) => {
-
-      if (!this.finalValue || !this.finalValue.id) {
-        return this.attribute.resourceConfig().createResource(this.finalValue)
-          .then(response => {
-
-            data.resource[this.attribute.name] = response.body.data.id
-            this.finalValue.id = response.body.data.id;
-
-            return data
-          })
-      } else {
-        return this.attribute.resourceConfig().updateResource(this.finalValue.id, this.finalValue)
-          .then(response => {
-
-            data.resource[this.attribute.name] = response.body.data.id
-            this.finalValue.id = response.body.data.id;
-
-            return data
-          })
-      }
-    });
-
-
   },
   watch: {
     value: function (){
       this.rawValue = this.attribute.extractValue(this.value);
+    },
+    finalValue: function (){
+      this.onChange(this.finalValue)
     },
   },
   methods: {
@@ -103,15 +82,15 @@ export default {
     },
     loadByVal (val) {
       this.rawValue = val;
+      this.finalValue = val;
     },
-    onChange: function (val) {
+    onChange: function () {
 
+      this.query = this.attribute.mutator(this.finalValue);
 
-      this.query = this.attribute.mutator(this.rawValue);
-
-      this.attribute.injectValue(this.value, this.rawValue);
+      this.attribute.injectValue(this.value, this.finalValue);
   
-      this.$emit('input', this.rawValue);
+      this.$emit('input', this.finalValue);
 
     },
     prepareHooks () {
