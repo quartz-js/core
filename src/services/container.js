@@ -10,11 +10,9 @@ export const container =
 
   set: function (name, value) {
   	set(this.__getStorage(), name, value);
-  	console.log(window['service']);
   },
 
   get: function (name, def) {
-  	console.log(name);
   	return get(this.__getStorage(), name, { default: def })
   }
 }

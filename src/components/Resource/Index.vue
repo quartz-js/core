@@ -363,9 +363,6 @@ export default {
         })
 
       }).catch(response => {
-
-        console.log(response);
-        
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;
         }

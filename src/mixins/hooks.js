@@ -8,16 +8,16 @@ export var hooks = {
       }));
     },
 
-	  executeHooks($event, data) {
+    executeHooks($event, data) {
 
-	    var hooks = this.getHooks($event, data);
+      var hooks = this.getHooks($event, data);
 
-	    return hooks.reduce(function (prev, curr) {
-	      return prev.then((data) => {
-	        return curr(data);
-	      });
-	    }, Promise.resolve(data));
+      return hooks.reduce(function (prev, curr) {
+        return prev.then((data) => {
+          return curr(data);
+        });
+      }, Promise.resolve(data));
 
-	  }
+    }
   }
 }

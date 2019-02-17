@@ -2,18 +2,18 @@
   <div v-if="show && attribute">
     <v-layout row wrap align-center>
       <v-autocomplete
-          :loading="loading"
-          :items="items"
-          item-text="label"
-          :label="attribute.getLabel()"
-          v-model="rawValue"
-          @input="onChange"
-          :search-input="search"
-          :search-input.sync="search"
-          return-object
-          editable
-          clearable
-        ></v-autocomplete>
+        :loading="loading"
+        :items="items"
+        item-text="label"
+        :label="attribute.getLabel()"
+        v-model="rawValue"
+        @input="onChange"
+        :search-input="search"
+        :search-input.sync="search"
+        return-object
+        editable
+        clearable
+      ></v-autocomplete>
 
       <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" flat>
         
