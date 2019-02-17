@@ -19,6 +19,25 @@ export class ServiceProvider {
     }
   }
 
+  findRoute(query) {
+
+    var routes = container.get('$vue.routes');
+
+    for (let i = 0; i < query.length; i++) {
+      var result = this.__findArray(routes, query[i])
+
+      routes = result.children
+    }
+
+    return result;
+  }
+
+  __findArray(array, params) {
+    return array.find((r) => {
+      return _.isEqual(_.pick(r, Object.keys(params)), params);
+    })
+  }
+
   addData(data) {
     container.get('$quartz.data').push(data);
   }
