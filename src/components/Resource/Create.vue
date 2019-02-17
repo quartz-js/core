@@ -7,6 +7,7 @@
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
           <div class="content text-xs-left" v-if="drawer">
+
             <h3 class='title'>{{ this.getResourceTitle(config) }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
             <v-divider class='mb-45'></v-divider>
@@ -59,6 +60,10 @@ export default {
       type: String,
       default: 'button-navigator'
     },
+    resource: {
+      type: Object,
+      default: null
+    },
     config: {
       type: Object,
       required: true,
@@ -68,8 +73,12 @@ export default {
     }
   },
   watch: {
+    resource: function (){
+      this.data = JSON.parse(JSON.stringify(this.resource));
+    },
     data: {
       handler: function (val) {
+
         if (this.type === 'direct') {
 
           let promise = this.getHooks('OnChange', {
@@ -82,7 +91,7 @@ export default {
     },
     drawer: function (val) {
       if (!val) {
-        this.data = {};
+        this.load();
         this.errors = [];
       }
     }
@@ -105,14 +114,16 @@ export default {
     return {
       drawer: false,
       loading: false,
-      data: {},
+      data: null,
       errors: [],
     }
   },
   methods: {
     create () {
       this.errors = [];
-      this.executeHooks('BeforeCreate', {resource: this.data}).then((data) => {
+
+      var resource = this.data; // Remove all null values.
+      this.executeHooks('BeforeCreate', {resource: resource}).then((data) => {
         return this.config.createResource(data.resource);
       }).then((response) => {
         this.errors = [];
@@ -120,17 +131,20 @@ export default {
       }).catch(response => {
         this.errors = response.body.errors
       });
+    },
+
+    load () {
+
+      let data = {};
+      this.config.injectDefault(data);
+
+      this.data = data;
+
     }
   },
   created() {
-    var data = {};
-
     this.config.ini();
-    this.config.attributes.map(attribute => {
-      data[attribute.getName()] = attribute.getDefault();
-    });
-    this.data = data;
-
+    this.load();
   }
 }
 

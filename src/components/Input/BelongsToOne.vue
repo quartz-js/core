@@ -1,6 +1,5 @@
-s<template>
+<template>
   <div v-if="show && attribute">
-
     <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct'/>
 
     <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct'/>
@@ -31,7 +30,6 @@ export default {
   },
   data: function () {
     return {
-      finalValue: {},
       rawValue: null,
       components: {
         create: null,
@@ -69,35 +67,37 @@ export default {
 
   },
   watch: {
-    value: function (){
-      this.rawValue = this.attribute.extractValue(this.value);
-    },
-    finalValue: function (){
-      this.onChange(this.finalValue)
-    },
+    value: {
+      handler: function (){
+        this.loadByVal(this.attribute.extractValue(this.value));
+      },
+      deep: true
+    }
   },
   methods: {
     attributeConfig() {
       return this.attribute.resourceConfig();
     },
     loadByVal (val) {
-      this.rawValue = val;
-      this.finalValue = val;
+
+      this.rawValue = JSON.parse(JSON.stringify(val));
     },
-    onChange: function () {
+    onChange: function (val) {
 
-      this.query = this.attribute.mutator(this.finalValue);
+      if (JSON.stringify(val) == JSON.stringify(this.rawValue)) {
+        return 
+      }
 
-      this.attribute.injectValue(this.value, this.finalValue);
-  
-      this.$emit('input', this.finalValue);
+      this.attribute.injectValue(this.value, val);
+    
+      this.$emit('input', this.value);
 
     },
     prepareHooks () {
       return {
         OnChange: [
           (data) => {
-            this.finalValue = JSON.parse(JSON.stringify(data.resource));
+            this.onChange(JSON.parse(JSON.stringify(data.resource)));
           }
         ]
       }

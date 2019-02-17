@@ -50,19 +50,14 @@ export default {
   },
   methods: {
     reloadRawValue() {
-
       var option = this.attribute.extractValue(this.value);
 
-
       this.rawValue = option ? !!option.value : false;
-      console.log(this.rawValue);
     },
     onChange: function (e) {
-      console.log(e.value)
       var index = e.value ? 1 : 0;
       this.rawValue = e.value
 
-      console.log(index);
       this.attribute.injectValue(this.value, index);
 
       this.$emit('input', this.value);

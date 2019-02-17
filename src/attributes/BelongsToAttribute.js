@@ -19,15 +19,18 @@ export class BelongsToAttribute extends BaseAttribute {
       return resource;
     };
 
+    this.default = () => {
+      return { id: undefined };
+    };
+
     this.extractor = resource => {
       return resource && typeof resource[this.getRelationName()] !== 'undefined' ? resource[this.getRelationName()] : null;
     };
   }
-
   addBeforeCreateHook () {
     this.addHook('BeforeCreate', (data) => {
 
-      let finalValue = data.resource[this.getRelationName()];
+      let finalValue = this.extractor(data.resource);
 
       if (!finalValue || !finalValue.id) {
         return this.resourceConfig().createResource(finalValue)
@@ -55,6 +58,21 @@ export class BelongsToAttribute extends BaseAttribute {
 
   getRelationName () {
     return this.name + '_relation';
+  }
+
+  injectDefault (data) {
+    let def = this.getDefault()
+
+    if (JSON.stringify(this.resourceConfig()) === JSON.stringify(this.manager())) {
+      return
+    }
+
+    console.log(def)
+
+
+    this.resourceConfig().injectDefault(def)
+
+    this.injectValue(data, def)
   }
 
   /**

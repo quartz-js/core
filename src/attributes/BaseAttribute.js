@@ -9,7 +9,7 @@ export class BaseAttribute {
     this.label = name;
     this.column = name;
     this.default = () => {
-      return undefined;
+      return null;
     };
 
     if (options && options.column) {
@@ -51,6 +51,11 @@ export class BaseAttribute {
 
     return this;
   }
+
+  injectDefault (data) {
+    this.injectValue(data, this.getDefault())
+  }
+
 
   /**
    * @return {Closure}

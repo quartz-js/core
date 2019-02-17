@@ -182,6 +182,14 @@ export class Manager {
     })
   }
 
+  injectDefault(data) {
+    this.attributes.map(attribute => {
+      attribute.injectDefault(data)
+    });
+  }
+
+      
+
   updateResource (id, data) {
     
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {

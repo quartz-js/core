@@ -81,7 +81,7 @@ export default {
         this.loading = false;
         this.loadByVal(this.attribute.extractValue(this.value));
       });
-    }else if (val) {
+    }else if (val && val.id) {
       this.loadByVal(val);
     } else {
       this.querySelections();
@@ -153,7 +153,7 @@ export default {
 
       this.attribute.injectValue(this.value, this.rawValue);
   
-      this.$emit('input', this.rawValue);
+      this.$emit('input', this.value);
 
     },
 
