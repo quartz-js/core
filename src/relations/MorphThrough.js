@@ -110,7 +110,8 @@ export class MorphThrough extends Base {
       show: 999,
       include: `${this.name}`
     }).then(responseR => {
-      return resources.map(resource => {
+      
+      return Promise.resolve(resources.map(resource => {
 
         var values = responseR.body.data.filter(b_resource => { 
           return b_resource[`${this.morphName}_id`] == resource.id 
@@ -127,7 +128,7 @@ export class MorphThrough extends Base {
         this.injectValue(resource, values);
 
         return resource;
-      });
+      }))
     });
   }
 
