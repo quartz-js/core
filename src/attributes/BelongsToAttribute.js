@@ -164,13 +164,25 @@ export class BelongsToAttribute extends BaseAttribute {
    * @return {Callable}
    */
   load (resources) {
-    var ids = resources.filter(resource => { return resource[this.column]; }).map(resource => { return resource[this.column] }).join(',');
+    var ids = resources.filter(resource => { 
+      return resource[this.column]; 
+    }).filter(resource => {
+      let val = this.extractValue(resource)
 
-    return this.api.index({query: ids ? 'id in (' + ids + ')' : '', show: 999}).then(responseR => {
-      return resources.map(resource => {
+      return !val || !val.id || resource[this.column] !== val.id
+
+    }).map(resource => { return resource[this.column] });
+
+
+    if (ids.length === 0) {
+      return Promise.resolve(resources)
+    }
+
+    return this.api.index({query: ids ? 'id in (' + ids.join(',') + ')' : '', show: 999}).then(responseR => {
+      return Promise.resolve(resources.map(resource => {
         resource[this.getRelationName()] = responseR.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
         return resource;
-      });
+      }))
     });
   }
 }
