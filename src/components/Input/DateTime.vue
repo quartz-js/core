@@ -1,37 +1,39 @@
 <template>
   <div v-if="show">
-
-    <v-menu
-      :close-on-content-click="false"
-      v-model="menu"
-      full-width
-      min-width="290px"
-    >
-      <v-text-field
-        slot="activator"
-        v-model="rawValue" 
-        :label="attribute.getLabel()"
-        :hint="attribute.getDescription()"
-        @input="onChange()"
-        persistent-hint
-        clearable
-        readonly
-      ></v-text-field>
-      <v-date-picker
-        v-model="rawValue"
-        @change="menu = false; onChange()"
-      ></v-date-picker>
-    </v-menu>
+    <datetime v-model="rawValue" type="datetime" :minute-step="5" ref="dateTimePicker" input-style="display:none" @input="onChange">
+      <template slot="after">
+        <v-text-field 
+          :value="getDateFormat(rawValue)" 
+          :label="getAttributeLabel(attribute)" 
+          :hint="getAttributeDescription(attribute)"
+          @click="$refs.dateTimePicker.isOpen = true"
+          persistent-hint
+        ></v-text-field>
+      </template>
+    </datetime>
   </div>
 </template>
 <script>
 
 import { BaseAttribute } from '../../attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
+
+import { Datetime } from 'vue-datetime';
+import Vue from 'vue'
+import moment from 'moment'
+
+Vue.use(require('vue-datetime'))
+require('vue-datetime/dist/vue-datetime.css')
+
 
 export default {
+  components: {
+    Datetime
+  },
   mixins: [
-    AttributePreMount
+    AttributePreMount,
+    ResourceLocalization
   ],
   props: {
     value: {
@@ -47,11 +49,10 @@ export default {
   },
   data() {
     return {
-    	rawValue: null,
-      menu: false
+    	rawValue: null
     }
   },
-  mounted () {
+  created () {
 
     if (!this.canMount()) {
       return;
@@ -62,16 +63,21 @@ export default {
   watch: {
   	value: function (){
     	this.reloadRawValue();
-  	}
+  	},
   },
   methods: {
+    getDateFormat(date)
+    {
+      return moment(date).format('MMMM Do YYYY, HH:mm')
+    },
   	reloadRawValue() {
-    	this.rawValue = this.attribute.extractValue(this.value);
+      let val = this.attribute.extractValue(this.value)
+    	this.rawValue = val ? moment(val).format() : null
   	},
     onChange () {
       var val = this.rawValue !== "" ? this.rawValue : null;
 
-      this.attribute.injectValue(this.value, val);
+      this.attribute.injectValue(this.value, moment(this.rawValue).format('YYYY-MM-DD HH:mm:ss'));
       this.$emit('input', this.value);
     }
 
@@ -79,8 +85,3 @@ export default {
 }
 
 </script>
-<style scoped>
-  .v-messages__message {
-    line-height: inherit !important;
-  }
-</style>

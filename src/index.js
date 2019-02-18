@@ -24,7 +24,6 @@ module.exports = {
     },
     install: function (Vue, options) {
 
-
         Vue.component("QResourceCreate", require('./components/Resource/Create').default)
         Vue.component("QResourceEdit", require('./components/Resource/Edit').default)
         Vue.component("QResourceIndex", require('./components/Resource/Index').default)
@@ -45,6 +44,7 @@ module.exports = {
         Vue.component("QBelongsToOne", require('./components/Input/BelongsToOne').default)
         Vue.component("QHtml", require('./components/Input/Html').default)
         Vue.component("QYaml", require('./components/Input/Yaml').default)
+        Vue.component("QDate", require('./components/Input/Date').default)
         Vue.component("QDatetime", require('./components/Input/DateTime').default)
         Vue.component("QJson", require('./components/Input/Json').default)
         Vue.component("QSecret", require('./components/Input/Secret').default)
