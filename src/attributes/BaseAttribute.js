@@ -221,7 +221,7 @@ export class BaseAttribute {
    * @return {Callable}
    */
   load (resources) {
-    return null;
+    return Promise.resolve(resources);
   }
 
   /**

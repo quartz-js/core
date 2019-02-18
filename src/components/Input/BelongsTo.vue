@@ -15,14 +15,14 @@
         clearable
       ></v-autocomplete>
 
-      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" flat>
+      <component v-if="(!rawValue || !rawValue.id) && components.create" v-bind:is="components.create" :config="attributeConfig()" flat>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
         </template>
       </component>
 
-      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat>
+      <component v-if="rawValue && rawValue.id && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat>
         
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
@@ -75,13 +75,16 @@ export default {
     
     var val = this.attribute.extractValue(this.value);
 
+
+
     if (val === null && this.value[this.name] !== null) {
       this.loading = true;
-      this.attribute.load([this.value]).then((data) => {
+      this.attribute.load([JSON.parse(JSON.stringify(this.value))]).then((data) => {
         this.loading = false;
-        this.loadByVal(this.attribute.extractValue(this.value));
+        this.rawValue = this.attribute.extractValue(data[0]);
+        this.onChange();
       });
-    }else if (val && val.id) {
+    } else if (val && val.id) {
       this.loadByVal(val);
     } else {
       this.querySelections();

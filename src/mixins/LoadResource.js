@@ -31,16 +31,24 @@ export var LoadResource = {
     setData (object) {
       this.data = JSON.parse(JSON.stringify(object));
     },
+    loadByAttributes (data) {
+      var promises = this.config.attributes.map(attribute => {
+          return () => { return attribute.load([data]) };
+      });
+       
+      return promises.reduce(function (prev, curr) {
+        return prev.then((data) => {
+          return curr(data);
+        });
+      }, Promise.resolve(data));
+    },
     loadDataById (id) {
       this.config.manager.show(id).then(response => {
         var resource = response.body;
-        var promises = this.config.attributes.map(attribute => {
-            return attribute.load([resource.data]);
-        });
-         
-        Promise.all(promises).then(() =>  {
-          this.setData(resource.data);
+        this.loadByAttributes(resource.data).then((data) => {
+          this.setData(data[0]);
         }).catch(response => {
+          console.log(response)
           this.setData(null);
         });
 
@@ -51,7 +59,13 @@ export var LoadResource = {
 
     loadDataByProps () {
       if (this.resource) {
-        this.setData(this.resource);
+        this.loadByAttributes(this.resource).then((data) => {
+          console.log(data)
+          this.setData(data[0]);
+        }).catch(response => {
+          console.log(response)
+          this.setData(null);
+        });
       } else if (this.id) {
         this.loadDataById(this.id);
       } else {

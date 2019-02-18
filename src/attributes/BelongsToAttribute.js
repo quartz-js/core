@@ -13,7 +13,7 @@ export class BelongsToAttribute extends BaseAttribute {
     };
 
     this.injector = (resource, value) => {
-      resource[this.getRelationName()] = value;
+      resource[this.getRelationName()] = value ? value : null;
       resource[this.name] = value ? value.id : null;
 
       return resource;
@@ -66,9 +66,6 @@ export class BelongsToAttribute extends BaseAttribute {
     if (JSON.stringify(this.resourceConfig()) === JSON.stringify(this.manager())) {
       return
     }
-
-    console.log(def)
-
 
     this.resourceConfig().injectDefault(def)
 
@@ -170,9 +167,8 @@ export class BelongsToAttribute extends BaseAttribute {
     var ids = resources.filter(resource => { return resource[this.column]; }).map(resource => { return resource[this.column] }).join(',');
 
     return this.api.index({query: ids ? 'id in (' + ids + ')' : '', show: 999}).then(responseR => {
-      resources.map(resource => {
+      return resources.map(resource => {
         resource[this.getRelationName()] = responseR.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
-
         return resource;
       });
     });

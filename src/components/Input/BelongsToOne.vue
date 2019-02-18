@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show && attribute">
+  <div v-if="show && attribute && !loading">
     <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct'/>
 
     <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct'/>
@@ -30,6 +30,7 @@ export default {
   },
   data: function () {
     return {
+      loading: false,
       rawValue: null,
       components: {
         create: null,
@@ -45,11 +46,14 @@ export default {
 
     var val = this.attribute.extractValue(this.value);
 
+
     if (val === null && this.value[this.name] !== null) {
+    
       this.loading = true;
-      this.attribute.load([this.value]).then((data) => {
+
+      this.attribute.load([JSON.parse(JSON.stringify(this.value))]).then((data) => {
+        this.onChange(this.attribute.extractValue(data[0]));
         this.loading = false;
-        this.loadByVal(this.attribute.extractValue(this.value));
 
       });
     } else {
@@ -79,7 +83,6 @@ export default {
       return this.attribute.resourceConfig();
     },
     loadByVal (val) {
-
       this.rawValue = JSON.parse(JSON.stringify(val));
     },
     onChange: function (val) {

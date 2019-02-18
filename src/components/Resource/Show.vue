@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="data" class="resource-card">
+  <v-card v-if="data" class="resource-card"> 
     <v-container fluid style='background:#f5f5f5; height: 64px; padding: 0 10px' align-center>
       <v-btn flat icon @click="showContent = !showContent"><v-icon>menu</v-icon></v-btn>
       <div class='v-toolbar__title'>{{ this.getResourceTitle(config) }} - #{{ data.id }}</div>

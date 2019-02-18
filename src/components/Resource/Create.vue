@@ -1,5 +1,5 @@
 <template>
-  <div v-if="config.create === true" class="create">
+  <div v-if="internalConfig.create === true" class="create">
     <div v-if="type === 'button-navigator'">
       <slot name="activator" v-if="activator">
         <v-btn color="primary" @click="drawer = true">{{ $t('$quartz.core.create') }}</v-btn>
@@ -8,12 +8,12 @@
         <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
           <div class="content text-xs-left" v-if="drawer">
 
-            <h3 class='title'>{{ this.getResourceTitle(config) }}</h3>
-            <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
+            <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
+            <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
             <v-divider class='mb-45'></v-divider>
             <errors :errors='errors' />
             <div>
-              <slot :resource="data" :errors="errors" :config="config" name="create"/>
+              <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
             </div>
             <div class='text-xs-right mt-5'>
               <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
@@ -25,12 +25,12 @@
     </div>
     <div v-if="type === 'direct'">
       <div class="text-xs-left">
-        <h3 class='title'>{{ this.getResourceTitle(config) }}</h3>
-        <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
+        <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
+        <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
         <v-divider class='mb-45'></v-divider>
         <errors :errors='errors' />
         <div>
-          <slot :resource="data" :errors="errors" :config="config" name="create"/>
+          <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
         </div>
       </div>
     </div>
@@ -124,7 +124,7 @@ export default {
 
       var resource = this.data; // Remove all null values.
       this.executeHooks('BeforeCreate', {resource: resource}).then((data) => {
-        return this.config.createResource(data.resource);
+        return this.internalConfig.createResource(data.resource);
       }).then((response) => {
         this.errors = [];
         this.drawer = false;
@@ -136,14 +136,15 @@ export default {
     load () {
 
       let data = {};
-      this.config.injectDefault(data);
+      this.internalConfig.injectDefault(data);
 
       this.data = data;
 
     }
   },
   created() {
-    this.config.ini();
+    this.internalConfig = this.config.clone();
+    this.internalConfig.ini();
     this.load();
   }
 }
