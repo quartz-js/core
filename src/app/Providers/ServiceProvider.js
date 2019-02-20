@@ -39,6 +39,11 @@ export class ServiceProvider {
   }
 
   addData(data) {
+
+    if (!data.icon) {
+      data.icon = require('../../assets/data-icon.svg');
+    }
+
     container.get('$quartz.data').push(data);
   }
 
