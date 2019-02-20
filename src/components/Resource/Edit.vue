@@ -2,7 +2,7 @@
   <div v-if="data !== 0 && data !== null && config.update === true" class='text-xs-left'>
     <div v-if="type === 'button-navigator'"  style='display:inline-block'>
       <slot name="activator" :drawer="drawer">
-        <v-btn small flat icon color="primary" @click="drawer = true"><v-icon>edit</v-icon></v-btn>
+        <v-btn small flat icon color="primary" @click="drawer = true" class="ma-0"><v-icon>edit</v-icon></v-btn>
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawer" fixed temporary app right width='800'>

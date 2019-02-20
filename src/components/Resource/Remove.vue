@@ -1,6 +1,6 @@
 <template>
   <div class="remove" style='display:inline-block'>
-    <v-btn v-if="config.remove === true" small flat icon @click="showRemoveDialog = true" color="error"><v-icon>delete</v-icon></v-btn>
+    <v-btn v-if="config.remove === true" small flat icon @click="showRemoveDialog = true" color="error" class="ma-0"><v-icon>delete</v-icon></v-btn>
     <v-dialog v-model="showRemoveDialog" width='400'>
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>

@@ -2,9 +2,9 @@
   <div v-if="show">
     <v-text-field 
       v-model="rawValue" 
-      :label="getAttributeLabel(attribute)" 
+      :label="label !== undefined ? label : getAttributeLabel(attribute)"
       @input="onChange()"
-      :hint="getAttributeDescription(attribute)"
+      :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
       persistent-hint
     ></v-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
@@ -22,6 +22,15 @@ export default {
     ResourceLocalization
   ],
   props: {
+    placeholder: {
+
+    },
+    label: {
+      default: undefined
+    },
+    hint: {
+      default: undefined
+    },
     value: {
       required: true,
     },

@@ -17,7 +17,7 @@
             </div>
             <div class='text-xs-right mt-5'>
               <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
-              <v-btn color="primary" @click="create()">{{ $t('$quartz.core.create') }}</v-btn>
+              <v-btn color="primary" @click="create()">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
             </div>
           </div>
          </v-navigation-drawer>
@@ -34,6 +34,17 @@
         </div>
       </div>
     </div>
+    <div v-if="type === 'fly'">
+      <div class="text-xs-left">
+        <errors :errors='errors' />
+        <div>
+          <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
+        </div>
+        <div class='text-xs-right'>
+          <v-btn color="primary" @click="create()">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,6 +54,7 @@ import { utils } from '../../mixins/utils'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
+import Vue from 'vue'
 
 export default {
   mixins: [ 
@@ -52,6 +64,9 @@ export default {
   ],
   components: { 'errors': Errors },
   props: {
+    labelCreate: {
+      default: null
+    },
     activator: {
       type: Boolean,
       default: true
@@ -127,6 +142,7 @@ export default {
         return this.internalConfig.createResource(data.resource);
       }).then((response) => {
         this.errors = [];
+        this.load();
         this.drawer = false;
       }).catch(response => {
         this.errors = response.body.errors

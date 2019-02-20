@@ -1,8 +1,10 @@
 <template>
   <div v-if="data">
-    <v-card class='mt-4'>
-      <router-link :to="config.getRouteIndex(data)">To index</router-link>
-    </v-card>
+    <slot :resource="data" name="breadcrumb">
+      <v-card class='mt-4' flat>
+        <router-link :to="config.getRouteIndex(data)">To index</router-link>
+      </v-card>
+    </slot>
     <div style='margin-top: -20px'>
       <slot :resource="data" name="body"></slot>
     </div>

@@ -229,6 +229,7 @@ export default {
   created () {
     this.config.ini();
     this.reload();
+    this.defineDefaultValue();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
     this.listable = this.config.getListableAttributes();
@@ -247,6 +248,8 @@ export default {
     });
   },
   methods: {
+    defineDefaultValue() {
+    },
     countColumns () {
 
       return this.attributes.filter((attribute) => {

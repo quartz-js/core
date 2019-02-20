@@ -1,6 +1,13 @@
 <template>
-  <div>
-    <v-textarea v-model="rawValue" :label="attribute.label" @input="onChange()"></v-textarea>
+  <div v-if="show">
+    <v-textarea 
+      v-model="rawValue" 
+      :label="label !== undefined ? label : getAttributeLabel(attribute)"
+      @input="onChange()"
+      :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
+      :placeholder="placeholder"
+      persistent-hint
+    ></v-textarea>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
