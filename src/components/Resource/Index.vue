@@ -88,7 +88,7 @@
                 <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
                   <remove :resource="props.item" :config="config"/>
                   <slot name="actions" :resource="props.item"></slot>
-                  <v-btn icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
+                  <v-btn class='ma-0' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
                 </div>
               </td>
             </tr>
