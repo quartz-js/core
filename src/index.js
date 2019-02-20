@@ -13,6 +13,7 @@ module.exports = {
         MorphThrough: require('./relations/MorphThrough').MorphThrough,
         Matrix: require('./relations/Matrix').Matrix,
     },
+    ProviderLoader: require('./app/Providers/ProviderLoader').ProviderLoader,
     ServiceProvider: require('./app/Providers/ServiceProvider').ServiceProvider,
     QuartzServiceProvider: require('./app/Providers/QuartzServiceProvider').QuartzServiceProvider,
     ResourceConfig: require('./resources/ResourceConfig').ResourceConfig,
