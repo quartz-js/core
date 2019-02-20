@@ -1,10 +1,8 @@
 {
   "$quartz": {
     "tags": {
-      "app": "Application",
-      "data": "Buisiness Core",
-      "system": "System",
-      "log": "Logs"
+      "data": "Application",
+      "system": "Help yourself with these tools"
     },
     "core": {
       "create": "Create",
