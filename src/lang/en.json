@@ -5,8 +5,11 @@
       "system": "Help yourself with these tools"
     },
     "core": {
+      "yes": "Yes",
+      "no": "No",
       "create": "Create",
       "search": "Search",
+      "search-placeholder": "Write your query (e.g. 'id = 1')",
       "settings": "Settings",
       "columns": "Columns",
       "actions": "Actions",

@@ -1,34 +1,57 @@
 <template>
   <div>
-    <v-card class="resource-card">
-      <v-dialog v-model="settingsActive" width="500">
-        <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>
-            {{ $t('$quartz.core.settings') }}
-          </v-card-title>
-          <v-card-text>
-            <v-select :items="listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint
-            ></v-select>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
 
-      <v-container fluid style='background:#f5f5f5; height: 64px; padding: 0 10px' align-center>
-        <v-btn flat icon @click="showContent = !showContent"><v-icon>menu</v-icon></v-btn>
-        <div class='v-toolbar__title'>{{ this.getResourceTitle(config) }}</div>
-        <v-spacer></v-spacer>
-        <div>
-          <v-btn icon flat @click="settingsActive = true"><v-icon>settings</v-icon></v-btn>
+    <v-dialog v-model="settingsActive" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+          {{ $t('$quartz.core.settings') }}
+        </v-card-title>
+        <v-card-text>
+          <v-select :items="listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint
+          ></v-select>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-card class="resource-card pa-3 my-5" v-if="(pagination && pagination.totalItems !== 0) || query">
+      <v-layout align-start>
+        <img :src="config.icon" width='90'>
+        <div class='ml-3'>
+          <h2 class='headline font-weight-thin'>
+            {{ this.getResourceTitle(config) }}
+
+            <v-btn icon flat small @click="settingsActive = true" class='ma-0'  color="grey"><v-icon>more_horiz</v-icon></v-btn>
+
+          </h2>
+          <p class='caption font-weight-thin'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor.
+            <!--{{ this.getResourceDescription(config) }}-->
+          </p>
         </div>
-      </v-container>
+      </v-layout>
+
+    </v-card>
+
+
+    <v-card class="resource-card pa-3 my-5" v-if="(pagination && pagination.totalItems !== 0) || query">
+      <v-layout align-start>
+        <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
+        <v-btn color="primary" @click="updateUrl()">{{ $t('$quartz.core.search') }}</v-btn>
+        <div class="text-xs-right"><slot name="top" :config="config"></slot></div>
+      </v-layout>
+    </v-card>
+
+
+    <!--
+
+  -->
+
+    <v-card class="resource-card my-5">
 
 
       <div v-if="showContent">
         <div v-if="(pagination && pagination.totalItems !== 0) || query">
-
-        <v-layout align-center class='content'>
-          <v-text-field v-model="query" append-icon="search" class="search" :label="$t('$quartz.core.search')" :error="errors.search" single-line hide-details></v-text-field>
-          <slot name="top" :config="config"></slot>
+          
         </v-layout>
 
         <v-data-table
@@ -67,8 +90,8 @@
                 {{ getAttributeLabel(header.attribute) }}
                 <v-icon small>arrow_upward</v-icon>
               </th>
-              <th class="column sortable text-xs-right">
-                {{ $t('$quartz.core.actions') }}
+              <th class="column sortable text-xs-right pr-4">
+                <span class='pr-3'>{{ $t('$quartz.core.actions') }}</span>
               </th>
             </tr>
           </template>
@@ -88,7 +111,7 @@
                 <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
                   <remove :resource="props.item" :config="config"/>
                   <slot name="actions" :resource="props.item"></slot>
-                  <v-btn class='ma-0' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
+                  <v-btn class='ma-0 mx-1' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
                 </div>
               </td>
             </tr>
@@ -97,9 +120,12 @@
       </div>
       <div v-else>
          <div class='content text-md-center'>
-            <img :src='config.icon ? config.icon : "https://image.flaticon.com/icons/svg/1055/1055645.svg"' width='218' class='my-3'>
+            <img :src='config.icon' width='218' class='my-3'>
             <h3 class='title my-3'>{{ $t('$quartz.core.no-results.message') }}</h3>
-            <p class='my-4'>{{ getResourceDescription(config) }}</p>
+            <p class='my-4' style='max-width: 800px; margin: 0 auto'>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor.
+              <!--{{ getResourceDescription(config) }}-->
+            </p>
             <slot name="top" :config="config" :big="true"></slot>
           </div>
         </div>
@@ -165,9 +191,6 @@ export default {
     }
   },
   computed: {
-    compoundProperty () {
-      return [this.query].join()
-    },
     data: {
       get: function() {
         return this.response.data;
@@ -184,18 +207,6 @@ export default {
       },
       deep: true
     },
-    compoundProperty: function (val, oldVal) {
-      if (val == oldVal) {
-        return
-      }
-
-      clearTimeout(this.timeout)
-
-      this.timeout = setTimeout(() => {
-        this.updateUrl();
-      }, 300)
-    },
-
     '$route.query'() {
         if (this.hasChanged()) {
           this.load(null);
@@ -435,6 +446,5 @@ export default {
 <style scoped>
   .search {
     padding-top:0;
-    margin-right: 40px;
   }
 </style>
