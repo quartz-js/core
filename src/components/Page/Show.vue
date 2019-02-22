@@ -2,7 +2,7 @@
   <div v-if="data">
     <slot :resource="data" name="breadcrumb">
       <v-card class='mt-4' flat>
-        <router-link :to="config.getRouteIndex(data)">To index</router-link>
+        <router-link :to="config.getRouteIndex(data)">Back</router-link>
       </v-card>
     </slot>
     <v-card class="resource-card pa-3 mt-4" >
@@ -11,7 +11,7 @@
         <v-spacer class='ml-3'>
           <v-layout align-center>
             <h2 class='headline font-weight-thin'>
-              {{ this.getResourceTitle(config) }} - #{{ data.id }}
+              {{ this.getResourceTitle(config) }} - #{{ data.id }} {{ data.name }}
             </h2>
             <v-spacer></v-spacer>
             <remove :resource="data" :config="config" button='normal'/>

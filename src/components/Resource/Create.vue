@@ -5,7 +5,7 @@
         <v-btn color="primary" @click="drawer = true">{{ $t('$quartz.core.create') }}</v-btn>
       </slot>
       <slot :resource="data" name="main">
-        <v-navigation-drawer v-model="drawable" fixed temporary app right width='800'>
+        <v-navigation-drawer v-model="drawable" fixed temporary app right width='1200'>
           <div class="content text-xs-left" v-if="drawer">
 
             <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>

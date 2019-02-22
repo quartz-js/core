@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <v-dialog v-model="settingsActive" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
@@ -13,7 +12,7 @@
       </v-card>
     </v-dialog>
 
-    <v-card class="resource-card pa-3 my-5" v-if="(pagination && pagination.totalItems !== 0) || query">
+    <v-card class="resource-card pa-3 mb-5" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <img :src="config.icon" width='90'>
         <div class='ml-3'>
