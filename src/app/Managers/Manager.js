@@ -1,4 +1,5 @@
 var clone = require('clone');
+const lodash = require('lodash');
 
 export class Manager {
   constructor (params) {
@@ -161,7 +162,16 @@ export class Manager {
   createResource (data) {
 
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
-      return this.manager.create(data.resource);
+
+      var params = data.resource;
+
+      params = _.pickBy(params, (value) => {
+        return value !== null
+      })
+
+      console.log(params);
+
+      return this.manager.create(params);
     }).then(response => {
 
       let promises = this.attributes.map(attribute => {
