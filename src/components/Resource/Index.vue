@@ -14,7 +14,7 @@
 
     <v-card class="resource-card pa-3 mb-5" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
-        <img :src="config.icon" width='90'>
+        <img :src="config.icon" width='110'>
         <div class='ml-3'>
           <h2 class='headline font-weight-thin'>
             {{ this.getResourceTitle(config) }}

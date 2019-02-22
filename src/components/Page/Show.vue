@@ -7,10 +7,11 @@
     </slot>
     <v-card class="resource-card pa-3 mt-4" >
       <v-layout align-start>
-        <img :src="config.icon" width='90'>
+        <img :src="config.icon" width='110'>
         <v-spacer class='ml-3'>
           <v-layout align-center>
-            <h2 class='headline font-weight-thin'>
+
+            <h2 class='headline font-weight-thin pa-1'>
               {{ this.getResourceTitle(config) }} - #{{ data.id }} {{ data.name }}
             </h2>
             <v-spacer></v-spacer>
@@ -25,6 +26,9 @@
               </v-list>
             </v-menu>
           </v-layout>
+
+          <slot :resource="data" :config="config" name="subtitle"/>
+
           <p class='caption font-weight-thin pa-1'>
             <slot :resource="data" name="description" :config="config">{{ data.description }}</slot>
           </p>
