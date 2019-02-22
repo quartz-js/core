@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="my-5">
     <slot :config="config" name="body"></slot>
   </div>
 </template>
