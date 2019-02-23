@@ -10,48 +10,23 @@
           ></v-select>
         </v-card-text>
       </v-card>
-    </v-dialog>
+    </v-dialog> 
 
-    <v-card class="resource-card pa-3 mb-5" v-if="(pagination && pagination.totalItems !== 0) || query">
-      <v-layout align-start>
-        <img :src="config.icon" width='110'>
-        <div class='ml-3'>
-          <h2 class='headline font-weight-thin'>
-            {{ this.getResourceTitle(config) }}
-
-            <v-btn icon flat small @click="settingsActive = true" class='ma-0'  color="grey"><v-icon>more_horiz</v-icon></v-btn>
-
-          </h2>
-          <p class='caption font-weight-thin'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor.
-            <!--{{ this.getResourceDescription(config) }}-->
-          </p>
-        </div>
-      </v-layout>
-
-    </v-card>
-
-
-    <v-card class="resource-card pa-3 my-5" v-if="(pagination && pagination.totalItems !== 0) || query">
+    <v-card class="resource-card pa-3 mt-4" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
         <v-btn color="primary" @click="updateUrl()">{{ $t('$quartz.core.search') }}</v-btn>
+
         <div class="text-xs-right"><slot name="top" :config="config"></slot></div>
       </v-layout>
     </v-card>
 
-
-    <!--
-
-  -->
-
-    <v-card class="resource-card my-5">
+    <v-card class="resource-card mt-5">
 
 
       <div v-if="showContent">
         <div v-if="(pagination && pagination.totalItems !== 0) || query">
-          
-        </v-layout>
+        
 
         <v-data-table
           v-model="selected"
@@ -90,7 +65,9 @@
                 <v-icon small>arrow_upward</v-icon>
               </th>
               <th class="column sortable text-xs-right pr-4">
-                <span class='pr-3'>{{ $t('$quartz.core.actions') }}</span>
+                <span class='pr-3'>
+                  {{ $t('$quartz.core.actions') }} 
+                </span>
               </th>
             </tr>
           </template>
@@ -116,6 +93,8 @@
             </tr>
           </template>
         </v-data-table>
+
+
       </div>
       <div v-else>
          <div class='content text-md-center'>
@@ -130,6 +109,9 @@
         </div>
       </div>
     </v-card>
+    <div class='py-4 px-3 text-md-right'>
+      <a href='#' @click="settingsActive = true" class='ma-0'>Settings</a>
+    </div>
   </div>
 </template>
 
