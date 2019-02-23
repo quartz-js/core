@@ -223,4 +223,27 @@ export class Manager {
       })
     })
   }
+
+  loadResources(data) {
+
+    var promises = this.attributes.map(attribute => {
+      return (r) => { 
+        return attribute.load(r)
+      };
+    });
+    
+    promises.push((r) => {
+      r.map(resource => {
+        return resource.__booted = true;
+      })
+
+      return Promise.resolve(r);
+    })
+    
+    return promises.reduce(function (prev, curr) {
+      return prev.then((r) => {
+        return curr(r);
+      });
+    }, Promise.resolve(data))
+  }
 };

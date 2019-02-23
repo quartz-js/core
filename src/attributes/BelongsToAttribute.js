@@ -165,14 +165,8 @@ export class BelongsToAttribute extends BaseAttribute {
    */
   load (resources) {
     var ids = resources.filter(resource => { 
-      return resource[this.column]; 
-    }).filter(resource => {
-      let val = this.extractValue(resource)
-
-      return !val || !val.id || resource[this.column] !== val.id
-
+      return resource[this.column] && !resource.__booted; 
     }).map(resource => { return resource[this.column] });
-
 
     if (ids.length === 0) {
       return Promise.resolve(resources)

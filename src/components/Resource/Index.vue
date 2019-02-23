@@ -348,13 +348,12 @@ export default {
         this.pagination.totalItems = response.body.meta.pagination.total;
         this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
 
-        var promises = this.attributes.map(attribute => {
-          return attribute.load(response.body.data);
-        });
+        var body = response.body;
 
-        return Promise.all(promises).then(() => {
+        return this.config.loadResources(response.body.data).then((r) => {
           this.loading = false;
-          this.response = response.body;
+          body.data = r;
+          this.response = body;
         })
 
       }).catch(response => {
@@ -362,7 +361,6 @@ export default {
           this.errors.search = response.body.message;
         }
         
-
         this.pagination.totalPages = 0;
         this.pagination.page = 1;
         this.response = response.body;
