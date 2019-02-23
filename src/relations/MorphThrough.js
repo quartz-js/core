@@ -103,7 +103,7 @@ export class MorphThrough extends Base {
    */
   load (resources) {
 
-    var ids = resources.map(resource => { return resource.id });
+    var ids = resources.filter(resource => { return resource.id }).map(resource => { return resource.id });
 
     return this.storageApi.index({
       query: ids.length > 0 ? `${this.morphName}_type = '${this.morphType}' and ${this.morphName}_id in (${ids.join(',')})` : '', 
