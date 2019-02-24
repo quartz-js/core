@@ -44,32 +44,34 @@
         >
           <v-progress-linear slot="progress" color="blue" indeterminate style='margin-top: -1px; height: 3px'></v-progress-linear>
           <template slot="headers" slot-scope="props">
-            <tr>
-              <th>
-                <v-checkbox
-                  :input-value="props.all"
-                  :indeterminate="props.indeterminate"
-                  primary
-                  hide-details
-                  @click.native="toggleAll"
-                ></v-checkbox>
-              </th>
-              <th
-                v-for="header in props.headers"
-                :key="header.text"
-                 class="text-xs-left"
-                :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-                @click="changeSort(header.value)"
-              >
-                {{ getAttributeLabel(header.attribute) }}
-                <v-icon small>arrow_upward</v-icon>
-              </th>
-              <th class="column sortable text-xs-right pr-4">
-                <span class='pr-3'>
-                  {{ $t('$quartz.core.actions') }} 
-                </span>
-              </th>
-            </tr>
+            <slot name="head" :config="config">
+              <tr>
+                <th>
+                  <v-checkbox
+                    :input-value="props.all"
+                    :indeterminate="props.indeterminate"
+                    primary
+                    hide-details
+                    @click.native="toggleAll"
+                  ></v-checkbox>
+                </th>
+                <th
+                  v-for="header in props.headers"
+                  :key="header.text"
+                   class="text-xs-left"
+                  :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+                  @click="changeSort(header.value)"
+                >
+                  {{ getAttributeLabel(header.attribute) }}
+                  <v-icon small>arrow_upward</v-icon>
+                </th>
+                <th class="column sortable text-xs-right pr-4">
+                  <span class='pr-3'>
+                    {{ $t('$quartz.core.actions') }} 
+                  </span>
+                </th>
+              </tr>
+            </slot>
           </template>
           <template slot="items" slot-scope="props" >
             <tr :active="props.selected" :class="{'disable': !config.showRow(props.item)}">
@@ -80,9 +82,11 @@
                   hide-details
                 ></v-checkbox>
               </td>
-              <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
-                {{ attribute.extractReadableValue(props.item) }}
-              </td>
+              <slot name="row" :resource="props.item" :config="config">
+                <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
+                  {{ attribute.extractReadableValue(props.item) }}
+                </td>
+              </slot>
               <td>
                 <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
                   <remove :resource="props.item" :config="config"/>
@@ -109,7 +113,7 @@
         </div>
       </div>
     </v-card>
-    <div class='py-4 px-3 text-md-right'>
+    <div class='py-4 px-3 text-md-right' v-if="settingsEnabled">
       <a href='#' @click="settingsActive = true" class='ma-0'>Settings</a>
     </div>
   </div>
@@ -137,6 +141,10 @@ export default {
       required: true,
     },
     url: {
+      type: Boolean,
+      default: true
+    },
+    settingsEnabled: {
       type: Boolean,
       default: true
     }
