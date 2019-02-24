@@ -65,6 +65,10 @@ export class ResourceApi {
       return response;
   }
 
+  post (url, body, options) {
+    return Vue.http.post(url, body, options)
+  }
+
   /**
    * Index
    *
