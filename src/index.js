@@ -8,6 +8,7 @@ module.exports = {
         Select: require('./attributes/SelectAttribute').SelectAttribute,
         Switch: require('./attributes/SwitchAttribute').SwitchAttribute,
         Url: require('./attributes/UrlAttribute').UrlAttribute,
+        File: require('./attributes/FileAttribute').FileAttribute,
     },
     Relations: {
         MorphThrough: require('./relations/MorphThrough').MorphThrough,
@@ -54,5 +55,6 @@ module.exports = {
         Vue.component("QText", require('./components/Input/Text').default)
         Vue.component("QTextarea", require('./components/Input/Textarea').default)
         Vue.component("QMatrix", require('./components/Input/Matrix').default)
+        Vue.component("QFile", require('./components/Input/File').default)
     }
 };
