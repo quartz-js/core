@@ -1,6 +1,5 @@
 <template>
   <v-card v-if="data" class="resource-card mt-4"> 
-    
     <div v-if="showContent" class="content">
       <div>
         <slot :resource="data" name="show" :config="config"></slot>
