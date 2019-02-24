@@ -125,6 +125,14 @@ export class Manager {
       this[i] = params[i];
     }
   }
+
+
+  set (name, value) {
+    this[name] = value
+
+    return this
+  }
+  
   getHooks($event, data){ 
     var hooks = [];
 
