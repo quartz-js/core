@@ -15,7 +15,7 @@
     <v-card class="resource-card pa-3 mt-4" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
-        <v-btn color="primary" @click="updateUrl()">{{ $t('$quartz.core.search') }}</v-btn>
+        <v-btn color="primary" @click="load()">{{ $t('$quartz.core.search') }}</v-btn>
 
         <div class="text-xs-right"><slot name="top" :config="config"></slot></div>
       </v-layout>
@@ -192,14 +192,9 @@ export default {
   watch: {
     pagination: {
       handler () {
-        this.updateUrl();
+        this.load(true);
       },
       deep: true
-    },
-    '$route.query'() {
-        if (this.hasChanged()) {
-          this.load(null);
-        }
     },
     cols: {
       handler: function (val, oldVal) {
@@ -256,19 +251,6 @@ export default {
         return this.showAttribute(attribute)
       }).length+2;
     },
-    onChangeQuery: function (query) {
-      if (this.query == query) {
-        return
-      }
-
-      this.query = query;
-
-      clearTimeout(this.timeout)
-
-      this.timeout = setTimeout(() => {
-        this.updateUrl()
-      }, 900)
-    },
     isAttributeListable: function (attribute) {
       return this.listable.indexOf(attribute.name) !== -1;
     },
@@ -308,48 +290,38 @@ export default {
     paramsToUrl() {
       return {query: this.query, pagination: this.filterPaginationUrl(this.pagination)};
     },
-    hasChanged () {
-
-      var route = this.getEncodedParamsFromUrl({
-        query: '',
-        pagination: {
-          sortBy: "updated_at",
-          descending: true,
-          rowsPerPage: 10,
-          page: 1
-      }});
-
-      return route !== this.encodeParams(this.paramsToUrl())
-    },
     updateUrl() {
+      var push = Object.assign({}, this.$route.query);
 
-      if (this.hasChanged()) {
-        var push = Object.assign({}, this.$route.query);
+      push[this.config.name] = this.encodeParams(this.paramsToUrl());
 
-        push[this.config.name] = this.encodeParams(this.paramsToUrl());
-
-        this.$router.push({query: push});
-
-        this.load(null)
-      }
+      this.$router.push({query: push});
     },
     filterPaginationUrl(pagination) {
       return _.pick(pagination, ['sortBy', 'descending', 'page', 'rowsPerPage']);
     },
-    load: function (params) {
+    load: function () {
+
       var manager = this.config.manager;
+
+      let params = {
+        query: this.config.getFinalQuery(this.query),
+        show: this.pagination.rowsPerPage,
+        page: this.pagination.page,
+        sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy ,
+      };
+
+      if (_.isEqual(this.params, params)) {
+        return;
+      }
+
       this.params = params;
 
       this.loading = true;
 
       this.selected = [];
 
-      manager.index({
-        query: this.config.getFinalQuery(this.query),
-        show: this.pagination.rowsPerPage,
-        page: this.pagination.page,
-        sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy ,
-      }).then(response => {
+      manager.index(params).then(response => {
         this.errors.search = null
         this.pagination.totalPages = response.body.meta.pagination.total_pages;
         this.pagination.page = response.body.meta.pagination.current_page;
@@ -362,6 +334,7 @@ export default {
           this.loading = false;
           body.data = r;
           this.response = body;
+          this.updateUrl();
         })
 
       }).catch(response => {
