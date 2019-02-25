@@ -192,7 +192,7 @@ export default {
   watch: {
     pagination: {
       handler () {
-        this.load(true);
+        this.load();
       },
       deep: true
     },
@@ -205,7 +205,7 @@ export default {
   },
   mounted: function () {
 
-    this.load(null);
+    this.load();
     
     var cols = [];
 
@@ -231,15 +231,15 @@ export default {
 
 
     bus.$on(this.config.resourceEvent("updated"), data => {
-      this.load();
+      this.load(true);
     });
 
     bus.$on(this.config.resourceEvent("created"), data => {
-      this.load();
+      this.load(true);
     });
 
     bus.$on(this.config.resourceEvent("removed"), data => {
-      this.load();
+      this.load(true);
     });
   },
   methods: {
@@ -300,7 +300,7 @@ export default {
     filterPaginationUrl(pagination) {
       return _.pick(pagination, ['sortBy', 'descending', 'page', 'rowsPerPage']);
     },
-    load: function () {
+    load: function (force) {
 
       var manager = this.config.manager;
 
@@ -311,7 +311,7 @@ export default {
         sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy ,
       };
 
-      if (_.isEqual(this.params, params)) {
+      if (!force && _.isEqual(this.params, params)) {
         return;
       }
 
