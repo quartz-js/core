@@ -126,6 +126,14 @@ export class Manager {
     }
   }
 
+  mergePartsQuery(parts, operator) {
+    let sub = parts.filter((part) => {
+      return part
+    }).map((part) => {
+      return `(${part})`
+    })
+    return sub.join(` ${operator} `)
+  }
 
   set (name, value) {
     this[name] = value
