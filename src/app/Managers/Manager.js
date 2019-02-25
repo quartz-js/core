@@ -4,6 +4,7 @@ const lodash = require('lodash');
 export class Manager {
   constructor (params) {
 
+    this.attributes = [];
     this.create = true;
     this.update = true;
     this.remove = true;
@@ -16,14 +17,16 @@ export class Manager {
     this.rowEnabled = (resource) => {
       return undefined;
     }
-
-    params.attributes.map((attribute) => {
-      attribute.manager = () => { return this };
-    });
-
     this.ini = () => {
       
     }
+
+    params.attributes.map((attribute) => {
+      this.addAttribute(attribute);
+    });
+
+    delete params.attributes
+
 
     this.getParamsShow = function (resource) {
       return { id: resource.id };
@@ -77,6 +80,7 @@ export class Manager {
       return true
     }
 
+
     /**
      * Get attribute by name
      *
@@ -124,6 +128,11 @@ export class Manager {
     for (var i in params) {
       this[i] = params[i];
     }
+  }
+
+  addAttribute (attribute) {
+    this.attributes.push(attribute)
+    attribute.manager = () => { return this };
   }
 
   mergePartsQuery(parts, operator) {

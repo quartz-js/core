@@ -146,7 +146,7 @@ export class MorphThrough extends Base {
    */
   persist (id, data) {
 
-    this.storageApi.index({
+    return this.storageApi.index({
       query: `${this.morphName}_type = '${this.morphType}' and ${this.morphName}_id eq ${id}`, 
       show: 999
     }).then(responseR => {
@@ -155,7 +155,7 @@ export class MorphThrough extends Base {
         return parseInt(resource[`${this.name}_id`])
       });
         
-      var idsDefined = typeof data[this.name] !== "undefined" ? data[this.name].map(resource => {
+      var idsDefined = typeof data[this.name] !== "undefined" && data[this.name] ? data[this.name].map(resource => {
         return parseInt(resource.id)
       }) : [];
       
