@@ -116,6 +116,7 @@
   },
   "dependencies": {
     "convict": "^4.4.1",
+    "cropperjs": "^1.4.3",
     "get-value": "^3.0.1",
     "js-beautify": "^1.8.9",
     "json-formatter-js": "^2.2.0",
