@@ -2,7 +2,6 @@ import VueI18n from 'vue-i18n'
 
 export var ResourceLocalization = {
   methods: {
-
     getLocalizationPrefixData() {
       return '$quartz.data.'
     },
@@ -25,6 +24,10 @@ export var ResourceLocalization = {
         return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
       }
 
+      if (attribute.resourceConfig && attribute.resourceConfig()) {
+        return this.$t(this.getLocalizationPrefixData() + attribute.resourceConfig().name + '.name')
+      }
+
       return attribute.getName();
     },
     getAttributeDescription(attribute) {
@@ -35,6 +38,10 @@ export var ResourceLocalization = {
 
       if (this.$te(this.getLocalizationKeyAttribute('__common', attribute, '.description'))) {
         return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.description'))
+      }
+
+      if (attribute.resourceConfig && attribute.resourceConfig()) {
+        return this.$t(this.getLocalizationPrefixData() + attribute.resourceConfig().name + '.description')
       }
 
       return null;
