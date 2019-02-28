@@ -1,19 +1,22 @@
 <template>
   <div>
-      <span>{{ attribute.getLabel() }}</span>
-      <toggle-button :value="rawValue" @change="onChange($event)" :height='28' :width="60" :sync="true" color="#1976d2"></toggle-button>
+    <span>{{ getAttributeLabel(attribute) }}</span>
+    <br>
+    <toggle-button :value="rawValue" @change="onChange($event)" :height='28' :width="60" :sync="true" color="#1976d2"></toggle-button>
   </div>
 </template>
 <script>
 
 import { BaseAttribute } from '../../attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 import { ToggleButton } from 'vue-js-toggle-button'
 
 export default {
   components: {
-    ToggleButton
+    ToggleButton,
+    ResourceLocalization
   },
   mixins: [
     AttributePreMount
@@ -21,6 +24,12 @@ export default {
   props: {
     value: {
       required: true,
+    },
+    label: {
+      default: undefined
+    },
+    hint: {
+      default: undefined
     },
     attribute: {
       type: BaseAttribute,

@@ -5,9 +5,10 @@
         :loading="loading"
         :items="items"
         item-text="label"
-        :label="attribute.getLabel()"
+        :label="label !== undefined ? label : getAttributeLabel(attribute)"
         v-model="rawValue"
         @input="onChange"
+        :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
         :search-input="search"
         :search-input.sync="search"
         return-object
@@ -16,14 +17,12 @@
       ></v-autocomplete>
 
       <component v-if="(!rawValue || !rawValue.id) && components.create" v-bind:is="components.create" :config="attributeConfig()" flat>
-        
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>new</v-icon></v-btn>
         </template>
       </component>
 
       <component v-if="rawValue && rawValue.id && components.update" v-bind:is="components.update" :config="attributeConfig()" :resource="rawValue" flat>
-        
         <template slot="activator" slot-scope="scope">
           <v-btn flat small icon color="info" class="mx-1" @click="scope.drawer = true"><v-icon>add</v-icon></v-btn>
         </template>
@@ -38,14 +37,22 @@
 
 import { BelongsToAttribute } from '../../attributes/BelongsToAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 export default {
   mixins: [
-    AttributePreMount
+    AttributePreMount,
+    ResourceLocalization
   ],
   props: {
     value: {
       required: true,
+    },
+    label: {
+      default: undefined
+    },
+    hint: {
+      default: undefined
     },
     attribute: {
       type: BelongsToAttribute,

@@ -39,15 +39,23 @@
         "attributes": {
           "id": {
             "label": "ID",
-            "description": "A unique identifier"
+            "description": "Un identificatore univoco"
+          },
+          "code": {
+            "label": "Codice",
+            "description": "Codice interno"
+          },
+          "uuid": {
+            "label": "Uuid",
+            "description": "Identificativo univoco universale"
           },
           "name": {
-            "label": "name",
-            "description": "Identify the record by a human-readable string"
+            "label": "Nome",
+            "description": "Nome"
           },
           "description": {
             "label": "Descrizione",
-            "description": "Un testo per descrivere l'entità"
+            "description": "Descrivi brevemente il dato"
           },
           "enabled": {
             "label": "Attivo",

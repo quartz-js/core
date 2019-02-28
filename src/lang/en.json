@@ -41,8 +41,16 @@
             "label": "ID",
             "description": "A unique identifier"
           },
+          "code": {
+            "label": "Code",
+            "description": "Internal code"
+          },
+          "uuid": {
+            "label": "Uuid",
+            "description": "Universally unique identifier"
+          },
           "name": {
-            "label": "name",
+            "label": "Name",
             "description": "Identify the record by a human-readable string"
           },
           "description": {
