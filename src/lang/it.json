@@ -5,9 +5,12 @@
       "system": "Help yourself with these tools"
     },
     "core": {
+      "yes": "Sì",
+      "no": "No",
       "create": "Crea",
       "search": "Ricerca",
       "settings": "Impostazioni",
+      "search-placeholder": "Scrivi la tua query (e.g. 'id = 1')",
       "columns": "Colonne",
       "actions": "Azioni",
       "save": "Salva",
