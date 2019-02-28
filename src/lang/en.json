@@ -43,7 +43,7 @@
           },
           "code": {
             "label": "Code",
-            "description": "Internal code"
+            "description": "A system used for brevity or secrecy of communication, in which arbitrarily chosen words, letters, or symbols are assigned to this entity."
           },
           "uuid": {
             "label": "Uuid",
@@ -51,11 +51,11 @@
           },
           "name": {
             "label": "Name",
-            "description": "Identify the record by a human-readable string"
+            "description": "A word or a combination of words by which this entity is designated, called, or known."
           },
           "description": {
             "label": "Description",
-            "description": "A text that describe the entity"
+            "description": "A text that describe this entity"
           },
           "enabled": {
             "label": "Enabled",

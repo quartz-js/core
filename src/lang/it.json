@@ -43,7 +43,7 @@
           },
           "code": {
             "label": "Codice",
-            "description": "Codice interno"
+            "description": "Un sistema utilizzato per brevità o segretezza della comunicazione, in cui parole, lettere o simboli scelti arbitrariamente sono assegnati a questa entità."
           },
           "uuid": {
             "label": "Uuid",
@@ -51,11 +51,11 @@
           },
           "name": {
             "label": "Nome",
-            "description": "Nome"
+            "description": "una parola o una combinazione di parole con cui questa entità è designato, chiamato o conosciuto."
           },
           "description": {
             "label": "Descrizione",
-            "description": "Descrivi brevemente il dato"
+            "description": "Descrivi brevemente l'entità"
           },
           "enabled": {
             "label": "Attivo",
