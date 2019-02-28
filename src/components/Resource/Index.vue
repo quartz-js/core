@@ -114,7 +114,7 @@
       </div>
     </v-card>
     <div class='py-4 px-3 text-md-right' v-if="settingsEnabled">
-      <a href='#' @click="settingsActive = true" class='ma-0'>{{ $t('$quartz.core.settings') }}</a>
+      <a href="javascript:;" @click="settingsActive = true" class='ma-0'>{{ $t('$quartz.core.settings') }}</a>
     </div>
   </div>
 </template>
