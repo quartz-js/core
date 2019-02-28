@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div v-if="show" class="mt-4">
     <datetime v-model="rawValue" type="datetime" :minute-step="5" ref="dateTimePicker" input-style="display:none" @input="onChange">
       <template slot="after">
         <v-text-field 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div v-if="show" class="mt-4">
     <v-textarea 
       v-model="rawValue" 
       :label="label !== undefined ? label : getAttributeLabel(attribute)"

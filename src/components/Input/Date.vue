@@ -1,6 +1,5 @@
 <template>
-  <div v-if="show">
-
+  <div v-if="show" class="mt-4">
     <v-menu
       :close-on-content-click="false"
       v-model="menu"

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div v-if="show" class="mt-4">
     <v-text-field 
       type="password"
       v-model="rawValue" 

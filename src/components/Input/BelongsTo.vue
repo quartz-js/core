@@ -1,7 +1,7 @@
 <template>
   <div v-if="show && attribute">
-    <v-layout row wrap align-center>
-      <v-autocomplete
+    <v-layout row wrap align-center class="mt-4">
+      <v-autocomplete 
         :loading="loading"
         :items="items"
         item-text="label"

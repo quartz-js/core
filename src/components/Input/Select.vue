@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-4">
     <v-autocomplete
         :items="attribute.options"
         item-text="label"

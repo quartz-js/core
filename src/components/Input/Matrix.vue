@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show && attribute">
+  <div v-if="show && attribute" class="mt-4">
     <span>{{ attribute.getLabel() }}</span>
     <v-divider/>
     <v-layout row wrap align-center v-if="rawValue && items.length > 0">

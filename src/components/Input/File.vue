@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show && rawValue">
+  <div v-if="show && rawValue" class="mt-4">
     <v-text-field 
       :value="rawValue.filename" prepend-icon='attach_file'
       :label="label !== undefined ? label : getAttributeLabel(attribute)"
