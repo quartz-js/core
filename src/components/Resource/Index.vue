@@ -295,7 +295,7 @@ export default {
 
       push[this.config.name] = this.encodeParams(this.paramsToUrl());
 
-      window.history.pushState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
+      window.history.replaceState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
 
       //this.$router.replace({query: push});
     },
