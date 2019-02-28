@@ -51,7 +51,7 @@
           },
           "name": {
             "label": "Nome",
-            "description": "una parola o una combinazione di parole con cui questa entità è designato, chiamato o conosciuto."
+            "description": "Una parola o una combinazione di parole con cui questa entità è designata, chiamata o conosciuta."
           },
           "description": {
             "label": "Descrizione",
