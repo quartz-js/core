@@ -1,6 +1,7 @@
 <template>
   <div v-if="show">
     <v-text-field 
+      class="mt-3"
       v-model="rawValue" 
       :label="label !== undefined ? label : getAttributeLabel(attribute)"
       @input="onChange()"
