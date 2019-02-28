@@ -1,6 +1,13 @@
 <template>
-  <div>
-    <v-text-field v-model="rawValue" :label="attribute.label" @input="onChange()"></v-text-field>
+  <div v-if="show">
+    <v-text-field 
+      type="password"
+      v-model="rawValue" 
+      :label="label !== undefined ? label : getAttributeLabel(attribute)"
+      @input="onChange()"
+      :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
+      persistent-hint
+    ></v-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
