@@ -20,6 +20,7 @@ module.exports = {
     QuartzServiceProvider: require('./app/Providers/QuartzServiceProvider').QuartzServiceProvider,
     ResourceConfig: require('./resources/ResourceConfig').ResourceConfig,
     Manager: require('./app/Managers/Manager').Manager,
+    Helper: require('./app/Helper').Helper,
     ResourceApi: require('./api/ResourceApi').ResourceApi,
     container: require('./services/container').container,
     mixins: {
