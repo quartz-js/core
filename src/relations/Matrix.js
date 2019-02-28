@@ -111,8 +111,6 @@ export class Matrix extends Base {
   }
 
   explode (arr) {
-
-
     if (arr.length <= 1) {
       return arr;
     }
@@ -192,10 +190,23 @@ export class Matrix extends Base {
    */
   load (resources) {
 
-    var ids = resources.map(resource => { return resource.id });
+    var ids = resources.filter(resource => {
+      return resource.id
+    }).map(resource => { 
+      return resource.id 
+    });
 
     return this.preLoad(resources).then(() => {
-      return this.api.index({query: ids ? this.searchQuery(ids) : '', show: 999}).then(responseR => {
+
+      if (ids.length === 0) {
+        /*resources.map(resource => {
+          resource[this.name]  = this.combinedRow(resource)          
+        })*/
+        return Promise.resolve(resources)
+      }
+
+      return this.api.index({query: this.searchQuery(ids), show: 999}).then(responseR => {
+
         resources.map(resource => {
 
           let value = this.combinedRow(resource)
@@ -218,8 +229,11 @@ export class Matrix extends Base {
           })
 
           resource[this.name] = value
+
           return resource;
         });
+
+        return resources
       });
     })
   }

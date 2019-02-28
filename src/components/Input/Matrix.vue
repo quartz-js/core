@@ -1,24 +1,22 @@
 <template>
   <div v-if="show && attribute" class="mt-4">
-    <span>{{ attribute.getLabel() }}</span>
+    <span>{{ getAttributeLabel(attribute) }}</span>
+    <span>{{ getAttributeDescription(attribute) }}</span>
     <v-divider/>
-    <v-layout row wrap align-center v-if="rawValue && items.length > 0">
-    <v-data-table :items="items" hide-headers :pagination.sync="pagination">
-      <template slot="items" slot-scope="props">
-        <td v-for="(field, fieldKey) in props.item">
-          <div v-if="!field.editable"  style='white-space: nowrap'>
-            {{ field.name }}
-          </div>
-          <div v-else>
-            <v-text-field :label="fieldKey" v-model="rawValue[findIndexRawValueByRow(props.item)][fieldKey]"></v-text-field>
-          </div>
-        </td>
-      </template>
-    </v-data-table>
-
-
+    <v-layout row wrap align-center v-if="rawValue && items.length > 0" >
+      <v-data-table :items="items" hide-headers :pagination.sync="pagination" style='width:100%'>
+        <template slot="items" slot-scope="props">
+          <td v-for="(field, fieldKey) in props.item" class="text-xs-left">
+            <div v-if="!field.editable" style='white-space: nowrap'>
+              {{ field.name }}
+            </div>
+            <div v-else>
+              <v-text-field :label="fieldKey" v-model="rawValue[findIndexRawValueByRow(props.item)][fieldKey]"></v-text-field>
+            </div>
+          </td>
+        </template>
+      </v-data-table>
     </v-layout>
-        
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
@@ -27,10 +25,12 @@
 import _ from 'lodash'
 import { Matrix } from '../../relations/Matrix'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 export default {
   mixins: [
-    AttributePreMount
+    AttributePreMount,
+    ResourceLocalization
   ],
   props: {
     value: {
