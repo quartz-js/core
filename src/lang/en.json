@@ -20,6 +20,7 @@
       "error": "An error has occurred",
       "cancel": "Cancel",
       "show": "Show",
+      "children": "Children",
       "no-results": {
         "title": "There's nothing here",
         "message": "Looks like you don't have any records here"
@@ -43,6 +44,18 @@
           "name": {
             "label": "name",
             "description": "Identify the record by a human-readable string"
+          },
+          "description": {
+            "label": "Description",
+            "description": "A text that describe the entity"
+          },
+          "enabled": {
+            "label": "Enabled",
+            "description": "Choose if enable or disable the entity"
+          },
+          "parent_id": {
+            "label": "Parent ID",
+            "description": "Who's the parent"
           },
           "created_at": {
             "label": "Created At",

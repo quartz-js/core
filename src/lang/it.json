@@ -20,6 +20,7 @@
       "error": "E' stato riscontrato un errore",
       "cancel": "Annulla",
       "show": "Mostra",
+      "children": "Figli",
       "no-results": {
         "title": "Non c'è niente qui!",
         "message": "Sembra che non ci sia niente qui"
@@ -43,6 +44,18 @@
           "name": {
             "label": "name",
             "description": "Identify the record by a human-readable string"
+          },
+          "description": {
+            "label": "Descrizione",
+            "description": "Un testo per descrivere l'entità"
+          },
+          "enabled": {
+            "label": "Attivo",
+            "description": "Scegli se attivare o disattivare l'entità"
+          },
+          "parent_id": {
+            "label": "Parent ID",
+            "description": "Identifica il genitore"
           },
           "created_at": {
             "label": "Created At",
