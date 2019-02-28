@@ -5,6 +5,7 @@
       "system": "Sfrutta questi strumenti per agevolare il tuo lavoro"
     },
     "core": {
+      "no-information": "Nessuna informazione disponibile",
       "yes": "Sì",
       "no": "No",
       "back": "Indietro",
@@ -66,15 +67,15 @@
             "description": "Identifica il genitore"
           },
           "created_at": {
-            "label": "Created At",
+            "label": "Creato il",
             "description": null
           },
           "updated_at": {
-            "label": "Updated At",
+            "label": "Aggiornato il",
             "description": null
           },
           "deleated_at": {
-            "label": "Deleted At",
+            "label": "Eliminato il",
             "description": null
           }
         }

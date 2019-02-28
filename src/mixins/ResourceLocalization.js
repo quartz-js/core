@@ -9,7 +9,8 @@ export var ResourceLocalization = {
       return this.$t(this.getLocalizationPrefixData() + resource.name + '.name')
     },
     getResourceDescription(resource) {
-      return this.$t(this.getLocalizationPrefixData() + resource.name + '.description')
+      return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor."
+      // return this.$t(this.getLocalizationPrefixData() + resource.name + '.description')
     },
     getLocalizationKeyAttribute (resource, attribute, suffix) {
       return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.getName() + suffix;

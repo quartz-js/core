@@ -5,6 +5,7 @@
       "system": "Help yourself with these tools"
     },
     "core": {
+      "no-information": "No information available",
       "yes": "Yes",
       "no": "No",
       "back": "Back",

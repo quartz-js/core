@@ -9,8 +9,7 @@
             {{ this.getResourceTitle(config) }}
           </h2>
           <p class='caption font-weight-thin'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor.
-            <!--{{ this.getResourceDescription(config) }}-->
+            {{ this.getResourceDescription(config) }}
           </p>
         </div>
       </v-layout>
