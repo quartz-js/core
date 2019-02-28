@@ -89,6 +89,11 @@
               </slot>
               <td>
                 <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
+
+                  <div v-for="(action, key) in config.actions.icon">
+                    <component v-bind:is="action" :resource="props.item" :config="config" />
+                  </div>
+                  
                   <remove :resource="props.item" :config="config"/>
                   <slot name="actions" :resource="props.item"></slot>
                   <v-btn class='ma-0 mx-1' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
@@ -216,10 +221,10 @@ export default {
     }
 
     if (!cols || cols.length === 0 || cols[0].label) {
-      cols = this.listable;
+      cols = this.listable.slice(0, 4);
     }
 
-    this.cols = cols.slice(0, 4);
+    this.cols = cols;
   },
   created () {
     this.config.ini();
