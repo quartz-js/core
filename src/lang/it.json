@@ -1,12 +1,15 @@
 {
   "$quartz": {
     "tags": {
-      "data": "Application",
-      "system": "Help yourself with these tools"
+      "data": "Applicazione",
+      "system": "Sfrutta questi strumenti per agevolare il tuo lavoro"
     },
     "core": {
       "yes": "Sì",
       "no": "No",
+      "back": "Indietro",
+      "settings": "Impostazioni",
+      "overview": "Sommario",
       "create": "Crea",
       "search": "Ricerca",
       "settings": "Impostazioni",

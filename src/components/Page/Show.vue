@@ -2,7 +2,7 @@
   <div v-if="data">
     <slot :resource="data" name="breadcrumb">
       <v-card class='mt-4' flat>
-        <router-link :to="config.getRouteIndex(data)">Back</router-link>
+        <router-link :to="config.getRouteIndex(data)">{{ $t('$quartz.core.back') }}</router-link>
       </v-card>
     </slot>
     <v-card class="resource-card pa-3 mt-4" >
@@ -39,7 +39,7 @@
     
     <v-tabs class='my-2'>
       <slot :resource="data" name="tabs" :config="config">
-        <v-tab>Overview</v-tab>
+        <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
         <v-tab-item :transition="false" :reverse-transition="false">
           <slot :resource="data" name="body"></slot>
         </v-tab-item>

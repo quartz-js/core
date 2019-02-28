@@ -7,6 +7,9 @@
     "core": {
       "yes": "Yes",
       "no": "No",
+      "back": "Back",
+      "settings": "Settings",
+      "overview": "Overview",
       "create": "Create",
       "search": "Search",
       "search-placeholder": "Write your query (e.g. 'id = 1')",

@@ -14,8 +14,8 @@
             <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
           </div>
           <div class='content text-xs-right mt-5'>
-            <v-btn @click="drawer = false">Cancel</v-btn>
-            <v-btn @click="save()" color="primary" :loading="loading" :disabled="loading">Save</v-btn>
+            <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
+            <v-btn @click="save()" color="primary" :loading="loading" :disabled="loading">{{ $t('$quartz.core.save') }}</v-btn>
           </div>
         </v-navigation-drawer>
       </slot>
