@@ -58,7 +58,7 @@
                 <th
                   v-for="header in props.headers"
                   :key="header.text"
-                   class="text-xs-left"
+                   class="text-xs-left cell"
                   :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
                   @click="changeSort(header.value)"
                 >
@@ -83,7 +83,7 @@
                 ></v-checkbox>
               </td>
               <slot name="row" :resource="props.item" :config="config">
-                <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index">
+                <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index" class="cell">
                   {{ attribute.extractReadableValue(props.item) }}
                 </td>
               </slot>
@@ -204,7 +204,7 @@ export default {
     }
   },
   mounted: function () {
-
+    console.log('Mounted once...');
     this.load();
     
     var cols = [];
@@ -219,7 +219,7 @@ export default {
       cols = this.listable;
     }
 
-    this.cols = cols;
+    this.cols = cols.slice(0, 4);
   },
   created () {
     this.config.ini();
@@ -295,7 +295,9 @@ export default {
 
       push[this.config.name] = this.encodeParams(this.paramsToUrl());
 
-      this.$router.push({query: push});
+      window.history.pushState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
+
+      //this.$router.replace({query: push});
     },
     filterPaginationUrl(pagination) {
       return _.pick(pagination, ['sortBy', 'descending', 'page', 'rowsPerPage']);
@@ -315,6 +317,12 @@ export default {
         return;
       }
 
+      console.log('---------');
+      console.log(this.config.name);
+      console.log(this.params);
+      console.log(force);
+      console.log(params);
+
       this.params = params;
 
       this.loading = true;
@@ -331,23 +339,28 @@ export default {
         var body = response.body;
 
         return this.config.loadResources(response.body.data).then((r) => {
-          this.loading = false;
           body.data = r;
           this.response = body;
           this.updateUrl();
+          this.loading = false;
         })
 
       }).catch(response => {
+        console.error(response)
+
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;
         }
         
         this.pagination.totalPages = 0;
         this.pagination.page = 1;
-        this.response = response.body;
+
+        if (response.body) {
+          this.response = response.body;
+        }
+
         this.response.data = [];
         this.loading = false;
-        
       });
     },
 
@@ -406,5 +419,13 @@ export default {
 <style scoped>
   .search {
     padding-top:0;
+  }
+
+  .cell {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    padding: 0 12px !important;
   }
 </style>
