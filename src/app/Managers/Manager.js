@@ -9,6 +9,11 @@ export class Manager {
     this.update = true;
     this.remove = true;
     this.show = true;
+
+    this.actions = {
+      basic: [],
+      icon: []
+    }
     
     if (!this.name) {
       this.name = this.title;
@@ -128,6 +133,10 @@ export class Manager {
     for (var i in params) {
       this[i] = params[i];
     }
+  }
+
+  addAction(type, component) {
+    this.actions[type].push(component)
   }
 
   addAttribute (attribute) {
