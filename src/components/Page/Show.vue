@@ -68,6 +68,7 @@ export default {
   ],
   created() {
     this.loadDataByUrl();
+    this.listenResourceEvents();
   },
 }
 </script>
