@@ -102,17 +102,16 @@ export default {
     },
     drawer: function (val) {
       if (!val) {
-        
-        var dt = JSON.stringify(this.data);
+
+        if (this.loading) {
+          return;
+        }
 
         this.resetData();
 
-        //if (dt !== JSON.stringify(this.data)) {
-
-          this.$emit('update', this.data);
-          bus.$emit(this.config.resourceEvent("updated"), this.data);
-        
-        // }
+        this.$emit('update', this.data);
+        bus.$emit(this.config.resourceEvent("updated"), this.data);
+          
       }
     }
   },
@@ -132,7 +131,6 @@ export default {
         this.errors = [];
         this.drawer = false;
       }).catch(response => {
-        console.log(response);
         this.errors = response.body.errors || response.body.message
       }).finally(response => {
         this.loading = false;
