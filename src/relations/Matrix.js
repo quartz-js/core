@@ -191,7 +191,7 @@ export class Matrix extends Base {
   load (resources) {
 
     var ids = resources.filter(resource => {
-      return resource.id
+      return resource.id && !resource.__booted; 
     }).map(resource => { 
       return resource.id 
     });
