@@ -15,10 +15,10 @@ import { ToggleButton } from 'vue-js-toggle-button'
 
 export default {
   components: {
-    ToggleButton,
-    ResourceLocalization
+    ToggleButton
   },
   mixins: [
+    ResourceLocalization,
     AttributePreMount
   ],
   props: {

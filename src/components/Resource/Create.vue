@@ -2,7 +2,7 @@
   <div v-if="internalConfig.create === true" class="create">
     <div v-if="type === 'button-navigator'">
       <slot name="activator" v-if="activator">
-        <v-btn color="primary" @click="drawer = true">{{ $t('$quartz.core.create') }}</v-btn>
+        <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</v-btn>
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawable" fixed temporary app right width='1200'>
@@ -66,6 +66,10 @@ export default {
   props: {
     labelCreate: {
       default: null
+    },
+    activatorType: {
+      type: String,
+      default: "btn"
     },
     activator: {
       type: Boolean,

@@ -2,7 +2,8 @@
   <div v-if="data !== 0 && data !== null && config.update === true">
     <div v-if="type === 'button-navigator'"  style='display:inline-block'>
       <slot name="activator" :drawer="drawer">
-        <v-btn small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>edit</v-icon></v-btn>
+        <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.edit') }}</v-btn>
+        <v-btn v-if="activatorType === 'icon'" small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>edit</v-icon></v-btn>
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawer" fixed temporary app right width='1200'>
@@ -65,6 +66,10 @@ export default {
     activator: {
       type: Boolean,
       default: true
+    },
+    activatorType: {
+      type: String,
+      default: "icon"
     },
     type: {
       type: String,

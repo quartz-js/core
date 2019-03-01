@@ -22,6 +22,7 @@ export class Manager {
     this.rowEnabled = (resource) => {
       return undefined;
     }
+
     this.ini = () => {
       
     }
@@ -124,7 +125,7 @@ export class Manager {
 
     this.getListableAttributes = function() {
       return this.attributes.filter((attribute) => {
-        return attribute.listable;
+        return attribute.listable && attribute.fixed() === undefined
       }).map((attribute) => {
         return attribute.getName()
       });

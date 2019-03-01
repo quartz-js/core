@@ -18,7 +18,6 @@ module.exports = {
     ProviderLoader: require('./app/Providers/ProviderLoader').ProviderLoader,
     ServiceProvider: require('./app/Providers/ServiceProvider').ServiceProvider,
     QuartzServiceProvider: require('./app/Providers/QuartzServiceProvider').QuartzServiceProvider,
-    ResourceConfig: require('./resources/ResourceConfig').ResourceConfig,
     Manager: require('./app/Managers/Manager').Manager,
     Helper: require('./app/Helper').Helper,
     ResourceApi: require('./api/ResourceApi').ResourceApi,

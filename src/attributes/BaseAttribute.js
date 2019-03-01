@@ -214,6 +214,11 @@ export class BaseAttribute {
    * @return mixed
    */
   injectValue (resource, value) {
+
+    if (!resource) {
+      return;
+    }
+
     return this.injector(resource, value);
   }
 
