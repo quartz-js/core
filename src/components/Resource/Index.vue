@@ -168,6 +168,7 @@ export default {
         totalPages: 0,
         page: 1
       },
+      listable: [],
       selected: [],
       showRemoveSelectedDialog: false,
       settingsActive: false,
@@ -233,7 +234,12 @@ export default {
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
 
+
+    console.log(this.config.getListableAttributes());
+    debugger;
+
     this.listable = this.config.getListableAttributes();
+
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);
