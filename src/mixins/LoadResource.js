@@ -32,7 +32,7 @@ export var LoadResource = {
       this.data = JSON.parse(JSON.stringify(object));
     },
     loadDataById (id) {
-      this.config.manager.show(id).then(response => {
+      return this.config.manager.show(id).then(response => {
         var resource = response.body;
         this.config.loadResources([resource.data]).then((data) => {
           this.setData(data[0]);
@@ -49,14 +49,14 @@ export var LoadResource = {
     loadDataByProps () {
 
       if (this.resource) {
-        this.config.loadResources([this.resource]).then((data) => {
+        return this.config.loadResources([this.resource]).then((data) => {
           this.setData(data[0]);
         }).catch(response => {
           console.log(response)
           this.setData(null);
         });
       } else if (this.id) {
-        this.loadDataById(this.id);
+        return this.loadDataById(this.id);
       } else {
         throw new Error("Nor resource object or id has been sent");
       }

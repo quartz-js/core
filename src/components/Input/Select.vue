@@ -16,30 +16,68 @@
 </template>
 <script>
 
+import { SelectAttribute } from '../../attributes/SelectAttribute'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
+import { AttributePreMount } from '../../mixins/AttributePreMount'
 
 export default {
   mixins: [
-    ResourceLocalization
+    ResourceLocalization,
+    AttributePreMount,
   ],
-  props: ['value', 'attribute', 'error', 'errors'],
+  props: {
+    placeholder: {
+
+    },
+    label: {
+      default: undefined
+    },
+    hint: {
+      default: undefined
+    },
+    value: {
+      required: true,
+    },
+    attribute: {
+      type: SelectAttribute,
+      required: true
+    },
+    errors: {
+      required: true
+    }
+  },
   data: function () {
     return {
       rawValue: null
     }
   },
-  created () {
-
-    var option = this.attribute.extractValue(this.value);
-
-    this.rawValue = null;
-
-    if (option) {
-      this.query = option.label;
-      this.rawValue = option.value;
+  watch: {
+    value: function (){
+      this.reloadRawValue();
     }
   },
+  created () {
+
+
+    if (!this.canMount()) {
+      return;
+    }
+    
+    this.reloadRawValue();
+
+  },
   methods: {
+    reloadRawValue() {
+      var option = this.attribute.extractValue(this.value);
+
+      this.rawValue = null;
+
+      if (option) {
+        this.query = option.label;
+        this.rawValue = option.value;
+      }
+
+    },
     onChange: function (oldVal, newVal) {
 
       var option = this.attribute.getOptionByValue(this.rawValue);

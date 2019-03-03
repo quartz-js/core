@@ -81,7 +81,11 @@ export default {
   },
   created() {
     this.config.ini();
-    this.loadDataByProps();
+    this.loadDataByProps().then((data) => {
+      this.getHooks('OnChange', {
+        resource: this.data
+      });
+    })
 
     if (!this.activator) {
       this.drawer = true;
