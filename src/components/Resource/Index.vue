@@ -234,10 +234,6 @@ export default {
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
 
-
-    console.log(this.config.getListableAttributes());
-    debugger;
-
     this.listable = this.config.getListableAttributes();
 
 
