@@ -67,7 +67,9 @@ export var LoadResource = {
     listenResourceEvents() {
       bus.$on(this.config.resourceEvent("updated"), data => {
         if (data.id === this.data.id) {
-          this.data = data;
+          this.config.loadResources([data]).then((data) => {
+            this.setData(data[0]);
+          })
         }
       });
       bus.$on(this.config.resourceEvent("removed"), data => {
