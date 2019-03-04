@@ -8,6 +8,7 @@ export class BaseAttribute {
     this.name = name;
     this.label = name;
     this.column = name;
+    this.priority = 1;
     this.default = () => {
       return null;
     };

@@ -4,6 +4,8 @@ module.exports = {
         BelongsTo: require('./attributes/BelongsToAttribute').BelongsToAttribute,
         DateTime: require('./attributes/DateTimeAttribute').DateTimeAttribute,
         Id: require('./attributes/IdAttribute').IdAttribute,
+        Uuid: require('./attributes/UuidAttribute').UuidAttribute,
+        LongText: require('./attributes/LongTextAttribute').LongTextAttribute,
         Image: require('./attributes/ImageAttribute').ImageAttribute,
         Select: require('./attributes/SelectAttribute').SelectAttribute,
         Switch: require('./attributes/SwitchAttribute').SwitchAttribute,

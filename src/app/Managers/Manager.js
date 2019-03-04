@@ -126,9 +126,7 @@ export class Manager {
     this.getListableAttributes = function() {
       return this.attributes.filter((attribute) => {
         return attribute.listable && attribute.fixed() === undefined
-      }).map((attribute) => {
-        return attribute.getName()
-      });
+      })
     }
 
     for (var i in params) {

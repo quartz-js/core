@@ -7,5 +7,6 @@ export class DateTimeAttribute extends BaseAttribute {
     this.mutator = function (value) {
       return value ? moment(value).format('DD-MM-YYYY[,] HH:mm:ss') : null
     };
+    this.priority = 0;
   }
 }

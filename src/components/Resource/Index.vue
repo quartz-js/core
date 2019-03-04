@@ -6,7 +6,7 @@
           {{ $t('$quartz.core.settings') }}
         </v-card-title>
         <v-card-text>
-          <v-select :items="listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint
+          <v-select :items="listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint item-text="label"
           ></v-select>
         </v-card-text>
       </v-card>
@@ -46,7 +46,7 @@
           <template slot="headers" slot-scope="props">
             <slot name="head" :config="config">
               <tr>
-                <th>
+                <th width='80'>
                   <v-checkbox
                     :input-value="props.all"
                     :indeterminate="props.indeterminate"
@@ -83,7 +83,7 @@
                 ></v-checkbox>
               </td>
               <slot name="row" :resource="props.item" :config="config">
-                <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index" class="cell">
+                <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index" class="cell" :width="getAttributeWidth(attribute)">
                   {{ attribute.extractReadableValue(props.item) }}
                 </td>
               </slot>
@@ -222,7 +222,11 @@ export default {
     }
 
     if (!cols || cols.length === 0 || cols[0].label) {
-      cols = this.listable.slice(0, 4);
+      var cols = this.config.getListableAttributes().filter((attribute) => {
+        return attribute.priority > 0;
+      }).map((attribute) => {
+        return attribute.name
+      })
     }
 
     this.cols = cols;
@@ -234,8 +238,7 @@ export default {
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
 
-    this.listable = this.config.getListableAttributes();
-
+    this.listable = this.selectableListableAttributes(this.config.getListableAttributes());
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);
@@ -250,19 +253,23 @@ export default {
     });
   },
   methods: {
+    selectableListableAttributes(arr) {
+      return arr.map((attribute) => {
+        return {
+          value: attribute.name,
+          label: this.getAttributeLabel(attribute)
+        }
+      })
+    },
     defineDefaultValue() {
     },
     countColumns () {
-
       return this.attributes.filter((attribute) => {
         return this.showAttribute(attribute)
       }).length+2;
     },
-    isAttributeListable: function (attribute) {
-      return this.listable.indexOf(attribute.name) !== -1;
-    },
     showAttribute: function (attribute) {
-      return this.isAttributeListable(attribute) && this.cols.find(col => { return col === attribute.name });
+      return this.cols.find(col => { return col === attribute.name });
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {
@@ -386,7 +393,14 @@ export default {
         this.$notify(response.message, 'error')
       });*/
     },
+    getAttributeWidth(attribute) {
 
+      if (attribute.constructor.name === "IdAttribute") {
+        return 80
+      }
+
+      return undefined
+    },
     toggleAll () {
       this.selected = this.selected.length ? [] : this.data.slice();
     },
