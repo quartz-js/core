@@ -49,6 +49,11 @@ export var LoadResource = {
     loadDataByProps () {
 
       if (this.resource) {
+
+        if (JSON.stringify(this.resource) === JSON.stringify(this.data)) {
+          return;
+        }
+
         return this.config.loadResources([this.resource]).then((data) => {
           this.setData(data[0]);
         }).catch(response => {
