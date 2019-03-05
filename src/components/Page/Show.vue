@@ -15,7 +15,7 @@
               {{ this.getResourceTitle(config) }} - #{{ data.id }} {{ data.name }}
             </h2>
             <v-spacer></v-spacer>
-            <remove :resource="data" :config="config" button='normal'/>
+            <remove :resource="data" :config="config" button='normal' @removed="$router.push(config.getRouteIndex(data))"/>
             <slot :resource="data" :config="config" name="actions"/>
             <v-menu>
               <v-btn icon flat small slot="activator"  class='ma-0'  color="grey">
