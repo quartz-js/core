@@ -25,9 +25,11 @@
     </div>
     <div v-if="type === 'direct'">
       <div class="text-xs-left">
-        <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
-        <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
-        <v-divider class='mb-45'></v-divider>
+        <div v-if="details">
+          <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}sss</h3>
+          <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
+          <v-divider class='mb-45'></v-divider>
+        </div>
         <errors :errors='errors' />
         <div>
           <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
@@ -66,6 +68,10 @@ export default {
   props: {
     labelCreate: {
       default: null
+    },
+    details: {
+      type: Boolean,
+      default: true
     },
     activatorType: {
       type: String,

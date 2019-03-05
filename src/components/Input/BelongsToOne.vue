@@ -1,8 +1,8 @@
 <template>
   <div v-if="show && attribute && !loading" class="mt-4">
-    <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct'/>
+    <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct' v-bind="$attrs"/>
 
-    <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct'/>
+    <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct' v-bind="$attrs"/>
       
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
