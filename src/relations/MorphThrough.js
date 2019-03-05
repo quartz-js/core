@@ -127,6 +127,10 @@ export class MorphThrough extends Base {
             return includedResource.id == b_resource[`${this.name}_id`]
           })
 
+          if (!includedResource) {
+            return null;
+          }
+
           includedResource.attributes.id = includedResource.id;
           return includedResource.attributes;
         })
