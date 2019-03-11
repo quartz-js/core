@@ -17,7 +17,7 @@
             </div>
             <div class='text-xs-right mt-5'>
               <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
-              <v-btn color="primary" @click="create()">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+              <v-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
             </div>
           </div>
          </v-navigation-drawer>
@@ -43,7 +43,7 @@
           <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
         </div>
         <div class='text-xs-right'>
-          <v-btn color="primary" @click="create()">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+          <v-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
         </div>
       </div>
     </div>
@@ -145,6 +145,12 @@ export default {
   },
   methods: {
     create () {
+      
+      if (this.loading) {
+        return true;
+      }
+
+      this.loading = true;
       this.errors = [];
 
       var resource = this.data; // Remove all null values.
@@ -156,6 +162,8 @@ export default {
         this.drawer = false;
       }).catch(response => {
         this.errors = response.body.errors
+      }).finally(response => {
+        this.loading = false;
       });
     },
 
