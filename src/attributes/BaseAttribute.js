@@ -2,8 +2,10 @@ import lodash from 'lodash';
 var clone = require('clone');
 
 export class BaseAttribute {
+  required = false;
+  
   constructor (name, options) {
-
+    this.required = false;
     this.hooks = [];
     this.name = name;
     this.label = name;
@@ -66,7 +68,7 @@ export class BaseAttribute {
 
     return d();
   }
-
+  
   addHook($event, callback) {
     if (typeof this.hooks[$event] === "undefined") {
       this.hooks[$event] = [];
@@ -238,6 +240,26 @@ export class BaseAttribute {
   }
   clone () {
     return clone(this);
+  }
+
+  getIdsFromResources (resources) {
+
+    return resources.filter(resource => { 
+      return resource.id; 
+    }).map(resource => { 
+      return resource.id 
+    });
+
+  }
+
+  getIdsNotBootedFromResources (resources) {
+
+    return resources.filter(resource => { 
+      return resource.id && !resource.__booted; 
+    }).map(resource => { 
+      return resource.id 
+    });
+
   }
 
 }
