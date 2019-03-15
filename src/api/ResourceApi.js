@@ -40,6 +40,22 @@ export class ResourceApi {
     return this;
   }
 
+  parseData (data, response) {
+
+    if (data.relationships) {
+      _.map(data.relationships, (relationship) => {
+
+        data.attributes[relationship.data.type] = this.parseData(response.body.included.find((include) => {
+          return include.type === relationship.data.type && include.id === relationship.data.id
+        }), response);
+      })
+    }
+
+    data = _.merge({id: data.id}, data.attributes);
+
+    return data;
+  }
+
   /**
    * Parse
    *
@@ -49,20 +65,19 @@ export class ResourceApi {
    */
   parse (response) {
 
-      var body = response.body;
+    var body = response.body;
 
-
-      if (Array.isArray(body.data)) {
-        for (var i in body.data) {
-          body.data[i] = _.merge({id: body.data[i].id}, body.data[i].attributes);
-        }
-      } else if (_.isObject(body.data)) {
-          body.data = _.merge({id: body.data.id}, body.data.attributes);
+    if (Array.isArray(body.data)) {
+      for (let i in body.data) {
+        body.data[i] = this.parseData(body.data[i], response);
       }
+    } else if (_.isObject(body.data)) {
+        body.data = this.parseData(body.data, response);
+    }
 
-      response.body = body;
+    response.body = body;
 
-      return response;
+    return response;
   }
 
   post (url, body, options) {
@@ -78,7 +93,7 @@ export class ResourceApi {
    */
   index (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.get(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+    return Vue.http.get(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -90,7 +105,7 @@ export class ResourceApi {
    */
   store (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.put(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+    return Vue.http.put(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -101,7 +116,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   create (params) {
-    return Vue.http.post(this.getFullUrl(), this.getFullParams(params), { headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+    return Vue.http.post(this.getFullUrl(), this.getFullParams(params), { headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -113,7 +128,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   show (id, params) {
-    return Vue.http.get(this.getFullUrl() + '/' + id, { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+    return Vue.http.get(this.getFullUrl() + '/' + id, { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -125,7 +140,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   update (id, params) {
-    return Vue.http.put(this.getFullUrl() + '/' + id, this.getFullParams(params), { headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+    return Vue.http.put(this.getFullUrl() + '/' + id, this.getFullParams(params), { headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -148,6 +163,6 @@ export class ResourceApi {
    */
   erase (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.delete(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then(this.parse);
+    return Vue.http.delete(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
   }
 };
