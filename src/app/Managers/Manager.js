@@ -202,8 +202,6 @@ export class Manager {
         return value !== null
       })
 
-      console.log(params);
-
       return this.manager.create(params);
     }).then(response => {
 
