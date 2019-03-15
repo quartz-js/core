@@ -1,20 +1,24 @@
 <template>
   <div v-if="show && attribute && !loading" class="mt-4">
-    <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct' v-bind="$attrs"/>
-
-    <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct' v-bind="$attrs"/>
-      
-    <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
+    <div v-if="!display && (!rawValue || !rawValue.id)">
+      <a href="javascript:;" @click="display = !display">Display {{ this.getResourceTitle(attributeConfig()) }}</a>
+    </div>
+    <div v-else>
+      <component v-if="!rawValue && components.create" v-bind:is="components.create" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct' v-bind="$attrs"/>
+      <component v-if="rawValue && components.update" v-bind:is="components.update" :config="attributeConfig()" :hooks="prepareHooks()" :resource="rawValue" flat type='direct' v-bind="$attrs"/>
+    </div>
   </div>
 </template>
 <script>
 
 import { BelongsToAttribute } from '../../attributes/BelongsToAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 export default {
   mixins: [
-    AttributePreMount
+    AttributePreMount,
+    ResourceLocalization
   ],
   props: {
     value: {
@@ -32,6 +36,7 @@ export default {
     return {
       loading: false,
       rawValue: null,
+      display: false,
       components: {
         create: null,
         update: null
@@ -44,8 +49,9 @@ export default {
       return;
     }
 
-    var val = this.attribute.extractValue(this.value);
+    this.display = this.attribute.required
 
+    var val = this.attribute.extractValue(this.value);
 
     if (val === null && this.value[this.name] !== null) {
     

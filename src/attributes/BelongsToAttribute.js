@@ -1,6 +1,7 @@
 import { BaseAttribute } from './BaseAttribute'
 
 export class BelongsToAttribute extends BaseAttribute {
+
   constructor (name, api, options) {
     super(name, options);
 
@@ -8,6 +9,7 @@ export class BelongsToAttribute extends BaseAttribute {
     this.query = (key) => {
       return "name ct '" + key + "'";
     };
+
     this.mutator = (value) => {
         return value ? this.getLabelByResource(value) : null;
     };
@@ -28,10 +30,20 @@ export class BelongsToAttribute extends BaseAttribute {
       return resource && typeof resource[this.getRelationName()] !== 'undefined' ? resource[this.getRelationName()] : null;
     };
   }
+  compareDefault (resource, value) {
+    let t = JSON.parse(JSON.stringify(resource));
+    this.injectDefault(t);
+    
+    return JSON.stringify(this.extractor(t)) === JSON.stringify(value);
+  }
   addBeforeCreateHook () {
     this.addHook('BeforeCreate', (data) => {
 
       let finalValue = this.extractor(data.resource);
+
+      if (this.compareDefault(data.resource, finalValue) && this.required === false) {
+        return Promise.resolve(data)
+      }
 
       if (!finalValue || !finalValue.id) {
         return this.resourceConfig().createResource(finalValue)
@@ -43,6 +55,7 @@ export class BelongsToAttribute extends BaseAttribute {
             return data
           })
       } else {
+
         return this.resourceConfig().updateResource(finalValue.id, finalValue)
           .then(response => {
 
@@ -166,6 +179,11 @@ export class BelongsToAttribute extends BaseAttribute {
    */
   load (resources) {
     var ids = resources.filter(resource => { 
+
+      if (!resource[this.column]) {
+        this.injectDefault(resource)
+      }
+
       return resource[this.column] && !resource.__booted; 
     }).map(resource => { return resource[this.column] });
 

@@ -161,7 +161,6 @@ export class HasOneMorph extends MorphThrough {
         return this.storageApi.update(responseR.body.data[0].id, params);
       }
 
-      return Promise.all(promises);
     });
   }
 }

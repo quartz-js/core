@@ -36,8 +36,6 @@
       </div>
 
     </v-layout>
-        
-    <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
 <script>

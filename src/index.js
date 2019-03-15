@@ -24,6 +24,7 @@ module.exports = {
     Helper: require('./app/Helper').Helper,
     ResourceApi: require('./api/ResourceApi').ResourceApi,
     container: require('./services/container').container,
+    AttributePreMount: require('./mixins/AttributePreMount').AttributePreMount,
     mixins: {
         utils: require('./mixins/utils').utils,
     },

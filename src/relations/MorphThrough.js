@@ -103,15 +103,12 @@ export class MorphThrough extends Base {
    */
   load (resources) {
 
-    var ids = resources.filter(resource => { 
-      return resource.id && !resource.__booted; 
-    }).map(resource => { 
-      return resource.id 
-    });
+    var ids = this.getIdsNotBootedFromResources(resources)
 
     if (ids.length === 0) {
       return Promise.resolve(resources);
     }
+
     return this.storageApi.index({
       query: `${this.morphName}_type = '${this.morphType}' and ${this.morphName}_id in (${ids.join(',')})`, 
       show: 999,

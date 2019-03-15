@@ -13,7 +13,7 @@ export var ResourceLocalization = {
       // return this.$t(this.getLocalizationPrefixData() + resource.name + '.description')
     },
     getLocalizationKeyAttribute (resource, attribute, suffix) {
-      return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.getName() + suffix;
+      return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.getLabel() + suffix;
     },
     getAttributeLabel(attribute) {
 
@@ -29,7 +29,7 @@ export var ResourceLocalization = {
         return this.$t(this.getLocalizationPrefixData() + attribute.resourceConfig().name + '.name')
       }
 
-      return attribute.getName();
+      return attribute.getLabel();
     },
     getAttributeDescription(attribute) {
 
