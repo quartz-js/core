@@ -277,4 +277,16 @@ export class Manager {
       });
     }, Promise.resolve(data))
   }
+
+  setAsChild(resource, attributeName) {
+    this.getFinalQuery = (query) => {
+      return query ? `${attributeName} eq ${resource.id} and (${query})` : `${attributeName} eq ${resource.id}`;
+    };
+        
+    this.getAttribute(attributeName).set('fixed', (r) => {
+      return resource;
+    })
+
+    return this;
+  }
 };
