@@ -22,43 +22,6 @@ export class Matrix extends Base {
     }
   }
 
-  /**
-   * @param {string} component
-   *
-   * @return this
-   */
-  setCreateComponent(component) {
-    this.createComponent = component;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getCreateComponent() {
-    return this.createComponent;
-  }
-
-  /**
-   * @param {string} component
-   *
-   * @return this
-   */
-  setUpdateComponent(component) {
-    this.updateComponent = component;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getUpdateComponent() {
-    return this.updateComponent;
-  }
-
-
 
   /**
    * @param {string} name
@@ -78,37 +41,7 @@ export class Matrix extends Base {
     return this.api;
   }
 
-  /**
-   * @param {callable} query
-   *
-   * @return this
-   */
-  setQuery (query) {
-    this.query = query;
 
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getQuery () {
-    return this.query;
-  }
-
-  /**
-   * @param {string} key
-   * @param {object} resource
-   *
-   * @return this
-   */
-  executeQuery (key, resource) {
-    return this.query(key, resource);
-  }
-
-  getLabelByResource (resource) {
-    return resource.name;
-  }
 
   explode (arr) {
     if (arr.length <= 1) {

@@ -197,7 +197,7 @@ export class Manager {
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
 
       var params = data.resource;
-
+      
       params = _.pickBy(params, (value) => {
         return value !== null
       })

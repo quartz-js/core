@@ -5,7 +5,8 @@
           :loading="loading"
           :items="items"
           item-text="label"
-          :label="attribute.getLabel()"
+          :label="label !== undefined ? label : getAttributeLabel(attribute)"
+          :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
           v-model="rawValue"
           @input="onChange"
           :search-input="search"
@@ -26,8 +27,6 @@
     <div >
       <v-chip  color="primary" text-color="white" v-for="item in rawValue" close @input="remove(item)"> {{ item.id }} {{ item.label }} </v-chip>
     </div>
-        
-    <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>
 </template>
 <script>
@@ -35,10 +34,12 @@
 import _ from 'lodash'
 import { MorphThrough } from '../../relations/MorphThrough'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
+import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 export default {
   mixins: [
-    AttributePreMount
+    AttributePreMount,
+    ResourceLocalization
   ],
   props: {
     value: {
@@ -50,6 +51,12 @@ export default {
     },
     errors: {
       required: true
+    },
+    label: {
+      default: undefined
+    },
+    hint: {
+      default: undefined
     }
   },
   data: function () {
@@ -136,11 +143,11 @@ export default {
     querySelections (v) {
       this.loading = true;
 
-      this.lastRawValue = this.rawValue;
+      this.lastRawValue = this.rawValue
 
-      v = this.attribute.executeQuery(v ? v : '', this.value);
+      console.log(this.value);
 
-      this.attribute.indexerApi.index({show: 5, query: v})
+      this.attribute.indexerApi.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
         .then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);

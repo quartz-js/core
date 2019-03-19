@@ -1,6 +1,6 @@
-import { BaseAttribute } from './BaseAttribute'
+import { Base } from '../relations/Base'
 
-export class BelongsToAttribute extends BaseAttribute {
+export class BelongsToAttribute extends Base {
 
   constructor (name, api, options) {
     super(name, options);
@@ -86,93 +86,6 @@ export class BelongsToAttribute extends BaseAttribute {
     this.injectValue(data, def)
   }
 
-  /**
-   * @param {string} component
-   *
-   * @return this
-   */
-  setCreateComponent(component) {
-    this.createComponent = component;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getCreateComponent() {
-    return this.createComponent;
-  }
-
-  /**
-   * @param {string} component
-   *
-   * @return this
-   */
-  setUpdateComponent(component) {
-    this.updateComponent = component;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getUpdateComponent() {
-    return this.updateComponent;
-  }
-
-
-
-  /**
-   * @param {string} name
-   *
-   * @return this
-   */
-  setApi (api) {
-    this.api = api;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getApi () {
-    return this.api;
-  }
-
-  /**
-   * @param {callable} query
-   *
-   * @return this
-   */
-  setQuery (query) {
-    this.query = query;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getQuery () {
-    return this.query;
-  }
-
-  /**
-   * @param {string} key
-   * @param {object} resource
-   *
-   * @return this
-   */
-  executeQuery (key, resource) {
-    return this.query(key, resource);
-  }
-
-  getLabelByResource (resource) {
-    return resource.name;
-  }
 
   /**
    * @return {Callable}

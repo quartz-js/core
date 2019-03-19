@@ -151,9 +151,7 @@ export default {
 
       this.lastRawValue = this.rawValue;
 
-      v = this.attribute.executeQuery(v ? v : '', this.value);
-
-      this.attribute.api.index({show: 5, query: v})
+      this.attribute.api.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
         .then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);
