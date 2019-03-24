@@ -16,8 +16,9 @@
             </h2>
             <v-spacer></v-spacer>
             <remove :resource="data" :config="config" button='normal' @removed="$router.push(config.getRouteIndex(data))"/>
+
             <slot :resource="data" :config="config" name="actions"/>
-            <v-menu>
+            <v-menu v-if="!!$scopedSlots['actions-extra']">
               <v-btn icon flat small slot="activator"  class='ma-0'  color="grey">
                 <v-icon>more_vert</v-icon>
               </v-btn>
@@ -69,6 +70,6 @@ export default {
   created() {
     this.loadDataByUrl();
     this.listenResourceEvents();
-  },
+  }
 }
 </script>
