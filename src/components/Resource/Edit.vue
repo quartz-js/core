@@ -7,7 +7,7 @@
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawer" fixed temporary app right width='1200'>
-          <div class="content"  v-if="drawer">
+          <div class="content text-xs-left" v-if="drawer">
             <h3 class='title'>{{ this.getResourceTitle(config) }} {{ data.id ? " - #" + data.id : null }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
             <v-divider class='mb-5'></v-divider>
