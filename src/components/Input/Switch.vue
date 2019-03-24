@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4">
+  <div class="mt-4" v-if="show">
     <span>{{ getAttributeLabel(attribute) }}</span>
     <br>
     <toggle-button :value="rawValue" @change="onChange($event)" :height='28' :width="60" :sync="true" color="#1976d2"></toggle-button>
