@@ -1,7 +1,11 @@
 <template>
-  <div class="my-5">
-
-    <v-card class="resource-card pa-3 mb-5">
+  <div>
+    <slot name="breadcrumb">
+      <v-card class='mt-4' flat>
+        <router-link :to="{path: '/'}">{{ $t('$quartz.core.back') }}</router-link>
+      </v-card>
+    </slot>
+    <v-card class="resource-card pa-3 mt-4">
       <v-layout align-start>
         <img :src="config.icon" width='110'>
         <div class='ml-3'>
