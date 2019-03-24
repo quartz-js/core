@@ -5,9 +5,8 @@
         <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</v-btn>
       </slot>
       <slot :resource="data" name="main">
-        <v-navigation-drawer v-model="drawable" fixed temporary app right width='1200'>
-          <div class="content text-xs-left" v-if="drawer">
-
+        <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
+          <div class="content text-xs-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
             <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
             <v-divider class='mb-45'></v-divider>
