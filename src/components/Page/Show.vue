@@ -1,7 +1,7 @@
 <template>
-  <div v-if="data">
+  <div v-if="data" class="px-2">
     <slot :resource="data" name="breadcrumb">
-      <v-card class='mt-4' flat>
+      <v-card class='mt-4 ml-2' flat>
         <router-link :to="config.getRouteIndex(data)">{{ $t('$quartz.core.back') }}</router-link>
       </v-card>
     </slot>
