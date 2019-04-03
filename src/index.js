@@ -22,6 +22,8 @@ module.exports = {
         Switch: require('./attributes/SwitchAttribute').SwitchAttribute,
         Url: require('./attributes/UrlAttribute').UrlAttribute,
         File: require('./attributes/FileAttribute').FileAttribute,
+        Email: require('./attributes/EmailAttribute').EmailAttribute,
+        Password: require('./attributes/PasswordAttribute').PasswordAttribute,
     },
     Relations: {
         MorphThrough: require('./relations/MorphThrough').MorphThrough,
