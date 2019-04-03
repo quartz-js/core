@@ -3,6 +3,19 @@ import lodash from 'lodash';
 
 export class ServiceProvider {
 
+  registerComponent(name, options) {
+    container.set('$vue.components', container.get('$vue.components', []).concat([{name: name, options: options}]))
+  }
+
+  loadComponents(vue) {
+
+    console.log(container.get('$vue.components'));
+    
+    container.get('$vue.components').map(component => {
+      vue.component(component.name, component.options);
+    })
+  }
+
   addRoutes(parentName, routes) {
     if (parentName) {
     	var route = container.get('$vue.routes').find((route) => {
