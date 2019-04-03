@@ -1,6 +1,8 @@
 import { BaseAttribute } from '../attributes/BaseAttribute'
 
 export class Base extends BaseAttribute {
+  listable = false;
+  
   constructor (name) {
     super(name, {});
     this.priority = 0;
