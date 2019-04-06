@@ -223,7 +223,7 @@ export default {
 
     if (!cols || cols.length === 0 || cols[0].label) {
       var cols = this.config.getListableAttributes().filter((attribute) => {
-        return attribute.priority > 0;
+        return attribute.required && attribute.fillable;
       }).map((attribute) => {
         return attribute.name
       })
