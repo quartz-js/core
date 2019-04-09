@@ -2,6 +2,7 @@ module.exports = {
     Attributes: {
         Base: require('./attributes/BaseAttribute').BaseAttribute,
         BelongsTo: require('./attributes/BelongsToAttribute').BelongsToAttribute,
+        MorphTo: require('./attributes/MorphToAttribute').MorphToToAttribute,
         DateTime: require('./attributes/DateTimeAttribute').DateTimeAttribute,
         CreatedAt: require('./attributes/CreatedAtAttribute').CreatedAtAttribute,
         UpdatedAt: require('./attributes/UpdatedAtAttribute').UpdatedAtAttribute,
@@ -69,6 +70,7 @@ module.exports = {
         Vue.component("QJson", require('./components/Input/Json').default)
         Vue.component("QSecret", require('./components/Input/Secret').default)
         Vue.component("QSelect", require('./components/Input/Select').default)
+        Vue.component("QMorphTo", require('./components/Input/MorphTo').default)
         Vue.component("QSwitch", require('./components/Input/Switch').default)
         Vue.component("QText", require('./components/Input/Text').default)
         Vue.component("QTextarea", require('./components/Input/Textarea').default)

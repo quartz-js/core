@@ -9,6 +9,7 @@ export class Manager {
     this.update = true;
     this.remove = true;
     this.show = true;
+    this.parserFinalQuery = [];
 
     this.actions = {
       basic: [],
@@ -55,6 +56,10 @@ export class Manager {
     };
 
     this.getFinalQuery = function (query) {
+      this.parserFinalQuery.map(parser => {
+        query = parser(query)
+      })
+
       return query;
     };
 
@@ -107,7 +112,7 @@ export class Manager {
     };
 
     /**
-     * Get attributes by names
+     * Get attributes by namesyay
      *
      * @param {string} name
      *
@@ -141,6 +146,13 @@ export class Manager {
   addAttribute (attribute) {
     this.attributes.push(attribute)
     attribute.manager = () => { return this };
+
+    if (attribute.fixed(null) !== undefined) {
+      console.log(attribute.column);
+      this.parserFinalQuery.push((query) => {
+        return this.mergePartsQuery([`${attribute.column} = '${attribute.fixed(null)}'`, query], 'and');
+      })
+    }
   }
 
   mergePartsQuery(parts, operator) {
@@ -276,17 +288,5 @@ export class Manager {
         return curr(r);
       });
     }, Promise.resolve(data))
-  }
-
-  setAsChild(resource, attributeName) {
-    this.getFinalQuery = (query) => {
-      return query ? `${attributeName} eq ${resource.id} and (${query})` : `${attributeName} eq ${resource.id}`;
-    };
-        
-    this.getAttribute(attributeName).set('fixed', (r) => {
-      return resource;
-    })
-
-    return this;
   }
 };

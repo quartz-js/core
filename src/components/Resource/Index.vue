@@ -94,7 +94,6 @@
                     <component v-bind:is="action" :resource="props.item" :config="config" />
                   </div>
                   
-                  <remove :resource="props.item" :config="config"/>
                   <slot name="actions" :resource="props.item"></slot>
                   <v-btn class='ma-0 mx-1' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
                 </div>

@@ -22,7 +22,7 @@ export default {
     AttributePreMount,
     ResourceLocalization
   ],
-  props: ['resource', 'value', 'error', 'attribute', 'errors'],
+  props: ['resource', 'value', 'attribute', 'errors'],
   mounted() {
 
     if (!this.canMount()) {

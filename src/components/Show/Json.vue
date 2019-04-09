@@ -13,7 +13,7 @@
 import JSONFormatter from 'json-formatter-js'
 
 export default {
-  props: ['value', 'error', 'attribute', 'errors'],
+  props: ['value', 'attribute', 'errors'],
   created () {
     this.rawValue = this.value;
 
