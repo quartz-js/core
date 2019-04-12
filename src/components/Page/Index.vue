@@ -1,9 +1,9 @@
 <template>
   <div class="px-2">
     <slot name="breadcrumb">
-      <v-card class='mt-4 ml-2' flat>
+      <div class='mt-4' flat>
         <router-link :to="{path: '/'}">{{ $t('$quartz.core.back') }}</router-link>
-      </v-card>
+      </div>
     </slot>
     <v-card class="resource-card pa-3 mt-4">
       <v-layout align-start>

@@ -1,8 +1,8 @@
 <template>
   <p v-if="show">
     <label class="label-show">{{ getAttributeLabel(attribute) }}</label>
-    <span v-if="attribute.resourceConfig && attribute.extractValue(resource)">
-      <router-link :to="attribute.resourceConfig().getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value">Show</router-link>
+    <span v-if="attribute.relationManager && attribute.extractValue(resource)">
+      <router-link :to="attribute.relationManager().getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value">Show</router-link>
     </span>
     <span  v-else>
       <span>

@@ -9,8 +9,6 @@ export class ServiceProvider {
 
   loadComponents(vue) {
 
-    console.log(container.get('$vue.components'));
-    
     container.get('$vue.components').map(component => {
       vue.component(component.name, component.options);
     })

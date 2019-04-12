@@ -75,7 +75,7 @@
             "label": "Updated At",
             "description": null
           },
-          "deleated_at": {
+          "deleted_at": {
             "label": "Deleted At",
             "description": null
           }

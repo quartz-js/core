@@ -21,7 +21,7 @@
       </v-layout>
     </v-card>
 
-    <v-card class="resource-card mt-5">
+    <v-card class="resource-card mt-4">
 
 
       <div v-if="showContent">
@@ -209,7 +209,6 @@ export default {
     }
   },
   mounted: function () {
-    console.log('Mounted once...');
     this.load();
     
     var cols = [];
@@ -329,12 +328,6 @@ export default {
       if (!force && _.isEqual(this.params, params)) {
         return;
       }
-
-      console.log('---------');
-      console.log(this.config.name);
-      console.log(this.params);
-      console.log(force);
-      console.log(params);
 
       this.params = params;
 

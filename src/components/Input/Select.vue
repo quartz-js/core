@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4">
+  <div v-if="show" class="mt-4">
     <v-autocomplete
         :items="attribute.options"
         item-text="label"
@@ -57,8 +57,6 @@ export default {
     }
   },
   created () {
-
-
     if (!this.canMount()) {
       return;
     }

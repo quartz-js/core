@@ -2,7 +2,7 @@ module.exports = {
     Attributes: {
         Base: require('./attributes/BaseAttribute').BaseAttribute,
         BelongsTo: require('./attributes/BelongsToAttribute').BelongsToAttribute,
-        MorphTo: require('./attributes/MorphToAttribute').MorphToToAttribute,
+        MorphTo: require('./attributes/MorphToAttribute').MorphToAttribute,
         DateTime: require('./attributes/DateTimeAttribute').DateTimeAttribute,
         CreatedAt: require('./attributes/CreatedAtAttribute').CreatedAtAttribute,
         UpdatedAt: require('./attributes/UpdatedAtAttribute').UpdatedAtAttribute,

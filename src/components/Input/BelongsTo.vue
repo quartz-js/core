@@ -20,15 +20,15 @@
       </v-spacer>
       <div class="pt-2">
         <component 
-          v-if="(!rawValue || !rawValue.id) && components.create" 
-          v-bind:is="components.create" 
+          v-if="(!rawValue || !rawValue.id) && attribute.components.create" 
+          v-bind:is="attribute.components.create" 
           :config="attributeConfig()" 
           activatorType="btn"
         ></component>
 
         <component 
-          v-if="rawValue && rawValue.id && components.update" 
-          v-bind:is="components.update" 
+          v-if="rawValue && rawValue.id && attribute.components.update" 
+          v-bind:is="attribute.components.update" 
           :config="attributeConfig()" 
           :resource="rawValue"
           activatorType="btn"
@@ -72,11 +72,7 @@ export default {
       rawValue: null,
       loading: false,
       search: '',
-      items: [],
-      components: {
-        create: null,
-        update: null
-      }
+      items: []
     }
   },
   mounted () {
@@ -101,15 +97,6 @@ export default {
     } else {
       this.querySelections();
     }
-    if (this.attribute.getCreateComponent()) {
-      this.components.create = this.attribute.getCreateComponent().component;
-
-    }
-
-    if (this.attribute.getUpdateComponent()) {
-      this.components.update = this.attribute.getUpdateComponent().component;
-    }
-
   },
   watch: {
     value: function (){
@@ -125,7 +112,8 @@ export default {
   methods: {
 
     attributeConfig() {
-      var t = this.attribute.resourceConfig().clone();
+      
+      var t = this.attribute.relationManager().clone();
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }
@@ -151,7 +139,7 @@ export default {
 
       this.lastRawValue = this.rawValue;
 
-      this.attribute.api.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
+      this.attribute.relationManager().manager.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
         .then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);

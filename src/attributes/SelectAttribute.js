@@ -12,6 +12,7 @@ export class SelectAttribute extends BaseAttribute {
     };
 
     this.injector = (resource, value) => {
+
       resource[this.name] = value;
 
       return resource;

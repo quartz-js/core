@@ -105,7 +105,9 @@ export class Manager {
       });
 
       if (!attr) {
-        throw "Cannot find attribute called " + this.name + ":" + name
+        throw `Cannot find attribute called ${this.name}:${name}. Available attributes(${this.attributes.length}) are: ${this.attributes.map(attribute => {
+          return attribute.name
+        }).join(',')}`
       }
 
       return attr
@@ -148,9 +150,15 @@ export class Manager {
     attribute.manager = () => { return this };
 
     if (attribute.fixed(null) !== undefined) {
-      console.log(attribute.column);
       this.parserFinalQuery.push((query) => {
-        return this.mergePartsQuery([`${attribute.column} = '${attribute.fixed(null)}'`, query], 'and');
+
+        let fixed = attribute.fixed(null);
+
+
+        // @todo: label of fixed
+        fixed = typeof fixed === 'object' ? fixed.id : fixed;
+
+        return this.mergePartsQuery([`${attribute.column} = '${fixed}'`, query], 'and');
       })
     }
   }

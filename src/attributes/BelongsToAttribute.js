@@ -2,14 +2,15 @@ import { Base } from '../relations/Base'
 
 export class BelongsToAttribute extends Base {
 
-  constructor (name, api, options) {
+  constructor (name, options) {
     super(name, options);
 
-    this.api = api;
     this.query = (key) => {
       return "name ct '" + key + "'";
     };
 
+    this.components = {};
+    
     this.mutator = (value) => {
         return value ? this.getLabelByResource(value) : null;
     };
@@ -46,7 +47,7 @@ export class BelongsToAttribute extends Base {
       }
 
       if (!finalValue || !finalValue.id) {
-        return this.resourceConfig().createResource(finalValue)
+        return this.relationManager().createResource(finalValue)
           .then(response => {
 
             data.resource[this.name] = response.body.data.id
@@ -56,7 +57,7 @@ export class BelongsToAttribute extends Base {
           })
       } else {
 
-        return this.resourceConfig().updateResource(finalValue.id, finalValue)
+        return this.relationManager().updateResource(finalValue.id, finalValue)
           .then(response => {
 
             data.resource[this.name] = response.body.data.id
@@ -76,12 +77,13 @@ export class BelongsToAttribute extends Base {
 
   injectDefault (data) {
     let def = this.getDefault()
+    console.log(this.relationManager);
 
-    if (JSON.stringify(this.resourceConfig()) === JSON.stringify(this.manager())) {
+    if (JSON.stringify(this.relationManager()) === JSON.stringify(this.manager())) {
       return
     }
 
-    this.resourceConfig().injectDefault(def)
+    this.relationManager().injectDefault(def)
 
     this.injectValue(data, def)
   }
@@ -104,7 +106,7 @@ export class BelongsToAttribute extends Base {
       return Promise.resolve(resources)
     }
 
-    return this.api.index({query: ids ? 'id in (' + ids.join(',') + ')' : '', show: 999}).then(responseR => {
+    return this.relationManager().manager.index({query: ids ? 'id in (' + ids.join(',') + ')' : '', show: 999}).then(responseR => {
       return Promise.resolve(resources.map(resource => {
         resource[this.getRelationName()] = responseR.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
         return resource;

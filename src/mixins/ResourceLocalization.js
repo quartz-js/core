@@ -25,8 +25,8 @@ export var ResourceLocalization = {
         return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
       }
 
-      if (attribute.resourceConfig && attribute.resourceConfig()) {
-        return this.$t(this.getLocalizationPrefixData() + attribute.resourceConfig().name + '.name')
+      if (attribute.relationManager && attribute.relationManager()) {
+        return this.$t(this.getLocalizationPrefixData() + attribute.relationManager().name + '.name')
       }
 
       return attribute.getLabel();
@@ -41,8 +41,8 @@ export var ResourceLocalization = {
         return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.description'))
       }
 
-      if (attribute.resourceConfig && attribute.resourceConfig()) {
-        return this.$t(this.getLocalizationPrefixData() + attribute.resourceConfig().name + '.description')
+      if (attribute.relationManager && attribute.relationManager()) {
+        return this.$t(this.getLocalizationPrefixData() + attribute.relationManager().name + '.description')
       }
 
       return null;
