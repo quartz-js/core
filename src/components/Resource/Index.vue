@@ -12,7 +12,7 @@
       </v-card>
     </v-dialog> 
 
-    <v-card class="resource-card pa-3 mt-4" v-if="(pagination && pagination.totalItems !== 0) || query">
+    <v-card class="resource-card pa-3 mb-4" v-if="(pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
         <v-btn color="primary" @click="load()">{{ $t('$quartz.core.search') }}</v-btn>
@@ -21,7 +21,7 @@
       </v-layout>
     </v-card>
 
-    <v-card class="resource-card mt-4">
+    <v-card class="resource-card">
 
 
       <div v-if="showContent">
@@ -84,7 +84,7 @@
               </td>
               <slot name="row" :resource="props.item" :config="config">
                 <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index" class="cell" :width="getAttributeWidth(attribute)">
-                  {{ attribute.extractReadableValue(props.item) }}
+                  {{ attribute.extractReadableValue(props.item) }}             
                 </td>
               </slot>
               <td>
@@ -230,7 +230,6 @@ export default {
     this.cols = cols;
   },
   created () {
-    this.config.ini();
     this.reload();
     this.defineDefaultValue();
     this.manager = this.config.manager;
@@ -320,9 +319,10 @@ export default {
 
       let params = {
         query: this.config.getFinalQuery(this.query),
+        include: this.config.executeRetriever('include', []).join(','),
         show: this.pagination.rowsPerPage,
         page: this.pagination.page,
-        sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy ,
+        sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy,
       };
 
       if (!force && _.isEqual(this.params, params)) {

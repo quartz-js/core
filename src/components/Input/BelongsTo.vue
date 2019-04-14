@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show && attribute">
+  <div v-if="show && attribute && attribute.getRelationManager(this.value)">
     <v-layout row align-top class="mt-4">
       <v-spacer>
         <v-autocomplete 
@@ -18,23 +18,14 @@
           clearable
         ></v-autocomplete>
       </v-spacer>
-      <div class="pt-2">
+      <div class="pt-4">
         <component 
-          v-if="(!rawValue || !rawValue.id) && attribute.components.create" 
-          v-bind:is="attribute.components.create" 
+          v-for="component in attribute.getRelationableActions(this.value)"
+          v-bind:is="component" 
           :config="attributeConfig()" 
-          activatorType="btn"
-        ></component>
-
-        <component 
-          v-if="rawValue && rawValue.id && attribute.components.update" 
-          v-bind:is="attribute.components.update" 
-          :config="attributeConfig()" 
-          :resource="rawValue"
-          activatorType="btn"
+          activatorType="icon"
         ></component>
       </div>
-
     </v-layout>
   </div>
 </template>
@@ -75,16 +66,23 @@ export default {
       items: []
     }
   },
+  created () {
+
+  },
   mounted () {
 
-    if (!this.canMount()) {
+    if (!this.canMount() || !this.attribute.getRelationManager(this.value)) {
       return;
     }
+
+    this.attribute.executeRetriever('watchToReload', []).map(field => {
+      this.$watch("value." + field, (newValue, oldValue) => {
+        this.unload(null)
+      })
+    })
     
     var val = this.attribute.extractValue(this.value);
-
-
-
+    
     if (val === null && this.value[this.name] !== null) {
       this.loading = true;
       this.attribute.load([JSON.parse(JSON.stringify(this.value))]).then((data) => {
@@ -99,21 +97,22 @@ export default {
     }
   },
   watch: {
-    value: function (){
-      this.rawValue = this.attribute.extractValue(this.value);
-      if (this.rawValue) {
-        this.rawValue.label = this.attribute.getLabelByResource(this.rawValue);
-      }
+    value: {
+      handler: function (val) {
+        this.rawValue = this.attribute.extractValue(this.value);
+        if (this.rawValue) {
+          this.rawValue.label = this.attribute.getLabelByResource(this.rawValue);
+        }
+      },
+      deep: true
     },
     search (newVal) {
       (!this.rawValue || (this.rawValue && newVal !== this.rawValue.label)) && this.querySelections(newVal)
     },
   },
   methods: {
-
     attributeConfig() {
-      
-      var t = this.attribute.relationManager().clone();
+      var t = this.attribute.getRelationManager(this.value).clone();
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }
@@ -139,7 +138,7 @@ export default {
 
       this.lastRawValue = this.rawValue;
 
-      this.attribute.relationManager().manager.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
+      this.attribute.getRelationManager(this.value).manager.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
         .then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);

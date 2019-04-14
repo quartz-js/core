@@ -2,7 +2,7 @@
   <div v-if="data" class="px-2">
     <slot :resource="data" name="breadcrumb">
       <div class='mt-4' flat>
-        <router-link :to="config.getRouteIndex(data)">{{ $t('$quartz.core.back') }}</router-link>
+        <a @click="$router.go(-1)">{{ $t('$quartz.core.back') }}</a>
       </div>
     </slot>
     <v-card class="resource-card pa-3 mt-4" >
@@ -15,7 +15,6 @@
               {{ this.getResourceTitle(config) }} - #{{ data.id }} {{ data.name }}
             </h2>
             <v-spacer></v-spacer>
-            <!--<remove :resource="data" :config="config" button='normal' @removed="$router.push(config.getRouteIndex(data))"/>-->
 
             <slot :resource="data" :config="config" name="actions"/>
             <v-menu v-if="!!$scopedSlots['actions-extra']">
@@ -38,7 +37,7 @@
 
     </v-card>
     
-    <v-tabs class='my-2'>
+    <v-tabs class='show-tabs my-4'>
       <slot :resource="data" name="tabs" :config="config">
         <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
         <v-tab-item :transition="false" :reverse-transition="false">
@@ -73,3 +72,12 @@ export default {
   }
 }
 </script>
+<style>
+  .show-tabs .v-tabs__wrapper {
+    border: 2px solid #efefef;
+    border-bottom: none;
+    margin-bottom: -2px;
+    z-index: 3;
+    position: relative;
+  }
+</style>

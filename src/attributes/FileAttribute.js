@@ -46,6 +46,10 @@ export class FileAttribute extends BaseAttribute {
 
     var content = this.extractValue(data);
 
+    if (!content) {
+      return Promise.resolve(1)
+    }
+
     const formData = new FormData();
 
     formData.append("file", content.file, content.filename)
@@ -54,7 +58,6 @@ export class FileAttribute extends BaseAttribute {
       if (e.lengthComputable) {
         var percent = e.loaded / e.total * 100;
         console.log(percent);
-
       }
     })
   }

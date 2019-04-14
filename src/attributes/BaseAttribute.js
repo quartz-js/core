@@ -5,12 +5,21 @@ export class BaseAttribute {
   required = false;
   
   constructor (name, options) {
+
+    if (!options) {
+      options = [];
+    }
+    
     this.required = false;
     this.hooks = [];
     this.name = name;
     this.label = name;
     this.column = name;
     this.priority = 1;
+    this.descriptor = options.descriptor || [];
+    this.retrievers = {
+    };
+
     this.default = () => {
       return null;
     };
@@ -38,6 +47,14 @@ export class BaseAttribute {
     }
   }
 
+  executeRetriever (key, data) {
+    return typeof this.retrievers[key] !== "undefined" ? this.retrievers[key](data) : data
+  }
+
+  setRetriever (key, closure) {
+    this.retrievers[key] = closure
+  }
+
   set (name, value) {
     this[name] = value
 
@@ -59,14 +76,11 @@ export class BaseAttribute {
     this.injectValue(data, this.getDefault())
   }
 
-
   /**
    * @return {Closure}
    */
   getDefault () {
-    var d = this.default;
-
-    return d();
+    return this.fixed(null) || this.default();
   }
   
   addHook($event, callback) {

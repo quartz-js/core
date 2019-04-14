@@ -2,12 +2,19 @@ import { Base } from '../relations/Base'
 
 export class BelongsToAttribute extends Base {
 
+  listable = true;
+  
   constructor (name, options) {
     super(name, options);
 
     this.query = (key) => {
       return "name ct '" + key + "'";
     };
+
+    this.relationables = [];
+    this.relationableSwitcher = (resource) => {
+      return null;
+    }
 
     this.components = {};
     
@@ -30,6 +37,16 @@ export class BelongsToAttribute extends Base {
     this.extractor = resource => {
       return resource && typeof resource[this.getRelationName()] !== 'undefined' ? resource[this.getRelationName()] : null;
     };
+
+
+    this.injector = (resource, value) => {
+      
+      resource[this.getRelationName()] = value ? value : null;
+      resource[this.name] = value ? value.id : null;
+
+      return resource;
+    };
+
   }
   compareDefault (resource, value) {
     let t = JSON.parse(JSON.stringify(resource));
@@ -47,7 +64,7 @@ export class BelongsToAttribute extends Base {
       }
 
       if (!finalValue || !finalValue.id) {
-        return this.relationManager().createResource(finalValue)
+        return this.getRelationManager(data.resource).createResource(finalValue)
           .then(response => {
 
             data.resource[this.name] = response.body.data.id
@@ -57,7 +74,7 @@ export class BelongsToAttribute extends Base {
           })
       } else {
 
-        return this.relationManager().updateResource(finalValue.id, finalValue)
+        return this.getRelationManager(data.resource).updateResource(finalValue.id, finalValue)
           .then(response => {
 
             data.resource[this.name] = response.body.data.id
@@ -72,45 +89,41 @@ export class BelongsToAttribute extends Base {
   }
 
   getRelationName () {
-    return this.name + '_relation';
+    return this.name.replace('_id', '');
   }
 
-  injectDefault (data) {
-    let def = this.getDefault()
-    console.log(this.relationManager);
-
-    if (JSON.stringify(this.relationManager()) === JSON.stringify(this.manager())) {
-      return
-    }
-
-    this.relationManager().injectDefault(def)
-
-    this.injectValue(data, def)
+  setRelationableSwitcher (closure) {
+    this.relationableSwitcher = closure;
   }
 
+  addRelationable(relationable) {
+    this.relationables.push(relationable);
+  }
 
-  /**
-   * @return {Callable}
-   */
-  load (resources) {
-    var ids = resources.filter(resource => { 
+  getRelationManager (resource) {
 
-      if (!resource[this.column]) {
-        this.injectDefault(resource)
-      }
-
-      return resource[this.column] && !resource.__booted; 
-    }).map(resource => { return resource[this.column] });
-
-    if (ids.length === 0) {
-      return Promise.resolve(resources)
+    if (!resource) {
+      return null;
     }
 
-    return this.relationManager().manager.index({query: ids ? 'id in (' + ids.join(',') + ')' : '', show: 999}).then(responseR => {
-      return Promise.resolve(resources.map(resource => {
-        resource[this.getRelationName()] = responseR.body.data.find(b_resource => { return b_resource.id == resource[this.column] });
-        return resource;
-      }))
-    });
+    let relationable = this.getCurrentRelationableByResource(resource)
+
+    return relationable ? relationable.manager(resource) : null
+  }
+
+  getCurrentRelationableByResource (resource) {
+    return this.relationables.find((relationable) => {
+      return relationable.key === this.relationableSwitcher(resource)
+    })
+  }
+
+  getRelationableActions (resource) {
+    if (!resource) {
+      return null;
+    }
+
+    let relationable = this.getCurrentRelationableByResource(resource)
+
+    return relationable ? relationable.actions : null
   }
 }

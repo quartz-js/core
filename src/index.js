@@ -31,6 +31,7 @@ module.exports = {
         HasOneMorph: require('./relations/HasOneMorph').HasOneMorph,
         Matrix: require('./relations/Matrix').Matrix,
     },
+    Interceptor: require('./app/Interceptor').Interceptor,
     ProviderLoader: require('./app/Providers/ProviderLoader').ProviderLoader,
     ServiceProvider: require('./app/Providers/ServiceProvider').ServiceProvider,
     QuartzServiceProvider: require('./app/Providers/QuartzServiceProvider').QuartzServiceProvider,
@@ -39,6 +40,7 @@ module.exports = {
     ResourceApi: require('./api/ResourceApi').ResourceApi,
     container: require('./services/container').container,
     AttributePreMount: require('./mixins/AttributePreMount').AttributePreMount,
+    HandleResource: require('./mixins/HandleResource').HandleResource,
     mixins: {
         utils: require('./mixins/utils').utils,
     },

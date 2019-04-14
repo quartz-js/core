@@ -1,8 +1,7 @@
 <template>
   <div class="mt-4" v-if="show">
     <span>{{ getAttributeLabel(attribute) }}</span>
-    <br>
-    <toggle-button :value="rawValue" @change="onChange($event)" :height='28' :width="60" :sync="true" color="#1976d2"></toggle-button>
+    <toggle-button :value="rawValue" @change="onChange($event)" :height='24' :width="50" :sync="true" color="#1976d2"></toggle-button>
   </div>
 </template>
 <script>
@@ -78,8 +77,11 @@ export default {
 </script>
 <style scoped>
   span {
+    display: block;
     color: rgba(0,0,0,0.54);
-    font-size: 16px;
+    font-size: 12px;
+    margin-top: -3px;
     margin-right: 5px;
+    margin-bottom: 8px;
   }
 </style>

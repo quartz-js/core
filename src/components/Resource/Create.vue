@@ -3,6 +3,7 @@
     <div v-if="type === 'button-navigator'">
       <slot name="activator" v-if="activator">
         <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</v-btn>
+        <v-btn v-if="activatorType === 'icon'" small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></v-btn>
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
@@ -138,7 +139,7 @@ export default {
     return {
       drawer: false,
       loading: false,
-      data: null,
+      data: {},
       errors: [],
     }
   },
@@ -157,8 +158,8 @@ export default {
         return this.internalConfig.createResource(data.resource);
       }).then((response) => {
         this.errors = [];
-        this.load();
         this.drawer = false;
+        this.load()
       }).catch(response => {
         this.errors = response.body.errors
       }).finally(response => {
@@ -167,17 +168,11 @@ export default {
     },
 
     load () {
-
-      let data = {};
-      this.internalConfig.injectDefault(data);
-
-      this.data = data;
-
+      this.data = this.internalConfig.newEntity();
     }
   },
   created() {
     this.internalConfig = this.config.clone();
-    this.internalConfig.ini();
     this.load();
   }
 }

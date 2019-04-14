@@ -72,9 +72,6 @@ export default {
     }
   },
   methods: {
-    attributeConfig() {
-      return this.attribute.relationManager();
-    },
     loadByVal (val) {
       this.rawValue = JSON.parse(JSON.stringify(val));
     },

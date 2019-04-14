@@ -42,10 +42,14 @@ export class ResourceApi {
 
   parseData (data, response) {
 
+    if (!data) {
+      return null
+    }
+    
     if (data.relationships) {
-      _.map(data.relationships, (relationship) => {
+      _.map(data.relationships, (relationship, key) => {
 
-        data.attributes[relationship.data.type] = this.parseData(response.body.included.find((include) => {
+        data.attributes[key] = this.parseData(response.body.included.find((include) => {
           return include.type === relationship.data.type && include.id === relationship.data.id
         }), response);
       })

@@ -68,7 +68,7 @@ export default {
   methods: {
     getDateFormat(date)
     {
-      return moment(date).format('MMMM Do YYYY, HH:mm')
+      return date ? moment(date).format('MMMM Do YYYY, HH:mm') : null
     },
   	reloadRawValue() {
       let val = this.attribute.extractValue(this.value)

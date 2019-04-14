@@ -88,7 +88,6 @@ export default {
     }
   },
   created() {
-    this.config.ini();
     this.loadDataByProps().then((data) => {
       this.getHooks('OnChange', {
         resource: this.data

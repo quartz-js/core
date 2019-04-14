@@ -10,7 +10,6 @@ export class HasOneMorph extends MorphThrough {
     this.indexerApi = api;
     this.storageApi = api;
     this.component = component
-    this.relationManager = component.relationManager
 
     this.query = (key) => {
       return "name ct '" + key + "'";

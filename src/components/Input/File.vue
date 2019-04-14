@@ -1,45 +1,48 @@
 <template>
-  <div v-if="show && rawValue" class="mt-4">
-    <v-text-field 
-      :value="rawValue.filename" prepend-icon='attach_file'
-      :label="label !== undefined ? label : getAttributeLabel(attribute)"
-      :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
-      persistent-hint
-      readonly
-      @click='pickFile'
-    ></v-text-field>
+  <div>
+    awd
+      <div v-if="show && rawValue" class="mt-4">
+      <v-text-field 
+        :value="rawValue.filename" prepend-icon='attach_file'
+        :label="label !== undefined ? label : getAttributeLabel(attribute)"
+        :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
+        persistent-hint
+        readonly
+        @click='pickFile'
+      ></v-text-field>
 
-    <input type="file" ref="image" style="display: none" @change="previewImage($event)">
-    <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
-    <v-layout v-if="rawValue.filename">
-      <div>
-        <div v-if="fileType == 'image'">
-          <canvas id="uploader" ref="uploader" class="preview">
-            Your browser does not support the HTML5 canvas element.
-          </canvas>
+      <input type="file" ref="image" style="display: none" @change="previewImage($event)">
+      <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
+      <v-layout v-if="rawValue.filename">
+        <div>
+          <div v-if="fileType == 'image'">
+            <canvas id="uploader" ref="uploader" class="preview">
+              Your browser does not support the HTML5 canvas element.
+            </canvas>
+          </div>
+          <div v-else>
+            Nope
+          </div>
         </div>
-        <div v-else>
-          Nope
-        </div>
-      </div>
-      <div class="pa-4" v-if="fileType == 'image'">
-        <div class='fluid fluid-vcenter' v-if='crop'>
-          <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="destroyCropImage()">{{ $t('Back')}}</v-btn>
-          <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="resetCropImage()">{{ $t('Reset')}}</v-btn>
-          <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="saveCropImage()">{{ $t('Save crop')}}</v-btn>
-        </div>
+        <div class="pa-4" v-if="fileType == 'image'">
+          <div class='fluid fluid-vcenter' v-if='crop'>
+            <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="destroyCropImage()">{{ $t('Back')}}</v-btn>
+            <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="resetCropImage()">{{ $t('Reset')}}</v-btn>
+            <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="saveCropImage()">{{ $t('Save crop')}}</v-btn>
+          </div>
 
-        <div v-if="!crop">
-          <v-btn color="primary" @click="cropImage()">{{ $t('Crop')}}</v-btn>
+          <div v-if="!crop">
+            <v-btn color="primary" @click="cropImage()">{{ $t('Crop')}}</v-btn>
+          </div>
+          <br>
+          <v-layout v-if='crop'>
+            <v-text-field :label="$t('ratio_width')" v-model="width" required v-on:change="resetCropImage()" />
+            <v-text-field :label="$t('ratio_height')" v-model="height" required v-on:change="resetCropImage()" />
+          </v-layout>
         </div>
-        <br>
-        <v-layout v-if='crop'>
-          <v-text-field :label="$t('ratio_width')" v-model="width" required v-on:change="resetCropImage()" />
-          <v-text-field :label="$t('ratio_height')" v-model="height" required v-on:change="resetCropImage()" />
-        </v-layout>
-      </div>
-    </v-layout>
+      </v-layout>
 
+    </div>
   </div>
 </template>
 <script>

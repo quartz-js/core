@@ -32,7 +32,10 @@ export var LoadResource = {
       this.data = JSON.parse(JSON.stringify(object));
     },
     loadDataById (id) {
-      return this.config.manager.show(id).then(response => {
+
+      return this.config.manager.show(id, {
+        include: this.config.executeRetriever('include', []).join(',')
+      }).then(response => {
         var resource = response.body;
         this.config.loadResources([resource.data]).then((data) => {
           this.setData(data[0]);

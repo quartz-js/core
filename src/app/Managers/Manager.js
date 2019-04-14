@@ -10,6 +10,7 @@ export class Manager {
     this.remove = true;
     this.show = true;
     this.parserFinalQuery = [];
+    this.descriptor = params.descriptor || [];
 
     this.actions = {
       basic: [],
@@ -22,10 +23,6 @@ export class Manager {
 
     this.rowEnabled = (resource) => {
       return undefined;
-    }
-
-    this.ini = () => {
-      
     }
 
     params.attributes.map((attribute) => {
@@ -64,7 +61,7 @@ export class Manager {
     };
 
     this.getIdentification = function () {
-      return this.manager.getFullUrl();
+      return this.name;
     };
 
     this.onShowEdit = function () {
@@ -127,18 +124,29 @@ export class Manager {
     };
 
     this.resourceEvent = function(label) {
-      return this.name + ":" + label;
+      return this.data + ":" + label;
     }
 
     this.getListableAttributes = function() {
       return this.attributes.filter((attribute) => {
-        return attribute.listable && attribute.fixed() === undefined
+        return !attribute.hidden && attribute.listable && attribute.fixed() === undefined
       })
     }
 
     for (var i in params) {
       this[i] = params[i];
     }
+
+    this
+  }
+
+  executeRetriever (key, data) {
+
+    this.attributes.map(attribute => {
+      data = attribute.executeRetriever(key, data)
+    })
+
+    return data
   }
 
   addAction(type, component) {
@@ -153,8 +161,7 @@ export class Manager {
       this.parserFinalQuery.push((query) => {
 
         let fixed = attribute.fixed(null);
-
-
+        
         // @todo: label of fixed
         fixed = typeof fixed === 'object' ? fixed.id : fixed;
 
@@ -216,7 +223,7 @@ export class Manager {
 
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
 
-      var params = data.resource;
+      var params = this.executeRetriever('beforePersist', data.resource);
       
       params = _.pickBy(params, (value) => {
         return value !== null
@@ -231,6 +238,7 @@ export class Manager {
 
       return Promise.all(promises).then(() => {
         this.onCreateSuccess(this, response);
+
         bus.$emit(this.resourceEvent("created"), response.body.data);
 
         return response;
@@ -241,6 +249,14 @@ export class Manager {
         throw error
       })
     })
+  }
+
+  newEntity() {
+    let data = {};
+
+    this.injectDefault(data)
+
+    return data;
   }
 
   injectDefault(data) {
@@ -254,7 +270,10 @@ export class Manager {
   updateResource (id, data) {
     
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
-      return this.manager.update(id, data.resource);
+
+      var params = this.executeRetriever('beforePersist', data.resource);
+
+      return this.manager.update(id, params);
     }).then(response => {
 
       let promises = this.attributes.map(attribute => {

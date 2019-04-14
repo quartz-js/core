@@ -1,7 +1,4 @@
-import { TextAttribute } from './TextAttribute'
+import { BelongsToAttribute } from './BelongsToAttribute'
 
-export class MorphToAttribute extends TextAttribute {
-  constructor (name, options) {
-    super(name, options);
-  }
+export class MorphToAttribute extends BelongsToAttribute {
 }

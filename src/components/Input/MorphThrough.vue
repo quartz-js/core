@@ -117,7 +117,7 @@ export default {
       }
     },
     attributeConfig() {
-      var t = this.attribute.relationManager().clone();
+      var t = this.attribute.getRelationManager(this.value).clone();
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }

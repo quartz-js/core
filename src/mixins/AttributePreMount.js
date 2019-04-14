@@ -11,8 +11,9 @@ export var AttributePreMount = {
       let fixed = this.attribute.fixed(this.value);
 
       if (this.attribute && fixed !== undefined) {
-        this.attribute.injectValue(this.value, fixed);
 
+        this.attribute.injectValue(this.value, fixed);
+        
         this.$emit('input', this.value);
         this.show = false;
         return false;
