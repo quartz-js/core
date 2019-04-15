@@ -5,4 +5,8 @@ export class LongTextAttribute extends BaseAttribute {
     super(name);
     this.priority = 0;
   }
+
+  getClassName() {
+    return 'LongTextAttribute'
+  }
 }

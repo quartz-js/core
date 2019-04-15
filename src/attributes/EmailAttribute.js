@@ -4,4 +4,8 @@ export class EmailAttribute extends TextAttribute {
   constructor (name) {
     super(name);
   }
+
+  getClassName() {
+    return 'EmailAttribute'
+  }
 }

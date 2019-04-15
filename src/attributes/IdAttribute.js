@@ -8,4 +8,8 @@ export class IdAttribute extends BaseAttribute {
     };
     this.priority = 0;
   }
+
+  getClassName() {
+    return 'IdAttribute'
+  }
 }

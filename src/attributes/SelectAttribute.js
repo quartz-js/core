@@ -46,4 +46,8 @@ export class SelectAttribute extends BaseAttribute {
       return option.value === value;
     });
   }
+
+  getClassName() {
+    return 'SelectAttribute'
+  }
 }

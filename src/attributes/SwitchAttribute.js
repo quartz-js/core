@@ -17,4 +17,8 @@ export class SwitchAttribute extends SelectAttribute {
       label: "Yes",
     }]);
   }
+
+  getClassName() {
+    return 'SwitchAttribute'
+  }
 }

@@ -7,4 +7,8 @@ export class ImageAttribute extends BaseAttribute {
       return "<a href='" + value + "' target='_blank'><img src='" + value + "' width='80' height='80'></a>";
     };
   }
+
+  getClassName() {
+    return 'ImageAttribute'
+  }
 }

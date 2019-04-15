@@ -8,4 +8,8 @@ export class UuidAttribute extends BaseAttribute {
     };
     this.priority = 0;
   }
+
+  getClassName() {
+    return 'UuidAttribute'
+  }
 }

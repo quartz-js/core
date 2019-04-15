@@ -9,4 +9,8 @@ export class DateTimeAttribute extends BaseAttribute {
     };
     this.priority = 0;
   }
+
+  getClassName() {
+    return 'DateTimeAttribute'
+  }
 }

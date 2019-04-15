@@ -7,4 +7,8 @@ export class UrlAttribute extends BaseAttribute {
       return "<a href='" + value + "' target='_blank'>" + (value.length > 50 ? value.substr(0, 50) + '\u2026' : value) + '</a>';
     };
   }
+
+  getClassName() {
+    return 'UrlAttribute'
+  }
 }

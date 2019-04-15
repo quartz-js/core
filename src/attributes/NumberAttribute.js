@@ -4,4 +4,8 @@ export class NumberAttribute extends BaseAttribute {
   constructor (name, options) {
     super(name, options);
   }
+
+  getClassName() {
+    return 'NumberAttribute'
+  }
 }

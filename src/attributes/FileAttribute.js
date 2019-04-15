@@ -61,4 +61,8 @@ export class FileAttribute extends BaseAttribute {
       }
     })
   }
+
+  getClassName() {
+    return 'FileAttribute'
+  }
 }

@@ -4,4 +4,8 @@ export class CreatedAtAttribute extends DateTimeAttribute {
   constructor (name, options) {
     super(name, options);
   }
+
+  getClassName() {
+    return 'CreatedAtAttribute'
+  }
 }

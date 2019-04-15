@@ -126,4 +126,8 @@ export class BelongsToAttribute extends Base {
 
     return relationable ? relationable.actions : null
   }
+
+  getClassName() {
+    return 'BelongsToAttribute'
+  }
 }

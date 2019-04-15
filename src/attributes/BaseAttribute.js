@@ -276,4 +276,8 @@ export class BaseAttribute {
 
   }
 
+  getClassName() {
+    return 'BaseAttribute'
+  }
+
 }

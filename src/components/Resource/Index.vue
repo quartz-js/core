@@ -387,9 +387,6 @@ export default {
     },
     getAttributeWidth(attribute) {
 
-      if (attribute.constructor.name === "IdAttribute") {
-        return 80
-      }
 
       return undefined
     },
