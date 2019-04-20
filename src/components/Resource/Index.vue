@@ -161,7 +161,7 @@ export default {
         10, 25, 50, 100, 250, 500
       ],
       pagination: {
-        sortBy: "updated_at",
+        sortBy: "id",
         descending: true,
         rowsPerPage: 25,
         totalPages: 0,
@@ -234,6 +234,10 @@ export default {
     this.defineDefaultValue();
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
+
+    if (this.config.getAttribute('updated_at')) {
+      this.pagination.sort = "-updated_at";
+    }
 
     this.listable = this.selectableListableAttributes(this.config.getListableAttributes());
 
