@@ -235,7 +235,7 @@ export default {
     this.manager = this.config.manager;
     this.attributes = this.config.attributes;
 
-    if (this.config.getAttribute('updated_at')) {
+    if (this.config.hasAttribute('updated_at')) {
       this.pagination.sort = "-updated_at";
     }
 

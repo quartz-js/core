@@ -90,6 +90,19 @@ export class Manager {
 
 
     /**
+     * Has attribute by name
+     *
+     * @param {string} name
+     *
+     * @return {BaseAttribute}
+     */
+    this.hasAttribute = function (name) {
+      return this.attributes.find(function (attribute) {
+        return attribute.name === name;
+      });
+    };
+
+    /**
      * Get attribute by name
      *
      * @param {string} name
