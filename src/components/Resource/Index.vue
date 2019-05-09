@@ -215,6 +215,11 @@ export default {
 
     try {
       cols = JSON.parse(this.$localStorage.get(this.config.getIdentification() + '.cols'));
+      cols = cols.filter(name => {
+        return this.config.getListableAttributes().find(item => {
+          return item.name === name;
+        });
+      })
     } catch (e) {
 
     }
