@@ -60,6 +60,10 @@ export class BaseAttribute {
 
     return this
   }
+
+  get (name) {
+    return this[name];
+  }
   
   /**
    * @param {Closure} callback
