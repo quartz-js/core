@@ -176,9 +176,18 @@ export class Manager {
         let fixed = attribute.fixed(null);
         
         // @todo: label of fixed
-        fixed = typeof fixed === 'object' ? fixed.id : fixed;
+        fixed = typeof fixed === 'object' && fixed ? fixed.id : fixed;
 
-        return this.mergePartsQuery([`${attribute.column} = '${fixed}'`, query], 'and');
+
+        let newQuery = '';
+
+        if (fixed === null) {
+          newQuery = `${attribute.column} is null`;
+        } else {
+          newQuery = `${attribute.column} = '${fixed}'`
+        }
+
+        return this.mergePartsQuery([newQuery, query], 'and');
       })
     }
   }
