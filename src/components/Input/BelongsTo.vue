@@ -21,8 +21,10 @@
       <div class="pt-4">
         <component 
           v-for="component in attribute.getRelationableActions(this.value)"
-          v-bind:is="component" 
+          v-bind:is="component"
+          :resource="rawValue"
           :config="attributeConfig()" 
+          :onManagerLoad="onRelationableManagerLoad"
           activatorType="icon"
         ></component>
       </div>
@@ -111,8 +113,8 @@ export default {
     },
   },
   methods: {
-    attributeConfig() {
-      var t = this.attribute.getRelationManager(this.value).clone();
+    onRelationableManagerLoad(t) {
+
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }
@@ -120,6 +122,10 @@ export default {
         this.unload(response.body.data);
       }
       return t;
+    },
+
+    attributeConfig() {
+      return  this.attribute.getRelationManager(this.value).clone();
     },
     unload(data) {
       this.loadByVal(data);
