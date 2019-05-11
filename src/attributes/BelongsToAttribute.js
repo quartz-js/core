@@ -108,7 +108,14 @@ export class BelongsToAttribute extends Base {
 
     let relationable = this.getCurrentRelationableByResource(resource)
 
-    return relationable ? relationable.manager(resource) : null
+    if (!relationable) {
+      return null;
+    }
+
+    let manager = relationable.manager(resource);
+    relationable.onLoad(manager);
+
+    return manager;
   }
 
   getCurrentRelationableByResource (resource) {
@@ -126,6 +133,17 @@ export class BelongsToAttribute extends Base {
 
     return relationable ? relationable.actions : null
   }
+
+  getRelationable (resource) {
+    if (!resource) {
+      return null;
+    }
+
+    let relationable = this.getCurrentRelationableByResource(resource)
+
+    return relationable
+  }
+
 
   getClassName() {
     return 'BelongsToAttribute'

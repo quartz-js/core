@@ -20,10 +20,10 @@
       </v-spacer>
       <div class="pt-4">
         <component 
-          v-for="component in attribute.getRelationableActions(this.value)"
+          v-for="component in attribute.getRelationableActions(value)"
           v-bind:is="component"
           :resource="rawValue"
-          :config="attributeConfig()" 
+          :config="attribute.getRelationManager(value).clone()" 
           :onManagerLoad="onRelationableManagerLoad"
           activatorType="icon"
         ></component>
@@ -115,6 +115,11 @@ export default {
   methods: {
     onRelationableManagerLoad(t) {
 
+      let relationable = this.attribute.getRelationable(this.value);
+      relationable.onLoad(t);
+
+
+
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }
@@ -122,10 +127,6 @@ export default {
         this.unload(response.body.data);
       }
       return t;
-    },
-
-    attributeConfig() {
-      return  this.attribute.getRelationManager(this.value).clone();
     },
     unload(data) {
       this.loadByVal(data);
@@ -144,14 +145,22 @@ export default {
 
       this.lastRawValue = this.rawValue;
 
-      this.attribute.getRelationManager(this.value).manager.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
-        .then(response => {
-          this.items = response.body.data.map((item) => {
-            item.label = this.attribute.getLabelByResource(item);
-            return item;
-          });
-        })
-        .finally(() => { this.loading = false});
+      let manager = this.attribute.getRelationManager(this.value);
+
+      let params = this.attribute.filterIndexerParams({
+        query: v, 
+        value: this.value
+      });
+
+      params.query = manager.getFinalQuery(params.query);
+
+      manager.manager.index(params).then(response => {
+        this.items = response.body.data.map((item) => {
+          item.label = this.attribute.getLabelByResource(item);
+          return item;
+        });
+      })
+      .finally(() => { this.loading = false});
     },
     onChange: function (val) {
 
