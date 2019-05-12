@@ -32,7 +32,7 @@
 <script>
 
 import _ from 'lodash'
-import { MorphThrough } from '../../relations/MorphThrough'
+import { MorphToMany } from '../../relations/MorphToMany'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
@@ -46,7 +46,7 @@ export default {
       required: true,
     },
     attribute: {
-      type: MorphThrough,
+      type: MorphToMany,
       required: true
     },
     errors: {
@@ -145,8 +145,6 @@ export default {
 
       this.lastRawValue = this.rawValue
 
-      console.log(this.value);
-
       this.attribute.indexerApi.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
         .then(response => {
           this.items = response.body.data.map((item) => {
@@ -160,9 +158,12 @@ export default {
 
       this.query = this.attribute.mutator(this.rawValue);
 
+      console.log('injectnig');
+      console.log(this.rawValue);
+
       this.attribute.injectValue(this.value, this.rawValue);
 
-      this.$emit('input', this.rawValue);
+      this.$emit('input', this.value);
 
     },
 

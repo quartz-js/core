@@ -1,4 +1,5 @@
 import VueI18n from 'vue-i18n'
+const s = require("underscore");
 
 export var ResourceLocalization = {
   methods: {

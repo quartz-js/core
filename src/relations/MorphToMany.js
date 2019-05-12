@@ -1,12 +1,10 @@
 import { Base } from './Base'
 
-export class MorphThrough extends Base {
+export class MorphToMany extends Base {
 
-  constructor (name, indexerApi, storageApi, morphName, morphType, options) {
+  constructor (name, indexerApi, storageApi, options) {
     super(name, options);
 
-    this.morphName = morphName;
-    this.morphType = morphType;
     this.indexerApi = indexerApi;
     this.storageApi = storageApi;
 
@@ -38,33 +36,25 @@ export class MorphThrough extends Base {
     var ids = this.getIdsNotBootedFromResources(resources)
 
     if (ids.length === 0) {
-      return Promise.resolve(resources);
+      // return Promise.resolve(resources);
     }
 
+    ids = resources.map(resource => { return resource.id});
+
     return this.storageApi.index({
-      query: `${this.morphName}_type = '${this.morphType}' and ${this.morphName}_id in (${ids.join(',')})`, 
+      query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} in (${ids.join(',')})`, 
       show: 999,
-      include: `${this.name}`
+      include: `${this.relationName}`
     }).then(responseR => {
       
       return Promise.resolve(resources.map(resource => {
 
-        var values = responseR.body.data.filter(b_resource => { 
-          return b_resource[`${this.morphName}_id`] == resource.id 
-        }).map(b_resource => {
-          var includedResource = responseR.body.included.find(includedResource => {
-            return includedResource.id == b_resource[`${this.name}_id`]
-          })
+        let values = responseR.body.data.filter(r => {
+          return parseInt(r[this.morphKeyColumn]) === parseInt(resource.id)
+        }).map(r => {
+          return r[this.relationName]
+        });
 
-          if (!includedResource) {
-            return null;
-          }
-
-          includedResource.attributes.id = includedResource.id;
-          return includedResource.attributes;
-        })
-
-        
         this.injectValue(resource, values);
 
         return resource;
@@ -80,14 +70,14 @@ export class MorphThrough extends Base {
   persist (id, data) {
 
     return this.storageApi.index({
-      query: `${this.morphName}_type = '${this.morphType}' and ${this.morphName}_id eq ${id}`, 
+      query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id}`, 
       show: 999
     }).then(responseR => {
       
       var idsOriginal = responseR.body.data.map(resource => {
-        return parseInt(resource[`${this.name}_id`])
+        return parseInt(resource[this.relationId])
       });
-        
+      
       var idsDefined = typeof data[this.name] !== "undefined" && data[this.name] ? data[this.name].map(resource => {
         return parseInt(resource.id)
       }) : [];
@@ -99,23 +89,28 @@ export class MorphThrough extends Base {
       var idsToRemove = idsOriginal.filter(rId => {
           return idsDefined.indexOf(rId) < 0;
       });
+
       var promises = idsToAdd.map((resourceId) => {
         var params = {};
 
-        params[`${this.morphName}_type`] = this.morphType
-        params[`${this.morphName}_id`] = id
-        params[`${this.name}_id`] = resourceId
+        params[this.morphTypeColumn] = this.morphTypeValue
+        params[this.morphKeyColumn] = id
+        params[this.relationId] = resourceId
 
         return this.storageApi.create(params);
       });
 
       if (idsToRemove.length > 0) {
         promises.push(this.storageApi.erase({
-          query: `${this.morphName}_type = '${this.morphType}' and ${this.morphName}_id eq ${id} and ${this.name}_id in (${idsToRemove.join(',')})`
+          query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id} and ${this.relationId} in (${idsToRemove.join(',')})`
         }));
       }
 
       return Promise.all(promises);
     });
+  }
+
+  getClassName() {
+    return 'MorphToMany'
   }
 }

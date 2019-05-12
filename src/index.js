@@ -27,8 +27,7 @@ module.exports = {
         Password: require('./attributes/PasswordAttribute').PasswordAttribute,
     },
     Relations: {
-        MorphThrough: require('./relations/MorphThrough').MorphThrough,
-        HasOneMorph: require('./relations/HasOneMorph').HasOneMorph,
+        MorphToMany: require('./relations/MorphToMany').MorphToMany,
         Matrix: require('./relations/Matrix').Matrix,
     },
     Interceptor: require('./app/Interceptor').Interceptor,
@@ -61,10 +60,9 @@ module.exports = {
         Vue.component("QFormJson", require('./components/Form/FormJson').default)
         Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
 
-        Vue.component("QMorphThrough", require('./components/Input/MorphThrough').default)
+        Vue.component("QMorphToMany", require('./components/Input/MorphToMany').default)
         Vue.component("QBelongsTo", require('./components/Input/BelongsTo').default)
         Vue.component("QBelongsToOne", require('./components/Input/BelongsToOne').default)
-        Vue.component("QHasOneMorph", require('./components/Input/HasOneMorph').default)
         Vue.component("QHtml", require('./components/Input/Html').default)
         Vue.component("QYaml", require('./components/Input/Yaml').default)
         Vue.component("QDate", require('./components/Input/Date').default)
