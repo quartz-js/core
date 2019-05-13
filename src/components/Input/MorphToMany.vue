@@ -17,6 +17,19 @@
           hide
           clearable
         >
+        <template v-slot:item="data">
+          <template v-if="typeof data.item !== 'object'">
+            <v-list-tile-content v-text="data.item"></v-list-tile-content>
+          </template>
+          <template v-else>
+            <v-list-tile-avatar v-if="data.item.avatar">
+              <img :src="data.item.avatar">
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title v-html="data.item.label"></v-list-tile-title>
+            </v-list-tile-content>
+          </template>
+        </template>
         <template
             slot="selection"
             slot-scope="data"
@@ -24,8 +37,21 @@
         </template>
       </v-autocomplete>
     </v-layout>
-    <div >
-      <v-chip  color="primary" text-color="white" v-for="item in rawValue" close @input="remove(item)"> {{ item.id }} {{ item.label }} </v-chip>
+    <div class="mb-3" >
+      <v-chip 
+        class="chip--select-multi"
+        color="primary" 
+        text-color="white" 
+        v-for="item in rawValue"
+        close 
+        @input="remove(item)"
+      >
+
+        <v-avatar v-if="item.avatar">
+          <img src="http://i.pravatar.cc/64">
+        </v-avatar>
+        #{{ item.id }} - {{ item.label }}
+      </v-chip>
     </div>
   </div>
 </template>
@@ -145,7 +171,14 @@ export default {
 
       this.lastRawValue = this.rawValue
 
-      this.attribute.indexerApi.index(this.attribute.filterIndexerParams({query: v, value: this.value}))
+      let params = this.attribute.filterIndexerParams({
+        query: v, 
+        value: this.value
+      });
+
+      console.log(this.attribute.indexerApi);
+
+      this.attribute.indexerApi.index(params)
         .then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);
@@ -157,9 +190,6 @@ export default {
     onChange: function (val) {
 
       this.query = this.attribute.mutator(this.rawValue);
-
-      console.log('injectnig');
-      console.log(this.rawValue);
 
       this.attribute.injectValue(this.value, this.rawValue);
 

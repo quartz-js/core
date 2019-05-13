@@ -1,10 +1,13 @@
 import VueI18n from 'vue-i18n'
-const s = require("underscore");
+const s = require("underscore.string");
 
 export var ResourceLocalization = {
   methods: {
     getLocalizationPrefixData() {
       return '$quartz.data.'
+    },
+    humanize(str) {
+      return s.humanize(str);
     },
     getResourceTitle(resource) {
       return this.$t(this.getLocalizationPrefixData() + resource.name + '.name')
@@ -26,7 +29,7 @@ export var ResourceLocalization = {
         return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
       }
 
-      return attribute.getLabel();
+      return this.humanize(attribute.getLabel());
     },
     getAttributeDescription(attribute) {
 

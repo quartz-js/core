@@ -35,11 +35,11 @@ export class MorphToMany extends Base {
 
     var ids = this.getIdsNotBootedFromResources(resources)
 
-    if (ids.length === 0) {
-      // return Promise.resolve(resources);
-    }
+    ids = resources.filter(resource => { return resource.id }).map(resource => { return resource.id });
 
-    ids = resources.map(resource => { return resource.id});
+    if (ids.length === 0) {
+      return Promise.resolve(resources);
+    }
 
     return this.storageApi.index({
       query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} in (${ids.join(',')})`, 
@@ -77,7 +77,7 @@ export class MorphToMany extends Base {
       var idsOriginal = responseR.body.data.map(resource => {
         return parseInt(resource[this.relationId])
       });
-      
+
       var idsDefined = typeof data[this.name] !== "undefined" && data[this.name] ? data[this.name].map(resource => {
         return parseInt(resource.id)
       }) : [];

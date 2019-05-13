@@ -128,6 +128,7 @@
     "store2": "^2.7.0",
     "string": "^3.3.3",
     "tether": "^1.4.0",
+    "underscore.string": "^3.3.5",
     "vue": "^2.5.0",
     "vue-clickaway": "^2.2.2",
     "vue-codemirror": "^4.0.6",
