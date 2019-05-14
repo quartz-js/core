@@ -35,8 +35,6 @@ export class MorphToMany extends Base {
 
     var ids = this.getIdsNotBootedFromResources(resources)
 
-    ids = resources.filter(resource => { return resource.id }).map(resource => { return resource.id });
-
     if (ids.length === 0) {
       return Promise.resolve(resources);
     }
