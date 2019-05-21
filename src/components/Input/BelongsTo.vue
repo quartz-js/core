@@ -77,9 +77,11 @@ export default {
       return;
     }
 
-    this.attribute.executeRetriever('watchToReload', []).map(field => {
-      this.$watch("value." + field, (newValue, oldValue) => {
-        this.unload(null)
+    this.attribute.executeHooks('watchToReload', []).then((arr) => {
+      return arr.map(field => {
+        this.$watch("value." + field, (newValue, oldValue) => {
+          this.unload(null)
+        })
       })
     })
     

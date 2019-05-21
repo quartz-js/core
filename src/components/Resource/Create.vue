@@ -23,6 +23,38 @@
          </v-navigation-drawer>
       </slot>
     </div>
+
+    <v-card class="resource-card" v-if="type === 'box'">
+      <div class='content text-md-center'>
+        <img :src='internalConfig.icon' width='218' class='my-3'>
+        <h3 class='title my-3'>{{ this.getResourceTitle(internalConfig) }}</h3>
+        <p class='my-4' style='max-width: 800px; margin: 0 auto'>
+          {{ this.getResourceDescription(internalConfig) }}
+          <br><br>
+          <slot name="activator" v-if="activator">
+            <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</v-btn>
+            <v-btn v-if="activatorType === 'icon'" small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></v-btn>
+          </slot>
+          <slot :resource="data" name="main">
+            <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
+              <div class="content text-xs-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
+                <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
+                <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
+                <v-divider class='mb-45'></v-divider>
+                <errors :errors='errors' />
+                <div>
+                  <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
+                </div>
+                <div class='text-xs-right mt-5'>
+                  <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
+                  <v-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+                </div>
+              </div>
+             </v-navigation-drawer>
+          </slot>
+        </p>
+      </div>
+    </v-card>
     <div v-if="type === 'direct'">
       <div class="text-xs-left">
         <div v-if="details">

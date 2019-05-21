@@ -315,7 +315,7 @@ export default {
 
       push[this.config.name] = this.encodeParams(this.paramsToUrl());
 
-      window.history.replaceState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
+      // window.history.replaceState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
 
       //this.$router.replace({query: push});
     },
@@ -328,7 +328,6 @@ export default {
 
       let params = {
         query: this.config.getFinalQuery(this.query),
-        include: this.config.executeRetriever('include', []).join(','),
         show: this.pagination.rowsPerPage,
         page: this.pagination.page,
         sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy,
@@ -344,7 +343,10 @@ export default {
 
       this.selected = [];
 
-      manager.index(params).then(response => {
+      this.config.executeHooks('include', []).then(includes => {
+        params.include = includes.join(",");
+        return manager.index(params)
+      }).then(response => {
         this.errors.search = null
         this.pagination.totalPages = response.body.meta.pagination.total_pages;
         this.pagination.page = response.body.meta.pagination.current_page;

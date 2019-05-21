@@ -7,11 +7,12 @@ export class ServiceProvider {
     container.set('$vue.components', container.get('$vue.components', []).concat([{name: name, options: options}]))
   }
 
-  loadComponents(vue) {
-
-    container.get('$vue.components').map(component => {
-      vue.component(component.name, component.options);
-    })
+  loadComponents() {
+    return (vue) => {
+      container.get('$vue.components').map(component => {
+        vue.component(component.name, component.options);
+      })
+    }
   }
 
   addRoutes(parentName, routes) {

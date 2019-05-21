@@ -56,9 +56,12 @@ export default {
     this.reloadRawValue();
   },
   watch: {
-  	value: function (){
-    	this.reloadRawValue();
-  	}
+  	value: {
+      handler: function (){
+      	this.reloadRawValue();
+    	},
+      deep: true
+    }
   },
   methods: {
   	reloadRawValue() {

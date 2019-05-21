@@ -28,6 +28,7 @@ module.exports = {
     },
     Relations: {
         MorphToMany: require('./relations/MorphToMany').MorphToMany,
+        BelongsToMany: require('./relations/BelongsToMany').BelongsToMany,
         Matrix: require('./relations/Matrix').Matrix,
     },
     Interceptor: require('./app/Interceptor').Interceptor,
@@ -61,6 +62,7 @@ module.exports = {
         Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
 
         Vue.component("QMorphToMany", require('./components/Input/MorphToMany').default)
+        Vue.component("QBelongsToMany", require('./components/Input/BelongsToMany').default)
         Vue.component("QBelongsTo", require('./components/Input/BelongsTo').default)
         Vue.component("QBelongsToOne", require('./components/Input/BelongsToOne').default)
         Vue.component("QHtml", require('./components/Input/Html').default)

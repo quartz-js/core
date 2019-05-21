@@ -1,6 +1,5 @@
 <template>
   <div>
-    awd
       <div v-if="show && rawValue" class="mt-4">
       <v-text-field 
         :value="rawValue.filename" prepend-icon='attach_file'
@@ -48,6 +47,7 @@
 <script>
 
 import Cropper from 'cropperjs';
+import _ from 'lodash';
 require('cropperjs/dist/cropper.min.css');
 import { BaseAttribute } from '../../attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
@@ -117,6 +117,10 @@ export default {
   	},
     onChange () {
       this.attribute.injectValue(this.value, this.rawValue);
+
+      if (this.attribute.manager().hasAttribute('name') && !this.value['name']) {
+        this.attribute.manager().getAttribute('name').injectValue(this.value, this.rawValue.file.name);
+      }
 
       this.$emit('input', this.value);
     },

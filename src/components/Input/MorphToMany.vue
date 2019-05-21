@@ -175,9 +175,6 @@ export default {
         query: v, 
         value: this.value
       });
-
-      console.log(this.attribute.indexerApi);
-
       this.attribute.indexerApi.index(params)
         .then(response => {
           this.items = response.body.data.map((item) => {

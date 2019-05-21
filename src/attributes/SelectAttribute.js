@@ -43,7 +43,7 @@ export class SelectAttribute extends BaseAttribute {
 
   getOptionByValue (value) {
     return this.options.find(function (option) {
-      return option.value === value;
+      return option.value == value;
     });
   }
 

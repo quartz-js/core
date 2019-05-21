@@ -47,14 +47,6 @@ export class BaseAttribute {
     }
   }
 
-  executeRetriever (key, data) {
-    return typeof this.retrievers[key] !== "undefined" ? this.retrievers[key](data) : data
-  }
-
-  setRetriever (key, closure) {
-    this.retrievers[key] = closure
-  }
-
   set (name, value) {
     this[name] = value
 
@@ -100,6 +92,18 @@ export class BaseAttribute {
     var hooks = typeof this.hooks[$event] !== "undefined" ? this.hooks[$event] : [];
 
     return hooks
+  }
+
+
+  executeHooks($event, data) {
+
+    var hooks = this.getHooks($event, data);
+
+    return hooks.reduce(function (prev, curr) {
+      return prev.then((data) => {
+        return curr(data);
+      });
+    }, Promise.resolve(data));
   }
 
 

@@ -150,16 +150,7 @@ export class Manager {
       this[i] = params[i];
     }
 
-    this
-  }
-
-  executeRetriever (key, data) {
-
-    this.attributes.map(attribute => {
-      data = attribute.executeRetriever(key, data)
-    })
-
-    return data
+    this.hooks = [];
   }
 
   addAction(type, component) {
@@ -207,8 +198,17 @@ export class Manager {
     return this
   }
   
+  addHook($event, callback) {
+    if (typeof this.hooks[$event] === "undefined") {
+      this.hooks[$event] = [];
+    }
+
+    this.hooks[$event].push(callback)
+
+  }
+
   getHooks($event, data){ 
-    var hooks = [];
+    var hooks = typeof this.hooks[$event] !== "undefined" ? this.hooks[$event] : [];
 
     this.attributes.map(attribute => {
       hooks = hooks.concat(attribute.getHooks($event, data))
@@ -226,8 +226,8 @@ export class Manager {
         return curr(data);
       });
     }, Promise.resolve(data));
-
   }
+
 
   clone () {
     return clone(this);
@@ -244,8 +244,8 @@ export class Manager {
   createResource (data) {
 
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
-
-      var params = this.executeRetriever('beforePersist', data.resource);
+      return this.executeHooks('beforePersist', data.resource);
+    }).then(params => {
       
       params = _.pickBy(params, (value) => {
         return value !== null
@@ -292,9 +292,8 @@ export class Manager {
   updateResource (id, data) {
     
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
-
-      var params = this.executeRetriever('beforePersist', data.resource);
-
+      return this.executeHooks('beforePersist', data.resource);
+    }).then(params => {
       return this.manager.update(id, params);
     }).then(response => {
 
