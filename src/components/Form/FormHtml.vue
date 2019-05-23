@@ -47,7 +47,7 @@ export default {
     }
   },
   mounted () {
-    this.rawValue = this.beautify(this.value);
+    this.rawValue = this.beautify(this.value ? this.value : '');
   },
 
   methods: {
