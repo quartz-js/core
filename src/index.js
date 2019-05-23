@@ -25,6 +25,7 @@ module.exports = {
         File: require('./attributes/FileAttribute').FileAttribute,
         Email: require('./attributes/EmailAttribute').EmailAttribute,
         Password: require('./attributes/PasswordAttribute').PasswordAttribute,
+        Html: require('./attributes/HtmlAttribute').HtmlAttribute,
     },
     Relations: {
         MorphToMany: require('./relations/MorphToMany').MorphToMany,
