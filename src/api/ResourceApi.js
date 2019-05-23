@@ -84,8 +84,11 @@ export class ResourceApi {
     return response;
   }
 
-  post (url, body, options) {
-    return Vue.http.post(url, body, options)
+  post (url, params, options) {
+    return Vue.http.post(this.getFullUrl() + url, params instanceof FormData ? params : this.getFullParams(params), _.merge({ headers: { Authorization: 'Bearer ' + this.access_token }}, options))
+      .then((response) => { 
+        return this.parse(response) 
+      });
   }
 
   get (url, options) {
