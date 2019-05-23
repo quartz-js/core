@@ -12,7 +12,7 @@
       </v-card>
     </v-dialog> 
 
-    <v-card class="resource-card pa-3 mb-4" v-if="(pagination && pagination.totalItems !== 0) || query">
+    <v-card class="resource-card pa-3 mb-4" v-if="loading || (pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
         <v-btn color="primary" @click="load()">{{ $t('$quartz.core.search') }}</v-btn>
@@ -22,12 +22,9 @@
     </v-card>
 
     <v-card class="resource-card">
-
-
       <div v-if="showContent">
-        <div v-if="(pagination && pagination.totalItems !== 0) || query">
+        <div v-if="loading || (pagination && pagination.totalItems !== 0) || query">
         
-
         <v-data-table
           v-model="selected"
           :headers="getHeaders()"
@@ -89,12 +86,7 @@
               </slot>
               <td>
                 <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
-
-                  <div v-for="(action, key) in config.actions.icon">
-                    <component v-bind:is="action" :resource="props.item" :config="config" />
-                  </div>
-                  
-                  <slot name="actions" :resource="props.item"></slot>
+                  <slot name="actions" :resource="props.item" :config="config"></slot>
                   <v-btn class='ma-0 mx-1' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
                 </div>
               </td>
@@ -181,7 +173,7 @@ export default {
         search: null
       },
       timeout: null,
-      loading: true
+      loading: false
     }
   },
   computed: {
@@ -324,9 +316,15 @@ export default {
     },
     load: function (force) {
 
+      if (this.loading) {
+
+        return;
+      }
+
       var manager = this.config.manager;
 
       let params = {
+        include: '',
         query: this.config.getFinalQuery(this.query),
         show: this.pagination.rowsPerPage,
         page: this.pagination.page,
@@ -348,6 +346,7 @@ export default {
         return manager.index(params)
       }).then(response => {
         this.errors.search = null
+
         this.pagination.totalPages = response.body.meta.pagination.total_pages;
         this.pagination.page = response.body.meta.pagination.current_page;
         this.pagination.totalItems = response.body.meta.pagination.total;
@@ -359,7 +358,6 @@ export default {
           body.data = r;
           this.response = body;
           this.updateUrl();
-          this.loading = false;
         })
 
       }).catch(response => {
@@ -377,8 +375,9 @@ export default {
         }
 
         this.response.data = [];
+      }).finally(response => {
         this.loading = false;
-      });
+      })
     },
 
     removeSelected: function () {
