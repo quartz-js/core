@@ -1,10 +1,10 @@
 <template>
   <p v-if="show">
     <label class="label-show">{{ getAttributeLabel(attribute) }}</label>
-    <!--<span v-if="">
+    <span v-if="attribute.getClassName() === 'BelongsToAttribute'">
       <router-link :to="attribute.getRelationManager(resource).getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value">Show</router-link>
-    </span>-->
-    <span>
+    </span>
+    <span v-else>
       <span>
         <span v-if="html !== null" class="show-value" v-html="html"/>
       </span>
