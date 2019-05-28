@@ -6,7 +6,7 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource);
 
 export class ResourceApi {
-  constructor () {
+  constructor (language) {
     this.url = container.get('config').app.api.url;
     this.access_token = container.get('oauth').getToken();
     this.params = {};
@@ -18,6 +18,11 @@ export class ResourceApi {
 
       return query;
     }
+
+    this.headers = {
+      "Authorization": 'Bearer ' + this.access_token,
+      "Accept-Language": language
+    };
   }
 
   setParams (params) {
@@ -85,7 +90,7 @@ export class ResourceApi {
   }
 
   post (url, params, options) {
-    return Vue.http.post(this.getFullUrl() + url, params instanceof FormData ? params : this.getFullParams(params), _.merge({ headers: { Authorization: 'Bearer ' + this.access_token }}, options))
+    return Vue.http.post(this.getFullUrl() + url, params instanceof FormData ? params : this.getFullParams(params), _.merge({ headers: this.headers }, options))
       .then((response) => { 
         return this.parse(response) 
       });
@@ -104,7 +109,7 @@ export class ResourceApi {
    */
   index (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.get(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
+    return Vue.http.get(this.getFullUrl(), { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -116,7 +121,7 @@ export class ResourceApi {
    */
   store (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.put(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
+    return Vue.http.put(this.getFullUrl(), { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -127,7 +132,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   create (params) {
-    return Vue.http.post(this.getFullUrl(), this.getFullParams(params), { headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
+    return Vue.http.post(this.getFullUrl(), this.getFullParams(params), { headers: this.headers }).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -139,7 +144,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   show (id, params) {
-    return Vue.http.get(this.getFullUrl() + '/' + id, { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
+    return Vue.http.get(this.getFullUrl() + '/' + id, { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -151,7 +156,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   update (id, params) {
-    return Vue.http.put(this.getFullUrl() + '/' + id, this.getFullParams(params), { headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
+    return Vue.http.put(this.getFullUrl() + '/' + id, this.getFullParams(params), { headers: this.headers}).then((response) => { return this.parse(response) });
   }
 
   /**
@@ -162,7 +167,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   remove (id) {
-    return Vue.http.delete(this.getFullUrl() + '/' + id, { headers: { Authorization: 'Bearer ' + this.access_token }});
+    return Vue.http.delete(this.getFullUrl() + '/' + id, { headers: this.headers});
   }
 
   /**
@@ -174,6 +179,6 @@ export class ResourceApi {
    */
   erase (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.delete(this.getFullUrl(), { params: this.getFullParams(params), headers: { Authorization: 'Bearer ' + this.access_token }}).then((response) => { return this.parse(response) });
+    return Vue.http.delete(this.getFullUrl(), { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
   }
 };
