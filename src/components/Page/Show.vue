@@ -37,14 +37,17 @@
 
     </v-card>
     
-    <v-tabs class='show-tabs my-4'>
-      <slot :resource="data" name="tabs" :config="config">
+    <v-tabs class='show-tabs my-4' v-model="tabs">
+      <slot :resource="data" name="tabs" :config="config" :tabs="tabs">
         <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
         <v-tab-item :transition="false" :reverse-transition="false">
           <slot :resource="data" name="body"></slot>
         </v-tab-item>
       </slot>
     </v-tabs>
+    <slot :resource="data" name="footer" :config="config">
+
+    </slot>
   </div>
 </template>
 
@@ -60,6 +63,11 @@ export default {
   components: {
     Errors,
     Remove
+  },
+  data() {
+    return {
+      tabs: null
+    }
   },
   mixins: [ 
     LoadResource,

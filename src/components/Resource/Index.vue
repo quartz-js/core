@@ -81,7 +81,17 @@
               </td>
               <slot name="row" :resource="props.item" :config="config">
                 <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index" class="cell" :width="getAttributeWidth(attribute)">
-                  {{ attribute.extractReadableValue(props.item) }}             
+
+
+                  <span v-if="attribute.getClassName() === 'BelongsToAttribute' && props.item">
+                    <router-link :to="attribute.getRelationManager(props.item).getRouteShow(attribute.extractValue(props.item))"class="show-value">
+                      {{ attribute.extractReadableValue(props.item) }}   
+                    </router-link>
+                  </span>
+                  <span v-else>
+
+                  {{ attribute.extractReadableValue(props.item) }}    
+                  </span>         
                 </td>
               </slot>
               <td>

@@ -45,6 +45,12 @@ export class ResourceApi {
     return this;
   }
 
+  parseRelationship (relationship, response) {
+    return response.body.included.find((include) => {
+      return include.type === relationship.type && include.id === relationship.id
+    })
+  }
+
   parseData (data, response) {
 
     if (!data) {
@@ -52,11 +58,19 @@ export class ResourceApi {
     }
     
     if (data.relationships) {
-      _.map(data.relationships, (relationship, key) => {
+      _.map(data.relationships, (relationships, key) => {
 
-        data.attributes[key] = this.parseData(response.body.included.find((include) => {
-          return include.type === relationship.data.type && include.id === relationship.data.id
-        }), response);
+        if (!Array.isArray(relationships.data)) {
+          data.attributes[key] = this.parseData(this.parseRelationship(relationships, response), response);
+        } else {
+          data.attributes[key] = [];
+
+          relationships.data.map((relationship, keyRelation) => {
+            data.attributes[key][keyRelation] = this.parseData(this.parseRelationship(relationship, response), response);
+          })
+
+        }
+
       })
     }
 

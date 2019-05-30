@@ -27,41 +27,6 @@ export class MorphToMany extends Base {
     };
   }
 
-
-  /**
-   * @return {Callable}
-   */
-  load (resources) {
-
-    var ids = this.getIdsNotBootedFromResources(resources)
-
-    if (ids.length === 0) {
-      return Promise.resolve(resources);
-    }
-
-    return this.storageApi.index({
-      query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} in (${ids.join(',')})`, 
-      show: 999,
-      include: `${this.relationName}`
-    }).then(responseR => {
-      
-      return Promise.resolve(resources.map(resource => {
-
-        let values = responseR.body.data.filter(r => {
-          return parseInt(r[this.morphKeyColumn]) === parseInt(resource.id)
-        }).map(r => {
-          return r[this.relationName]
-        });
-
-        this.injectValue(resource, values);
-
-        return resource;
-      }))
-    });
-  }
-
-
-
   /**
    * @return {Callable}
    */
