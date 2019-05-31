@@ -61,7 +61,7 @@ export class ResourceApi {
       _.map(data.relationships, (relationships, key) => {
 
         if (!Array.isArray(relationships.data)) {
-          data.attributes[key] = this.parseData(this.parseRelationship(relationships, response), response);
+          data.attributes[key] = this.parseData(this.parseRelationship(relationships.data, response), response);
         } else {
           data.attributes[key] = [];
 
