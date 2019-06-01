@@ -33,7 +33,6 @@ export var LoadResource = {
     },
     loadDataByQuery(query)
     {
-
       this.config.executeHooks('include', []).then(includes => {
         return this.config.manager.index({
           include: includes.join(","),
@@ -55,7 +54,7 @@ export var LoadResource = {
     loadDataByQueryOrId(id) {
       
       if (this.config.getFinalQuery(null)) {
-        return this.loadDataByQuery(this.config.getFinalQuery(`id eq ${id}`));
+        return this.loadDataByQuery(`id eq ${id}`);
       }
 
       if (id) {
@@ -82,6 +81,7 @@ export var LoadResource = {
 
     loadDataByProps () {
 
+
       if (this.resource) {
         if (JSON.stringify(this.resource) === JSON.stringify(this.data)) {
           return;
@@ -100,6 +100,7 @@ export var LoadResource = {
       }
     },
     loadDataByUrl () {
+      console.log('Loading by url');
       return this.loadDataByQueryOrId(this.config.getId(this));
     },
     listenResourceEvents() {
