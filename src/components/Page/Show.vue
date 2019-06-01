@@ -85,7 +85,7 @@ export default {
     border: 2px solid #efefef;
     border-bottom: none;
     margin-bottom: -2px;
-    z-index: 3;
+    z-index: 1;
     position: relative;
   }
 </style>
