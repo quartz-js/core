@@ -17,13 +17,13 @@ export class MorphToMany extends Base {
     };
 
     this.injector = (resource, values) => {
-      resource[this.name] = values;
+      resource[this.column] = values;
 
       return resource;
     };
 
     this.extractor = resource => {
-      return resource && typeof resource[this.name] !== 'undefined' ? resource[this.name] : [];
+      return resource && typeof resource[this.column] !== 'undefined' ? resource[this.column] : [];
     };
   }
 
@@ -41,7 +41,7 @@ export class MorphToMany extends Base {
         return parseInt(resource[this.relationId])
       });
 
-      var idsDefined = typeof data[this.name] !== "undefined" && data[this.name] ? data[this.name].map(resource => {
+      var idsDefined = typeof data[this.column] !== "undefined" && data[this.column] ? data[this.column].map(resource => {
         return parseInt(resource.id)
       }) : [];
       
