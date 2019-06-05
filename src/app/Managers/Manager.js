@@ -297,13 +297,15 @@ export class Manager {
       return this.manager.update(id, params);
     }).then(response => {
 
+      data = _.merge(data, response.body.data);
+
       let promises = this.attributes.map(attribute => {
-        return attribute.persist(response.body.data.id, data);
+        return attribute.persist(data.id, data);
       });
 
       return Promise.all(promises).then(() => {
         this.onUpdateSuccess(this, response);
-        bus.$emit(this.resourceEvent("updated"), response.body.data);
+        bus.$emit(this.resourceEvent("updated"), data);
 
         return response;
       });
