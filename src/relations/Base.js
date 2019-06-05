@@ -42,7 +42,7 @@ export class Base extends BaseAttribute {
 
   filterIndexerParams (params) {
     return {
-      show: 5,
+      show: 50,
       query: this.executeQuery(params.query ? params.query : '', params.value)
     }
   }
