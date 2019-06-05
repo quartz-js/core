@@ -1,5 +1,6 @@
 {
   "$quartz": {
+    "error": "Si è verificato un errore",
     "tags": {
       "data": "Applicazione",
       "system": "Sfrutta questi strumenti per agevolare il tuo lavoro"

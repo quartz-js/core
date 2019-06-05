@@ -1,5 +1,6 @@
 {
   "$quartz": {
+    "error": "An error has occured",
     "tags": {
       "data": "Application",
       "system": "Help yourself with these tools"
