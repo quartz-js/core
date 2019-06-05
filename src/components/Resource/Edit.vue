@@ -122,7 +122,6 @@ export default {
 
         this.$emit('update', this.data);
         bus.$emit(this.config.resourceEvent("updated"), this.data);
-          
       }
     }
   },

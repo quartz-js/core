@@ -4,6 +4,9 @@
     <span v-if="attribute.getClassName() === 'BelongsToAttribute' && attribute.extractValue(resource) !== null">
       <router-link :to="attribute.getRelationManager(resource).getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value" />
     </span>
+    <span v-if="(attribute.getClassName() === 'BelongsToMany' || attribute.getClassName() === 'MorphToMany') && attribute.extractValue(resource) !== null" class="py-2 px-0" style='display:block'>
+      <v-chip color="primary" dark v-for="item in attribute.extractValue(resource)">{{ item.name }}</v-chip>
+    </span>
     <span v-else>
       <span>
         <span v-if="html !== null" class="show-value" v-html="html"/>
