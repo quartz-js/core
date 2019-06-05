@@ -144,6 +144,17 @@ export class BelongsToAttribute extends Base {
     return relationable
   }
 
+  onCreate(data) {
+    bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
+  }
+
+  onUpdate(data) {
+    bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
+  }
+
+  onRemove(data) {
+    bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
+  }
 
   getClassName() {
     return 'BelongsToAttribute'

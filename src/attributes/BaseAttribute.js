@@ -284,6 +284,16 @@ export class BaseAttribute {
 
   }
 
+  onUpdate(data) {
+
+  }
+  onRemove(data) {
+
+  }
+  onCreate(data) {
+
+  }
+
   getClassName() {
     return 'BaseAttribute'
   }

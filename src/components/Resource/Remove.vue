@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     remove: function () {
-      this.config.removeResource(this.data.id).then((response) => {
+      this.config.removeResource(this.data).then((response) => {
         this.$emit('removed')
       })
     },

@@ -104,15 +104,28 @@ export var LoadResource = {
       return this.loadDataByQueryOrId(this.config.getId(this));
     },
     listenResourceEvents() {
+
+      bus.$on(this.config.resourceEvent("changed"), data => {
+        if (this.data.id) {
+          this.loadDataById(this.data.id);
+        }
+      });
+
       bus.$on(this.config.resourceEvent("updated"), data => {
-        if (data.id === this.data.id) {
+
+        if (!data) {
+          return;
+        }
+
+        if (parseInt(data.id) === parseInt(this.data.id)) {
+          console.log(JSON.stringify(data));
           this.config.loadResources([data]).then((data) => {
             this.setData(data[0]);
           })
         }
       });
       bus.$on(this.config.resourceEvent("removed"), data => {
-        if (data.id === this.data.id) {
+        if (parseInt(data.id) === parseInt(this.data.id)) {
           // this.data = null;
         }
       });

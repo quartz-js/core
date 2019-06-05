@@ -233,11 +233,15 @@ export class Manager {
     return clone(this);
   }
 
-  removeResource (id) {
+  removeResource (data) {
 
-    return this.manager.remove(id).then(response => {
+    return this.manager.remove(data.id).then(response => {
       this.onRemoveSuccess(this, response);
-      bus.$emit(this.resourceEvent("removed"), id);
+      bus.$emit(this.resourceEvent("removed"), data.id);
+
+      this.attributes.map((attribute) => {
+        attribute.onRemove(data);
+      });
     })
   }
 
@@ -257,6 +261,12 @@ export class Manager {
       let promises = this.attributes.map(attribute => {
         return attribute.persist(response.body.data.id, data);
       });
+
+
+      this.attributes.map((attribute) => {
+        attribute.onCreate(data);
+      });
+
 
       return Promise.all(promises).then(() => {
         this.onCreateSuccess(this, response);
@@ -306,6 +316,10 @@ export class Manager {
       return Promise.all(promises).then(() => {
         this.onUpdateSuccess(this, response);
         bus.$emit(this.resourceEvent("updated"), data);
+
+        this.attributes.map((attribute) => {
+          attribute.onUpdate(data);
+        });
 
         return response;
       });
