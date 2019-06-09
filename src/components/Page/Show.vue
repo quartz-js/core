@@ -37,14 +37,16 @@
 
     </v-card>
     
-    <v-tabs class='show-tabs my-4' v-model="tabs">
-      <slot :resource="data" name="tabs" :config="config" :tabs="tabs">
-        <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
-        <v-tab-item :transition="false" :reverse-transition="false">
-          <slot :resource="data" name="body"></slot>
-        </v-tab-item>
-      </slot>
-    </v-tabs>
+    <div class="resource-card">
+      <v-tabs class='show-tabs my-4' v-model="tabs">
+        <slot :resource="data" name="tabs" :config="config" :tabs="tabs">
+          <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
+          <v-tab-item :transition="false" :reverse-transition="false">
+            <slot :resource="data" name="body"></slot>
+          </v-tab-item>
+        </slot>
+      </v-tabs>
+    </div>
     <slot :resource="data" name="footer" :config="config">
 
     </slot>
@@ -82,10 +84,13 @@ export default {
 </script>
 <style>
   .show-tabs .v-tabs__wrapper {
-    border: 2px solid #efefef;
     border-bottom: none;
     margin-bottom: -2px;
     z-index: 1;
     position: relative;
+  }
+
+  .v-tabs__bar {
+    z-index: 1;
   }
 </style>

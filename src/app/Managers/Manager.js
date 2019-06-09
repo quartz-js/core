@@ -169,7 +169,6 @@ export class Manager {
         // @todo: label of fixed
         fixed = typeof fixed === 'object' && fixed ? fixed.id : fixed;
 
-
         let newQuery = '';
 
         if (fixed === null) {

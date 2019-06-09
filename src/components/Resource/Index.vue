@@ -80,9 +80,17 @@
                 ></v-checkbox>
               </td>
               <slot name="row" :resource="props.item" :config="config">
-                <td v-for="(attribute, index) in attributes" v-if="showAttribute(attribute)" :key="index" class="cell" :width="getAttributeWidth(attribute)">
+                <td 
+                  v-for="(attribute, index) in attributes" 
+                  v-if="showAttribute(attribute)" 
+                  :key="index" 
+                  class="cell" 
+                  :width="getAttributeWidth(attribute)" 
+                  style='cursor: pointer' 
+                  @click="switchRow(props.item);"
+                >
                   <span v-if="attribute.getClassName() === 'BelongsToAttribute' && attribute.extractValue(props.item) !== null">
-                    <router-link :to="attribute.getRelationManager(props.item).getRouteShow(attribute.extractValue(props.item))"class="show-value">
+                    <router-link :to="attribute.getRelationManager(props.item).getRouteShow(attribute.extractValue(props.item))" class="show-value">
                       {{ attribute.extractReadableValue(props.item) }}   
                     </router-link>
                   </span>
@@ -95,6 +103,15 @@
                 <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
                   <slot name="actions" :resource="props.item" :config="config"></slot>
                   <v-btn class='ma-0 mx-1' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="currentRowOpened === props.item.id">
+              <td :colspan="attributesShowable().length + 2">
+                <div class="mt-3"></div>
+                <div v-for="(attribute, index) in attributesShowable()">
+                  <q-text :resource="props.item" :attribute="attribute"></q-text>  
+                  
                 </div>
               </td>
             </tr>
@@ -126,6 +143,7 @@
 
 import { utils } from '../../mixins/utils'
 import Remove from '../../components/Resource/Remove'
+import QText from '../../components/Show/Text'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 var qs = require('qs');
 import _ from 'lodash'
@@ -136,6 +154,7 @@ export default {
     ResourceLocalization,
   ],
   components: {
+    QText,
     Remove,
   },
   props: {
@@ -154,6 +173,7 @@ export default {
   },
   data: function () {
     return {
+      currentRowOpened: 0,
       showContent: true,
       query: '',
       rowsPerPageItems: [
@@ -258,6 +278,18 @@ export default {
     });
   },
   methods: {
+    switchRow (item) {
+      if (window.getSelection().toString()) {
+        return;
+      }
+      
+      this.currentRowOpened = this.currentRowOpened != item.id ? item.id : 0
+    },
+    attributesShowable () {
+      return this.attributes.filter((attr) => {
+        return this.showAttribute(attr);
+      });
+    },
     selectableListableAttributes(arr) {
       return arr.map((attribute) => {
         return {
