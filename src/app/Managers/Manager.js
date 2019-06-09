@@ -282,21 +282,19 @@ export class Manager {
     })
   }
 
-  newEntity() {
+  newEntity(route) {
     let data = {};
 
-    this.injectDefault(data)
+    this.injectDefault(data, route)
 
     return data;
   }
 
-  injectDefault(data) {
+  injectDefault(data, route) {
     this.attributes.map(attribute => {
-      attribute.injectDefault(data)
+      attribute.injectDefault(data, route)
     });
   }
-
-      
 
   updateResource (id, data) {
     

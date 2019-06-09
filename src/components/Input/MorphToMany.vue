@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show && attribute">
+  <div v-if="attribute && this.canShow()">
     <v-layout row wrap align-center>
       <v-autocomplete
           :loading="loading"

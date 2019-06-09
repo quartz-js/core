@@ -54,6 +54,11 @@ export class BelongsToAttribute extends Base {
     
     return JSON.stringify(this.extractor(t)) === JSON.stringify(value);
   }
+
+  parseExtractedDefaultFromRoute (value) {
+    return value ? JSON.parse(value) : null;
+  }
+
   addBeforeCreateHook () {
     this.addHook('BeforeCreate', (data) => {
 

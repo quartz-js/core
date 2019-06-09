@@ -1,4 +1,5 @@
 import { Base } from './Base'
+import { Helper } from '../app/Helper'
 
 export class MorphToMany extends Base {
 
@@ -8,8 +9,24 @@ export class MorphToMany extends Base {
     this.indexerApi = indexerApi;
     this.storageApi = storageApi;
 
-    this.query = (key) => {
-      return "name ct '" + key + "'";
+    this.query = (key, resource) => {
+
+      let queries = [];
+
+      queries.push("name ct '" + key + "'");
+
+      if (this.style && this.style.query) {
+
+        var template = (tpl, args) => tpl.replace(/\${(\w+)}/g, (_, v) => args[v]);
+
+        let query = template(this.style.query, resource);
+
+        query = query.replace("eq null", "is null");
+        queries.push(query);
+      }
+
+      return Helper.mergePartsQuery(queries, "and");
+
     };
 
     this.mutator = (value) => {
@@ -32,8 +49,17 @@ export class MorphToMany extends Base {
    */
   persist (id, data) {
 
+
+    let query;
+
+    if (this.morphTypeColumn) {
+      query = `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id}`;
+    } else {
+      query = `${this.morphKeyColumn} eq ${id}`;
+    }
+
     return this.storageApi.index({
-      query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id}`, 
+      query: query, 
       show: 999
     }).then(responseR => {
       
@@ -56,7 +82,10 @@ export class MorphToMany extends Base {
       var promises = idsToAdd.map((resourceId) => {
         var params = {};
 
-        params[this.morphTypeColumn] = this.morphTypeValue
+        if (this.morphTypeColumn) {
+          params[this.morphTypeColumn] = this.morphTypeValue
+        }
+
         params[this.morphKeyColumn] = id
         params[this.relationId] = resourceId
 
@@ -64,8 +93,17 @@ export class MorphToMany extends Base {
       });
 
       if (idsToRemove.length > 0) {
+
+        let query;
+
+        if (this.morphTypeColumn) {
+          query = `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id} and ${this.relationId} in (${idsToRemove.join(',')})`
+        } else {
+          query = `${this.morphKeyColumn} eq ${id} and ${this.relationId} in (${idsToRemove.join(',')})`
+        }
+
         promises.push(this.storageApi.erase({
-          query: `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id} and ${this.relationId} in (${idsToRemove.join(',')})`
+          query: query
         }));
       }
 

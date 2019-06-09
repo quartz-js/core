@@ -21,6 +21,8 @@ export class BaseAttribute {
     };
 
     this.default = () => {
+
+
       return null;
     };
 
@@ -68,8 +70,19 @@ export class BaseAttribute {
     return this;
   }
 
-  injectDefault (data) {
-    this.injectValue(data, this.getDefault())
+  injectDefault (data, route) {
+
+    let defaultByRoute = this.parseExtractedDefaultFromRoute(this.extractDefaultFromRoute(route));
+
+    this.injectValue(data, defaultByRoute ? defaultByRoute : this.getDefault())
+  }
+
+  extractDefaultFromRoute (route) {
+    return route['query'] && route['query'][this.name] ? route['query'][this.name] : null;
+  }
+
+  parseExtractedDefaultFromRoute (value) {
+    return value;
   }
 
   /**

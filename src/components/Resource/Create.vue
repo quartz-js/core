@@ -200,11 +200,13 @@ export default {
     },
 
     load () {
-      this.data = this.internalConfig.newEntity();
+      this.data = this.internalConfig.newEntity(this.$route);
     }
   },
   created() {
     this.internalConfig = this.config.clone();
+  },
+  mounted() {
     this.load();
   }
 }
