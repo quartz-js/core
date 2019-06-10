@@ -1,34 +1,39 @@
 <template>
   <div v-if="show && attribute && attribute.getRelationManager(this.value)">
-    <v-layout row align-top class="mt-4">
-      <v-spacer>
-        <v-autocomplete 
-          :loading="loading"
-          :items="items"
-          item-text="label"
-          :label="label !== undefined ? label : getAttributeLabel(attribute)"
-          v-model="rawValue"
-          @input="onChange"
-          :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
-          persistent-hint
-          :search-input="search"
-          :search-input.sync="search"
-          return-object
-          editable
-          clearable
-        ></v-autocomplete>
-      </v-spacer>
-      <div class="pt-4">
-        <component 
-          v-for="component in attribute.getRelationableActions(value)"
-          v-bind:is="component"
-          :resource="rawValue"
-          :config="attribute.getRelationManager(value).clone()" 
-          :onManagerLoad="onRelationableManagerLoad"
-          activatorType="icon"
-        ></component>
-      </div>
-    </v-layout>
+    <div v-if="!attribute.style.form">
+      <v-layout row align-top class="mt-4">
+        <v-spacer>
+          <v-autocomplete 
+            :loading="loading"
+            :items="items"
+            item-text="label"
+            :label="label !== undefined ? label : getAttributeLabel(attribute)"
+            v-model="rawValue"
+            @input="onChange"
+            :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
+            persistent-hint
+            :search-input="search"
+            :search-input.sync="search"
+            return-object
+            editable
+            clearable
+          ></v-autocomplete>
+        </v-spacer>
+        <div class="pt-4">
+          <component 
+            v-for="component in attribute.getRelationableActions(value)"
+            v-bind:is="component"
+            :resource="rawValue"
+            :config="attribute.getRelationManager(value).clone()" 
+            :onManagerLoad="onRelationableManagerLoad"
+            activatorType="icon"
+          ></component>
+        </div>
+      </v-layout>
+    </div>
+    <div v-if="attribute.style.form && attribute.style.form.name === 'checker'" style='margin-bottom:-25px'>
+      <v-checkbox v-model="checked" :label="getAttributeLabel(attribute)" @change="onChange()"></v-checkbox>
+    </div>
   </div>
 </template>
 <script>
@@ -62,6 +67,7 @@ export default {
   },
   data: function () {
     return {
+      checked: false,
       rawValue: null,
       loading: false,
       search: '',
@@ -87,6 +93,10 @@ export default {
     
     var val = this.attribute.extractValue(this.value);
     
+    if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
+      this.querySelections(''); 
+    } 
+
     if (val === null && this.value[this.name] !== null) {
       this.loading = true;
       this.attribute.load([JSON.parse(JSON.stringify(this.value))]).then((data) => {
@@ -103,9 +113,10 @@ export default {
   watch: {
     value: {
       handler: function (val) {
-        this.rawValue = this.attribute.extractValue(this.value);
-        if (this.rawValue) {
-          this.rawValue.label = this.attribute.getLabelByResource(this.rawValue);
+        this.loadByVal(this.attribute.extractValue(this.value));
+
+        if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
+          this.querySelections(''); 
         }
       },
       deep: true
@@ -120,8 +131,6 @@ export default {
       let relationable = this.attribute.getRelationable(this.value);
       relationable.onLoad(t);
 
-
-
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
       }
@@ -135,15 +144,24 @@ export default {
       this.onChange();
     },
     loadByVal (val) {
+
       if (val) {
         val.label = this.attribute.getLabelByResource(val);
         this.items.push(val);
+
+        this.checked = this.items.length === 1 || (this.items.length > 1 && val.id === this.items[1].id)
+
       }
 
       this.rawValue = val;
+
     },
     querySelections (v) {
       this.loading = true;
+
+      if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
+        v = null;
+      }
 
       this.lastRawValue = this.rawValue;
 
@@ -156,15 +174,28 @@ export default {
 
       params.query = manager.getFinalQuery(params.query);
 
-      manager.manager.index(params).then(response => {
+      this.attribute.executeHooks('include', []).then(includes => {
+        params.include = includes.join(",");
+        return manager.manager.index(params)
+      }).then(response => {
         this.items = response.body.data.map((item) => {
           item.label = this.attribute.getLabelByResource(item);
           return item;
         });
+
+
       })
       .finally(() => { this.loading = false});
     },
     onChange: function (val) {
+
+      if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
+        this.rawValue = this.items.filter((item, key)=> {
+          return (this.checked === false && key === 0) || (this.checked === true && key === 1);
+        })[0]
+
+        console.log(this.rawValue.id);
+      }
 
       this.query = this.attribute.mutator(this.rawValue);
 

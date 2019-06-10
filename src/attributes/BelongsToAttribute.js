@@ -7,10 +7,6 @@ export class BelongsToAttribute extends Base {
   constructor (name, options) {
     super(name, options);
 
-    this.query = (key) => {
-      return "name ct '" + key + "'";
-    };
-
     this.relationables = [];
     this.relationableSwitcher = (resource) => {
       return null;

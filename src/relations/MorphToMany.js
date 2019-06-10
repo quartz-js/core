@@ -1,5 +1,4 @@
 import { Base } from './Base'
-import { Helper } from '../app/Helper'
 
 export class MorphToMany extends Base {
 
@@ -8,27 +7,7 @@ export class MorphToMany extends Base {
 
     this.indexerApi = indexerApi;
     this.storageApi = storageApi;
-
-    this.query = (key, resource) => {
-
-      let queries = [];
-
-      queries.push("name ct '" + key + "'");
-
-      if (this.style && this.style.query) {
-
-        var template = (tpl, args) => tpl.replace(/\${(\w+)}/g, (_, v) => args[v]);
-
-        let query = template(this.style.query, resource);
-
-        query = query.replace("eq null", "is null");
-        queries.push(query);
-      }
-
-      return Helper.mergePartsQuery(queries, "and");
-
-    };
-
+    
     this.mutator = (value) => {
         return value ? this.getLabelByResource(value) : null;
     };

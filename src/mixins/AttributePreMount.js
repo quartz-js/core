@@ -9,7 +9,6 @@ export var AttributePreMount = {
     canShowDueToCondition()
     {
       if (this.attribute.get('style') && this.attribute.get('style').condition) {
-        console.log(this.attribute.get('style').condition);
 
         for (let key in this.attribute.get('style').condition) {
           let value = this.attribute.get('style').condition[key];
