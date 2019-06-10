@@ -149,8 +149,7 @@ export default {
         val.label = this.attribute.getLabelByResource(val);
         this.items.push(val);
 
-        this.checked = this.items.length === 1 || (this.items.length > 1 && val.id === this.items[1].id)
-
+        this.checked = (this.items.length > 1 && val.id === this.items[1].id)
       }
 
       this.rawValue = val;
@@ -183,6 +182,10 @@ export default {
           return item;
         });
 
+
+        if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
+          this.loadByVal(this.rawValue)
+        }
 
       })
       .finally(() => { this.loading = false});

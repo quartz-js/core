@@ -46,7 +46,7 @@ export class MorphToMany extends Base {
         return parseInt(resource[this.relationId])
       });
 
-      var idsDefined = typeof data[this.column] !== "undefined" && data[this.column] ? data[this.column].map(resource => {
+      var idsDefined = typeof data[this.column] !== "undefined" && data[this.column] ? data[this.column].filter(resource => resource).map(resource => {
         return parseInt(resource.id)
       }) : [];
       

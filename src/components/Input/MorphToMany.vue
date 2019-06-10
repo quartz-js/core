@@ -47,7 +47,6 @@
           close 
           @input="remove(item)"
         >
-
           <v-avatar v-if="item.avatar">
             <img src="http://i.pravatar.cc/64">
           </v-avatar>
@@ -126,7 +125,6 @@ export default {
     
     var val = this.attribute.extractValue(this.value);
 
-
     if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
       this.querySelections(''); 
     } 
@@ -137,7 +135,6 @@ export default {
         this.loadByVal(this.attribute.extractValue(this.value));
       });
     } else if (val) {
-      console.log(val);
       this.loadByVal(val);
     } else {
       this.querySelections();
@@ -184,19 +181,25 @@ export default {
       this.onChange();
     },
     loadByVal (val) {
-      if (val  && val.length > 0) {
+      if (val && val.length > 0) {
+        val = val.filter(resource => { return resource});
+
         val.map(resource => {
           return resource.label = this.attribute.getLabelByResource(resource)
           
           this.items.push(resource);
         })
+
+        this.rawValue = val;
+
+        this.rawValueIds = val.map(resource => {
+          return resource.id;
+        })
+      } else {
+        this.rawValue = [];
+        this.rawValueIds = [];
       }
 
-      this.rawValue = val;
-
-      this.rawValueIds = val.map(resource => {
-        return resource.id;
-      })
     },
     querySelections (v) {
       this.loading = true;

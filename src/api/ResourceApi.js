@@ -47,7 +47,7 @@ export class ResourceApi {
 
   parseRelationship (relationship, response) {
     return response.body.included.find((include) => {
-      return include.type === relationship.type && include.id === relationship.id
+      return include.type === relationship.type && parseInt(include.id) === parseInt(relationship.id)
     })
   }
 
@@ -63,18 +63,20 @@ export class ResourceApi {
         if (!Array.isArray(relationships.data)) {
           data.attributes[key] = this.parseData(this.parseRelationship(relationships.data, response), response);
         } else {
-          data.attributes[key] = [];
-
           relationships.data.map((relationship, keyRelation) => {
-            data.attributes[key][keyRelation] = this.parseData(this.parseRelationship(relationship, response), response);
+            let val = this.parseData(this.parseRelationship(relationship, response), response);
+
+            if (val !== null && typeof val === 'object') {
+              data.attributes[key][keyRelation] = val;
+            }
           })
 
         }
 
       })
     }
+    data = _.merge({id: parseInt(data.id)}, data.attributes);
 
-    data = _.merge({id: data.id}, data.attributes);
 
     return data;
   }
