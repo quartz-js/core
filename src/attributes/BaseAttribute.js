@@ -297,9 +297,18 @@ export class BaseAttribute {
 
   }
 
+  preUpdate(data) {
+    if (this.fixed(data) !== undefined) {
+      delete data[this.name]
+    }
+
+    return data;
+  }
+
   onUpdate(data) {
 
   }
+
   onRemove(data) {
 
   }

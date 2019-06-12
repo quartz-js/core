@@ -301,6 +301,11 @@ export class Manager {
     return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
       return this.executeHooks('beforePersist', data.resource);
     }).then(params => {
+
+      this.attributes.map(attribute => {
+        params = attribute.preUpdate(params);
+      });
+
       return this.manager.update(id, params);
     }).then(response => {
 

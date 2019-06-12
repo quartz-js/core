@@ -40,7 +40,7 @@
     <slot :resource="data" name="content" :config="config" />
 
     <slot :resource="data" name="container-tabs" :config="config">
-      <div class="resource-card">
+      <div>
         <v-tabs class='show-tabs my-4' v-model="tabs">
           <slot :resource="data" name="tabs" :config="config" :tabs="tabs">
             <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
@@ -88,7 +88,6 @@ export default {
 </script>
 <style>
   .show-tabs .v-tabs__wrapper {
-    border-bottom: none;
     margin-bottom: -2px;
     z-index: 1;
     position: relative;
