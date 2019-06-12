@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!firstLoading">
+  <div>
     <v-dialog v-model="settingsActive" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
@@ -186,7 +186,6 @@ export default {
         totalPages: 0,
         page: 1
       },
-      firstLoading: false,
       listable: [],
       selected: [],
       showRemoveSelectedDialog: false,
@@ -229,7 +228,6 @@ export default {
     }
   },
   mounted: function () {
-    this.firstLoading = true;
     this.load();
     
     var cols = [];
@@ -357,6 +355,7 @@ export default {
     },
     load: function (force) {
 
+
       if (this.loading) {
         return;
       }
@@ -417,7 +416,6 @@ export default {
         this.response.data = [];
       }).finally(response => {
         this.loading = false;
-        this.firstLoading = false;
       })
     },
 
