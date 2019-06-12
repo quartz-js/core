@@ -75,7 +75,7 @@ export class ResourceApi {
 
       })
     }
-    data = _.merge({id: parseInt(data.id)}, data.attributes);
+    data = _.merge({id: data.id == parseInt(data.id) ? parseInt(data.id) : data.id}, data.attributes);
 
 
     return data;
