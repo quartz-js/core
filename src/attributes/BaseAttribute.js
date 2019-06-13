@@ -31,7 +31,7 @@ export class BaseAttribute {
     }
 
     this.mutator = (value) => {
-      return value;
+      return this.extractor(value);
     };
     this.extractor = (resource) => {
       return lodash.get(resource, this.column);
@@ -240,7 +240,7 @@ export class BaseAttribute {
    * @return mixed
    */
   extractReadableValue (resource) {
-    return this.mutator(this.extractor(resource));
+    return this.mutator(resource);
   }
 
   /**
@@ -273,6 +273,7 @@ export class BaseAttribute {
   persist (id, data) {
     return null;
   }
+  
   clone () {
     return clone(this);
   }

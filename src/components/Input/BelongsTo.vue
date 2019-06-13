@@ -146,11 +146,15 @@ export default {
     loadByVal (val) {
 
       if (val) {
-        val.label = this.attribute.getLabelByResource(val);
-        this.items.push(val);
+        val.label = this.attribute.getLabelByResource(val, this.value);
+
+        if (val.label) {
+          this.items.push(val);
+        }
 
         this.checked = (this.items.length > 1 && val.id === this.items[1].id)
       }
+
 
       this.rawValue = val;
 
@@ -178,7 +182,7 @@ export default {
         return manager.manager.index(params)
       }).then(response => {
         this.items = response.body.data.map((item) => {
-          item.label = this.attribute.getLabelByResource(item);
+          item.label = this.attribute.getLabelByResource(item, this.value);
           return item;
         });
 
@@ -188,7 +192,11 @@ export default {
         }
 
       })
-      .finally(() => { this.loading = false});
+      .catch(() => {
+        // this.items = [];
+        // this.loadByVal();
+
+      }).finally(() => { this.loading = false});
     },
     onChange: function (val) {
 

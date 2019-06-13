@@ -14,9 +14,6 @@ export class BelongsToAttribute extends Base {
 
     this.components = {};
     
-    this.mutator = (value) => {
-        return value ? this.getLabelByResource(value) : null;
-    };
 
     this.injector = (resource, value) => {
       

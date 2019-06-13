@@ -19,6 +19,8 @@ export class SelectAttribute extends BaseAttribute {
     };
 
     this.mutator = (value) => {
+      value = this.extractor(value);
+      
       return value ? value.label : null;
     };
   }

@@ -7,10 +7,6 @@ export class MorphToMany extends Base {
 
     this.indexerApi = indexerApi;
     this.storageApi = storageApi;
-    
-    this.mutator = (value) => {
-        return value ? this.getLabelByResource(value) : null;
-    };
 
     this.injector = (resource, values) => {
       resource[this.column] = values;

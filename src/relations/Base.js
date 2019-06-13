@@ -7,12 +7,25 @@ export class Base extends BaseAttribute {
   constructor (name) {
     super(name, {});
 
+    this.mutator = (resource) => {
+      return this.getLabelByResource(this.extractor(resource), resource)
+    }
 
     this.query = (key, resource) => {
 
       let queries = [];
 
-      queries.push("name ct '" + key + "'");
+      let manager = this.getRelationManager(resource);
+
+      if (manager) {
+        let str = manager.getQueryableAttributes().map(attribute => {
+          return attribute.name;
+        }).join(', ,')
+
+        queries.push(`concat(${str})`)
+      } else {
+        queries.push(`name eq "${key}"`)
+      }
 
       if (this.style && this.style.query) {
 
@@ -31,7 +44,29 @@ export class Base extends BaseAttribute {
     this.priority = 0;
   }
 
-  getLabelByResource (resource) {
+  getLabelByResource (resource, parentResource) {
+
+    if (!resource) {
+      return;
+    }
+
+    if (parentResource) {
+      let manager = this.getRelationManager(parentResource);
+      
+      if (manager) {
+        let names = [];
+
+        manager.getQueryableAttributes().map(attribute => {
+
+          if (resource[attribute.name]) {
+            names.push(resource[attribute.name]);
+          }
+        })
+
+        return names.join(" ");
+      }
+    }
+
     return resource.name;
   }
 
@@ -52,6 +87,7 @@ export class Base extends BaseAttribute {
 
     return this;
   }
+  
   /**
    * @param {string} key
    * @param {object} resource
@@ -61,10 +97,12 @@ export class Base extends BaseAttribute {
   executeQuery (key, resource) {
     return this.query(key, resource);
   }
-  
+    
+  getRelationManager (resource) {
+    return null;
+  }
 
   filterIndexerParams (params) {
-
     return {
       show: 50,
       query: this.executeQuery(params.query ? params.query : '', params.value)

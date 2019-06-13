@@ -355,4 +355,15 @@ export class Manager {
       });
     }, Promise.resolve(data))
   }
+
+  getQueryableAttributes() {
+
+    if (this.hasAttribute('name')) {
+      return [this.getAttribute('name')]
+    }
+
+    return this.attributes.filter(attribute => {
+      return attribute.getClassName() === 'TextAttribute' || attribute.getClassName() === 'NumberAttribute';
+    }).slice(0, 5);
+  }
 };
