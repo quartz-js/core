@@ -48,7 +48,7 @@
           close 
           @input="remove(item)"
         >
-          <v-avatar v-if="item.avatar">
+          <v-avatar v-if="item.avatar" label tile>
             <img src="http://i.pravatar.cc/64">
           </v-avatar>
           #{{ item.id }} - {{ item.label }}
@@ -160,7 +160,16 @@ export default {
   },
   methods: {
     randomColor (str) {
-      return new ColorHash().hex(str);
+
+      var customHash = function(str) {
+          var hash = 0;
+          for(var i = 0; i < str.length; i++) {
+              hash += str.charCodeAt(i);
+          }
+          return hash;
+      };
+
+      return new ColorHash({hash: customHash, lightness: [0.5], saturation: [0.65]}).hex(str);
     },
     remove (item) {
       const index = this.rawValue.findIndex(r => {
