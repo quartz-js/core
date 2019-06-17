@@ -115,6 +115,7 @@
     ]
   },
   "dependencies": {
+    "color-hash": "^1.0.3",
     "convict": "^4.4.1",
     "cropperjs": "^1.4.3",
     "get-value": "^3.0.1",

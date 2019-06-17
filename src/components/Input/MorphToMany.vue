@@ -41,7 +41,8 @@
       <div class="mb-3" >
         <v-chip 
           class="chip--select-multi"
-          color="primary" 
+          label
+          :color="randomColor(item.label)" 
           text-color="white" 
           v-for="item in rawValue"
           close 
@@ -79,6 +80,7 @@ import _ from 'lodash'
 import { MorphToMany } from '../../relations/MorphToMany'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
+import ColorHash from 'color-hash'
 
 export default {
   mixins: [
@@ -157,6 +159,9 @@ export default {
     },
   },
   methods: {
+    randomColor (str) {
+      return new ColorHash().hex(str);
+    },
     remove (item) {
       const index = this.rawValue.findIndex(r => {
         return item.id = r.id;
