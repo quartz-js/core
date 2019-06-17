@@ -43,7 +43,7 @@
           class="chip--select-multi"
           color="primary" 
           text-color="white" 
-          v-for="item in ite"
+          v-for="item in rawValue"
           close 
           @input="remove(item)"
         >

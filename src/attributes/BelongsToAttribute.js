@@ -143,15 +143,15 @@ export class BelongsToAttribute extends Base {
   }
 
   onCreate(data) {
-    bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
+    this.getRelationManager(data) && bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
   }
 
   onUpdate(data) {
-    bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
+    this.getRelationManager(data) && bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
   }
 
   onRemove(data) {
-    bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
+    this.getRelationManager(data) && bus.$emit(this.getRelationManager(data).resourceEvent("changed"), this.extractValue(data));
   }
 
   getClassName() {

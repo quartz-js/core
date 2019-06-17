@@ -4,6 +4,11 @@ export class SelectAttribute extends BaseAttribute {
   constructor (name) {
     super(name);
     this.extractor = resource => {
+
+      if (!resource) {
+        return;
+      }
+      
       var value = resource[this.name];
 
       var option = this.getOptionByValue(value);

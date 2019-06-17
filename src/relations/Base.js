@@ -24,7 +24,7 @@ export class Base extends BaseAttribute {
 
         queries.push(`concat(${str})`)
       } else {
-        queries.push(`name eq "${key}"`)
+        queries.push(`name ct "${key}"`)
       }
 
       if (this.style && this.style.query) {

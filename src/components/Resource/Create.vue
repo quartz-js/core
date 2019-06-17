@@ -69,7 +69,7 @@
       </div>
     </div>
     <div v-if="type === 'fly'">
-      <div class="text-xs-left">
+      <div class="text-xs-left" v-if="data">
         <errors :errors='errors' />
         <div>
           <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
