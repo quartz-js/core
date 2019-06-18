@@ -100,10 +100,9 @@ export var LoadResource = {
       }
     },
     loadDataByUrl () {
-      console.log('Loading by url');
       return this.loadDataByQueryOrId(this.config.getId(this));
     },
-    listenResourceEvents() {
+    createListeners() {
 
       bus.$on(this.config.resourceEvent("changed"), data => {
         if (this.data.id) {
@@ -118,7 +117,6 @@ export var LoadResource = {
         }
 
         if (parseInt(data.id) === parseInt(this.data.id)) {
-          console.log(JSON.stringify(data));
           this.config.loadResources([data]).then((data) => {
             this.setData(data[0]);
           })
@@ -129,6 +127,11 @@ export var LoadResource = {
           // this.data = null;
         }
       });
+    },
+    destroyListeners() {
+      bus.$off(this.config.resourceEvent("changed"));
+      bus.$off(this.config.resourceEvent("updated"));
+      bus.$off(this.config.resourceEvent("removed"));
     }
   }
 }
