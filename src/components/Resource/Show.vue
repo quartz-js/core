@@ -37,7 +37,11 @@ export default {
   },
   created() {
     this.loadDataByProps();
-    this.listenResourceEvents();
+    this.createListeners();
   },
+  beforeDestroy()
+  {
+    this.destroyListeners();
+  }
 }
 </script>

@@ -204,8 +204,6 @@ export default {
         this.rawValue = this.items.filter((item, key)=> {
           return (this.checked === false && key === 0) || (this.checked === true && key === 1);
         })[0]
-
-        console.log(this.rawValue.id);
       }
 
       this.query = this.attribute.mutator(this.rawValue);

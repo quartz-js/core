@@ -82,7 +82,11 @@ export default {
   ],
   created() {
     this.loadDataByUrl();
-    this.listenResourceEvents();
+    this.createListeners();
+  },
+  beforeDestroy()
+  {
+    this.destroyListeners();
   }
 }
 </script>

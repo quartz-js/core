@@ -280,6 +280,11 @@ export default {
       this.load(true);
     });
   },
+  beforeDestroy() {
+    bus.$off(this.config.resourceEvent("updated"));
+    bus.$off(this.config.resourceEvent("created"));
+    bus.$off(this.config.resourceEvent("removed"));
+  },
   methods: {
     switchRow (item) {
       if (window.getSelection().toString()) {
