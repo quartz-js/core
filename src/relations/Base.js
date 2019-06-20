@@ -22,7 +22,7 @@ export class Base extends BaseAttribute {
           return attribute.name;
         }).join(', ,')
 
-        queries.push(`concat(${str})`)
+        queries.push(`concat(${str}) ct "${key}"`)
       } else {
         queries.push(`name ct "${key}"`)
       }
