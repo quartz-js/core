@@ -1,6 +1,6 @@
 <template>
   <p v-if="show">
-    <label class="label-show">{{ getAttributeLabel(attribute) }}</label>
+    <label class="label-show" v-if="showLabel">{{ getAttributeLabel(attribute) }}</label>
     <span v-if="attribute.getClassName() === 'BelongsToAttribute' && attribute.extractValue(resource) !== null">
       <router-link :to="attribute.getRelationManager(resource).getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value" />
     </span>
@@ -13,6 +13,7 @@
       </span>
       <span v-if="html === null" class="show-value font-italic " v-html="$t('$quartz.core.no-information')"/>
     </span>
+    <span v-if="showLabel" style='display:block; height: 10px'></span>
   </p>
 </template>
 <script>
@@ -25,7 +26,20 @@ export default {
     AttributePreMount,
     ResourceLocalization
   ],
-  props: ['resource', 'value', 'attribute', 'errors'],
+  props: {
+    resource: {
+      type: Object,
+      default: null
+    },
+    attribute: {
+      type: Object,
+      default: null
+    },
+    showLabel: {
+      type: Boolean,
+      default: true
+    }
+  },
   mounted() {
 
     if (!this.canMount()) {
@@ -34,7 +48,17 @@ export default {
   },
   computed: {
     html: function () {
-      return this.attribute.extractReadableValue(this.resource);
+      let val = this.attribute.extractReadableValue(this.resource);
+
+
+      if (this.attribute.getClassName() === 'EnumAttribute') {
+        let key = `$quartz.data.${this.attribute.manager().name}.attributes.${this.attribute.getLabel()}.options.${val}`;
+        if (this.$te(key)) {
+          val = this.$t(key);
+        }
+      }
+
+      return val;
     }
   }
 }
@@ -52,6 +76,7 @@ export default {
 
   p {
     text-align: left;
+    margin-bottom: 0;
   }
 
 </style>
