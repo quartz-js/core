@@ -89,14 +89,7 @@
                   style='cursor: pointer' 
                   @click="switchRow(props.item);"
                 >
-                  <span v-if="attribute.getClassName() === 'BelongsToAttribute' && attribute.extractValue(props.item) !== null">
-                    <router-link :to="attribute.getRelationManager(props.item).getRouteShow(attribute.extractValue(props.item))" class="show-value">
-                      {{ attribute.extractReadableValue(props.item) }}   
-                    </router-link>
-                  </span>
-                  <span v-else>
-                    {{ attribute.extractReadableValue(props.item) }}    
-                  </span>         
+                <q-text :resource="props.item" :attribute="attribute" :showLabel="false"/>
                 </td>
               </slot>
               <td>
