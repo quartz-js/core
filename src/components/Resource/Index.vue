@@ -228,6 +228,9 @@ export default {
     }
   },
   mounted: function () {
+
+    this.query = this.$route.query.query;
+
     this.load();
     
     var cols = [];
