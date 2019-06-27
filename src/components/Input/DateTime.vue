@@ -75,7 +75,7 @@ export default {
     	this.rawValue = val ? moment(val).format() : null
   	},
     onChange () {
-      let val = this.rawValue ? moment(this.rawValu).format('YYYY-MM-DD HH:mm:ss') : null;
+      let val = this.rawValue ? moment(this.rawValue).format('YYYY-MM-DD HH:mm:ss') : null;
 
       this.attribute.injectValue(this.value, val);
       this.$emit('input', this.value);
