@@ -61,6 +61,7 @@ module.exports = {
 
         Vue.component("QFormJson", require('./components/Form/FormJson').default)
         Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
+        Vue.component("QFormYaml", require('./components/Form/Yaml').default)
 
         Vue.component("QMorphToMany", require('./components/Input/MorphToMany').default)
         Vue.component("QBelongsToMany", require('./components/Input/BelongsToMany').default)

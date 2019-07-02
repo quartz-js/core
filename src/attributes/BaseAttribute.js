@@ -16,6 +16,7 @@ export class BaseAttribute {
     this.label = name;
     this.column = name;
     this.priority = 1;
+    this.show = true;
     this.descriptor = options.descriptor || [];
     this.retrievers = {
     };

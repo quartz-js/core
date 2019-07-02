@@ -1,17 +1,5 @@
 <template>
   <div>
-    <v-dialog v-model="settingsActive" width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>
-          {{ $t('$quartz.core.settings') }}
-        </v-card-title>
-        <v-card-text>
-          <v-select :items="listable" v-model="cols" :menu-props="{ maxHeight: '400' }" :label="$t('$quartz.core.columns')" multiple persistent-hint item-text="label"
-          ></v-select>
-        </v-card-text>
-      </v-card>
-    </v-dialog> 
-
     <v-card class="resource-card pa-3 mb-4" v-if="loading || (pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
@@ -126,9 +114,6 @@
         </div>
       </div>
     </v-card>
-    <div class='py-4 px-3 text-md-right' v-if="settingsEnabled">
-      <a href="javascript:;" @click="settingsActive = true" class='ma-0'>{{ $t('$quartz.core.settings') }}</a>
-    </div>
   </div>
 </template>
 
@@ -158,10 +143,6 @@ export default {
     url: {
       type: Boolean,
       default: true
-    },
-    settingsEnabled: {
-      type: Boolean,
-      default: true
     }
   },
   data: function () {
@@ -182,7 +163,6 @@ export default {
       listable: [],
       selected: [],
       showRemoveSelectedDialog: false,
-      settingsActive: false,
       manager: null,
       cols: [],
       response: {},
@@ -212,12 +192,6 @@ export default {
         this.load();
       },
       deep: true
-    },
-    cols: {
-      handler: function (val, oldVal) {
-        this.$localStorage.set(this.config.getIdentification() + '.cols', JSON.stringify(val))
-      },
-      deep: true
     }
   },
   mounted: function () {
@@ -226,28 +200,12 @@ export default {
 
     this.load();
     
-    var cols = [];
+    this.cols = this.config.getListableAttributes().filter((attribute) => {
+      return attribute.required && attribute.fillable;
+    }).map((attribute) => {
+      return attribute.name
+    })
 
-    try {
-      cols = JSON.parse(this.$localStorage.get(this.config.getIdentification() + '.cols'));
-      cols = cols.filter(name => {
-        return this.config.getListableAttributes().find(item => {
-          return item.name === name;
-        });
-      })
-    } catch (e) {
-
-    }
-
-    if (!cols || cols.length === 0 || cols[0].label) {
-      var cols = this.config.getListableAttributes().filter((attribute) => {
-        return attribute.required && attribute.fillable;
-      }).map((attribute) => {
-        return attribute.name
-      })
-    }
-
-    this.cols = cols;
   },
   created () {
     this.reload();
@@ -307,7 +265,7 @@ export default {
       }).length+2;
     },
     showAttribute: function (attribute) {
-      return this.cols.find(col => { return col === attribute.name });
+      return attribute.show === true
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {

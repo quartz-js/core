@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <codemirror
       :value="rawValue"
