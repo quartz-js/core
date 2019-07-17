@@ -14,7 +14,7 @@ import { minify } from "uglify-es";
 
 import pack from "./package.json";
 
-const projectName = "@railken/quartz-core";
+const projectName = "@quartz/core";
 
 // compute globals from dependencies
 const globals = pack.dependencies && Object.assign({}, ...Object.keys(pack.dependencies).map((key) => ({
