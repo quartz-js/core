@@ -188,7 +188,13 @@ export default {
 
 
         if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-          this.loadByVal(this.rawValue)
+
+          if (this.rawValue && this.rawValue.label != '') {
+            this.loadByVal(this.rawValue)
+          } else {
+            this.loadByVal(this.items[0])
+            this.onChange();
+          }
         }
 
       })

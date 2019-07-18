@@ -56,7 +56,6 @@
       </div>
     </div>
     <div v-if="attribute.style.form && attribute.style.form.name === 'checker'">
-
       <p class="mt-3">{{ getAttributeLabel(attribute) }}</p>
       <div v-if="attribute.style.form.grouped_by">
         <div v-for="items in groupedItems">
@@ -145,6 +144,7 @@ export default {
   watch: {
     value: {
       handler: function (){
+
         this.loadByVal(this.attribute.extractValue(this.value));
 
         if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
@@ -204,11 +204,11 @@ export default {
           this.items.push(resource);
         })
 
-        this.rawValue = val;
-
         this.rawValueIds = val.map(resource => {
           return resource.id;
         })
+
+        this.rawValue = val;
       } else {
         this.rawValue = [];
         this.rawValueIds = [];
@@ -238,7 +238,6 @@ export default {
             delete item['pivot'];
             return item;
           });
-
 
           if (this.attribute.style.form && this.attribute.style.form.grouped_by) {
             var groupedItems = {};

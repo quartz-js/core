@@ -29,11 +29,14 @@ export class Base extends BaseAttribute {
 
       if (this.style && this.style.query) {
 
-        var template = (tpl, args) => tpl.replace(/\${(\w+)}/g, (_, v) => args[v]);
+        var template = (tpl, args) => tpl.replace(/\${(\w+)}/g, (_, v) => {
+          return typeof args[v] !== 'undefined' ? args[v] : 'null'
+        });
 
         let query = template(this.style.query, resource);
 
         query = query.split("eq null").join("is null");
+        query = query.split("!= null").join("is not null");
         queries.push(query);
       }
 

@@ -70,7 +70,7 @@
               <slot name="row" :resource="props.item" :config="config">
                 <td 
                   v-for="(attribute, index) in attributes" 
-                  v-if="showAttribute(attribute)" 
+                  v-if="attribute.show" 
                   :key="index" 
                   class="cell" 
                   :width="getAttributeWidth(attribute)" 
@@ -90,9 +90,8 @@
             <tr v-if="currentRowOpened === props.item.id">
               <td :colspan="attributesShowable().length + 2">
                 <div class="mt-3"></div>
-                <div v-for="(attribute, index) in attributesShowable()">
-                  <q-text :resource="props.item" :attribute="attribute"></q-text>  
-                  
+                <div v-for="(attribute, index) in attributes">
+                  <q-text :resource="props.item" :attribute="attribute" v-if="attribute.show"></q-text>  
                 </div>
               </td>
             </tr>

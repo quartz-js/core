@@ -22,8 +22,6 @@ export class BaseAttribute {
     };
 
     this.default = () => {
-
-
       return null;
     };
 
