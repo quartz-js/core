@@ -55,18 +55,17 @@
         </v-chip>
       </div>
     </div>
-    <div v-if="attribute.style.form && attribute.style.form.name === 'checker' && !loading">
+    <div v-if="attribute.style.form && attribute.style.form.name === 'checker'">
       <p class="mt-3">{{ getAttributeLabel(attribute) }}</p>
       <div v-if="attribute.style.form.grouped_by">
         <div v-for="items in groupedItems">
           <p>{{ items.key }}</p>
-          <v-checkbox v-for="item in items.items" v-model="rawValueIds" :label="item.label" :value="item.id" @change="onChange()"></v-checkbox>
+          <v-checkbox v-for="item in items.items" v-model="rawValueIds[item.id]" :label="item.label" @change="update($event, item.id)"></v-checkbox>
         </div>
       </div>
       <div v-else>
-        <v-checkbox v-for="item in items" v-model="rawValueIds" :label="item.label" :value="item.id" @change="onChange()"></v-checkbox>
+        <v-checkbox v-for="item in items" v-model="rawValueIds[item.id]" :label="item.label" @change="update($event, item.id)"></v-checkbox>
       </div>
-
       <div v-if="items.length === 0">
         No results found to relate
       </div>
@@ -107,7 +106,7 @@ export default {
   data: function () {
     return {
       rawValue: [],
-      rawValueIds: [],
+      rawValueIds: {},
       loading: false,
       search: '',
       groupedItems: {},
@@ -204,14 +203,14 @@ export default {
           this.items.push(resource);
         })
 
-        this.rawValueIds = val.map(resource => {
-          return resource.id;
+        val.map(resource => {
+          this.rawValueIds[resource.id] = true;
         })
 
         this.rawValue = val;
       } else {
         this.rawValue = [];
-        this.rawValueIds = [];
+        this.rawValueIds = {};
       }
 
     },
@@ -239,6 +238,19 @@ export default {
             return item;
           });
 
+          if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
+              
+            let rawValueIds = this.rawValueIds;
+
+            this.items.map(resource => {
+              if (typeof rawValueIds[resource.id] == 'undefined') {
+                rawValueIds[resource.id] = false;
+              }
+            });
+
+            this.rawValueIds = rawValueIds;
+          }
+
           if (this.attribute.style.form && this.attribute.style.form.grouped_by) {
             var groupedItems = {};
 
@@ -259,6 +271,10 @@ export default {
         })
         .finally(() => { this.loading = false});
     },
+    update: function ($status, id)
+    {
+      this.onChange();
+    },
     onChange: function () {
 
       if (!this.rawValue) {
@@ -266,12 +282,14 @@ export default {
       }
 
       if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-        this.rawValue = this.rawValueIds.map(id => {
-          return this.items.filter(item => {
-            return item.id == id
-          })[0]
-        })
 
+        this.rawValue = Object.keys(_.pickBy(this.rawValueIds, r => {
+          return r;
+        })).map(id => {
+          return this.items.find(item => {
+            return item.id == id
+          })
+        })
       }
 
       this.query = this.attribute.mutator(this.rawValue);
