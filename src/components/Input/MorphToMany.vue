@@ -55,7 +55,7 @@
         </v-chip>
       </div>
     </div>
-    <div v-if="attribute.style.form && attribute.style.form.name === 'checker'">
+    <div v-if="attribute.style.form && attribute.style.form.name === 'checker' && !loading">
       <p class="mt-3">{{ getAttributeLabel(attribute) }}</p>
       <div v-if="attribute.style.form.grouped_by">
         <div v-for="items in groupedItems">
