@@ -1,6 +1,6 @@
 <script>
 
-import { BelongsToMany } from '../../relations/BelongsToMany'
+import { BelongsToMany } from '../../app/Relations/BelongsToMany'
 import MorphToMany from './MorphToMany'
 
 export default {

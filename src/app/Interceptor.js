@@ -1,4 +1,4 @@
-import { container } from '../services/container'
+import { container } from '../app/Container'
 
 export class Interceptor {
   static storage (name, value) {

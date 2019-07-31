@@ -11,7 +11,7 @@
 </template>
 <script>
 
-import { BelongsToAttribute } from '../../attributes/BelongsToAttribute'
+import { BelongsToAttribute } from '../../app/Attributes/BelongsToAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 

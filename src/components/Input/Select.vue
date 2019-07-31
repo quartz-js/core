@@ -16,7 +16,7 @@
 </template>
 <script>
 
-import { SelectAttribute } from '../../attributes/SelectAttribute'
+import { SelectAttribute } from '../../app/Attributes/SelectAttribute'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 

@@ -25,7 +25,7 @@
 </template>
 <script>
 
-import { BaseAttribute } from '../../attributes/BaseAttribute'
+import { BaseAttribute } from '../../app/Attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 
 export default {

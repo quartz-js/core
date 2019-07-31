@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { container } from '../services/container';
+import { container } from '../Container';
 import _ from 'lodash';
 
 import VueResource from 'vue-resource'

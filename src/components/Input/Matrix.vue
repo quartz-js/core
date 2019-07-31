@@ -23,7 +23,7 @@
 <script>
 
 import _ from 'lodash'
-import { Matrix } from '../../relations/Matrix'
+import { Matrix } from '../../app/Relations/Matrix'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 

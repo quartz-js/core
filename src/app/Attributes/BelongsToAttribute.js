@@ -1,4 +1,4 @@
-import { Base } from '../relations/Base'
+import { Base } from '../Relations/Base'
 
 export class BelongsToAttribute extends Base {
 

@@ -1,5 +1,5 @@
 import { ServiceProvider } from './ServiceProvider'
-import { container } from '../../services/container'
+import { container } from '../../app/Container'
 export class QuartzServiceProvider extends ServiceProvider {
 
   register() {

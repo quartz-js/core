@@ -75,7 +75,7 @@
 <script>
 
 import _ from 'lodash'
-import { MorphToMany } from '../../relations/MorphToMany'
+import { MorphToMany } from '../../app/Relations/MorphToMany'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import ColorHash from 'color-hash'

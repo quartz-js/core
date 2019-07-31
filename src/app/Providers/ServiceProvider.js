@@ -1,4 +1,4 @@
-import { container } from './../../services/container'
+import { container } from './../../app/Container'
 import lodash from 'lodash';
 
 export class ServiceProvider {

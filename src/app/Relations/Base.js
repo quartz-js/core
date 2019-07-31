@@ -1,5 +1,5 @@
-import { BaseAttribute } from '../attributes/BaseAttribute'
-import { Helper } from '../app/Helper'
+import { BaseAttribute } from '../Attributes/BaseAttribute'
+import { Helper } from '../Helper'
 
 export class Base extends BaseAttribute {
   listable = false;

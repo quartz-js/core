@@ -49,7 +49,7 @@
 import Cropper from 'cropperjs';
 import _ from 'lodash';
 require('cropperjs/dist/cropper.min.css');
-import { BaseAttribute } from '../../attributes/BaseAttribute'
+import { BaseAttribute } from '../../app/Attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
