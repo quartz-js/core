@@ -14,6 +14,7 @@
       "settings": "Settings",
       "edit": "Edit",
       "overview": "Overview",
+      "remove": "Remove",
       "create": "Create",
       "search": "Search",
       "search-placeholder": "Write your query (e.g. 'id = 1')",
