@@ -44,6 +44,7 @@ module.exports = {
     HandleResource: require('./mixins/HandleResource').HandleResource,
     mixins: {
         utils: require('./mixins/utils').utils,
+        Expandable: require('./mixins/Expandable').Expandable,
     },
     install: function (Vue, options) {
 
