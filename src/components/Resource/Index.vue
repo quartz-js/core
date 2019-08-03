@@ -163,7 +163,6 @@ export default {
       selected: [],
       showRemoveSelectedDialog: false,
       manager: null,
-      cols: [],
       response: {},
       form: {},
       params: null,
@@ -198,12 +197,6 @@ export default {
     this.query = this.$route.query.query;
 
     this.load();
-    
-    this.cols = this.config.getListableAttributes().filter((attribute) => {
-      return attribute.required && attribute.fillable;
-    }).map((attribute) => {
-      return attribute.name
-    })
 
   },
   created () {
@@ -215,8 +208,6 @@ export default {
     if (this.config.hasAttribute('updated_at')) {
       this.pagination.sort = "-updated_at";
     }
-
-    this.listable = this.selectableListableAttributes(this.config.getListableAttributes());
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);

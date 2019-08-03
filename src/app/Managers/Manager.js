@@ -140,12 +140,6 @@ export class Manager {
       return this.data + ":" + label;
     }
 
-    this.getListableAttributes = function() {
-      return this.attributes.filter((attribute) => {
-        return !attribute.hidden && attribute.listable && attribute.fixed() === undefined
-      })
-    }
-
     for (var i in params) {
       this[i] = params[i];
     }
