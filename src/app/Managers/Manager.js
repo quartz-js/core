@@ -161,6 +161,8 @@ export class Manager {
     this.attributes.push(attribute)
     attribute.manager = () => { return this };
 
+    attribute.ini();
+
     if (attribute.fixed(null) !== undefined) {
       this.parserFinalQuery.push((query) => {
 

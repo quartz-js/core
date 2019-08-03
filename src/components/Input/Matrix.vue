@@ -1,6 +1,6 @@
 <template>
   <div v-if="show && attribute" class="mt-4">
-    <span>{{ getAttributeLabel(attribute) }}</span>
+    <span>{{ attribute.label }}</span>
     <span>{{ getAttributeDescription(attribute) }}</span>
     <v-divider/>
     <v-layout row wrap align-center v-if="rawValue && items.length > 0" >

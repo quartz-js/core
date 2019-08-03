@@ -3,7 +3,7 @@
       <div v-if="show && rawValue" class="mt-4">
       <v-text-field 
         :value="rawValue.filename" prepend-icon='attach_file'
-        :label="label !== undefined ? label : getAttributeLabel(attribute)"
+        :label="label !== undefined ? label : attribute.label"
         :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
         persistent-hint
         readonly

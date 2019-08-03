@@ -1,5 +1,8 @@
 import lodash from 'lodash';
 var clone = require('clone');
+import Vue from 'vue'
+import { container } from '../Container';
+import { Translator } from '../Translator';
 
 export class BaseAttribute {
   required = false;
@@ -10,10 +13,11 @@ export class BaseAttribute {
       options = [];
     }
     
+    this.translator = new Translator();
+
     this.required = false;
     this.hooks = [];
     this.name = name;
-    this.label = name;
     this.column = name;
     this.priority = 1;
     this.show = true;
@@ -45,6 +49,12 @@ export class BaseAttribute {
     
     this.fixed = (resource) => {
       return undefined;
+    }
+  }
+
+  ini () {
+    if (!this.label) {
+      this.label = this.translator.translate(this, 'label');
     }
   }
 

@@ -4,7 +4,7 @@
       <template slot="after">
         <v-text-field 
           :value="getDateFormat(rawValue)" 
-          :label="getAttributeLabel(attribute)" 
+          :label="attribute.label" 
           :hint="getAttributeDescription(attribute)"
           @click="$refs.dateTimePicker.isOpen = true"
           persistent-hint

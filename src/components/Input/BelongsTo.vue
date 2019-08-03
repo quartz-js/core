@@ -7,7 +7,7 @@
             :loading="loading"
             :items="items"
             item-text="label"
-            :label="label !== undefined ? label : getAttributeLabel(attribute)"
+            :label="label !== undefined ? label : attribute.label"
             v-model="rawValue"
             @input="onChange"
             :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"

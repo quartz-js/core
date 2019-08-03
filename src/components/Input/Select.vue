@@ -3,7 +3,7 @@
     <v-autocomplete
         :items="attribute.options"
         item-text="label"
-        :label="getAttributeLabel(attribute)"
+        :label="attribute.label"
         v-model="rawValue"
         @change="onChange()"
       :hint="getAttributeDescription(attribute)"

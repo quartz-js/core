@@ -2,7 +2,7 @@
   <v-flex v-if="show" class="mt-4" >
     <v-text-field 
       v-model="rawValue" 
-      :label="label !== undefined ? label : getAttributeLabel(attribute)"
+      :label="label !== undefined ? label : attribute.label"
       @input="onChange()"
       :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
       persistent-hint

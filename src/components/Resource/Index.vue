@@ -47,7 +47,7 @@
                   :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
                   @click="changeSort(header.value)"
                 >
-                  {{ getAttributeLabel(header.attribute) }}
+                  {{ header.attribute.label }}
                   <v-icon small>arrow_upward</v-icon>
                 </th>
                 <th class="column sortable text-xs-right pr-4">
@@ -252,7 +252,7 @@ export default {
       return arr.map((attribute) => {
         return {
           value: attribute.name,
-          label: this.getAttributeLabel(attribute)
+          label: attribute.label
         }
       })
     },

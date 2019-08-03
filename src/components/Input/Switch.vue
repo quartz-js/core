@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4" v-if="show">
-    <span>{{ getAttributeLabel(attribute) }}</span>
+    <span>{{ attribute.label }}</span>
     <toggle-button :value="rawValue" @change="onChange($event)" :height='24' :width="50" :sync="true" color="#1976d2"></toggle-button>
   </div>
 </template>

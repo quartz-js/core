@@ -6,7 +6,7 @@
             :loading="loading"
             :items="items"
             item-text="label"
-            :label="label !== undefined ? label : getAttributeLabel(attribute)"
+            :label="label !== undefined ? label : attribute.label"
             :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
             v-model="rawValue"
             @input="onChange"
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div v-if="attribute.style.form && attribute.style.form.name === 'checker'">
-      <p class="mt-3">{{ getAttributeLabel(attribute) }}</p>
+      <p class="mt-3">{{ attribute.label }}</p>
       <div v-if="attribute.style.form.grouped_by">
         <div v-for="items in groupedItems">
           <p>{{ items.key }}</p>
