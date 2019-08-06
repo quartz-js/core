@@ -238,7 +238,6 @@ export default {
       }).then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);
-            console.log(item.label)
             delete item['pivot'];
             return item;
           });
