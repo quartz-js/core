@@ -6,6 +6,7 @@
         :label="attribute.label"
         v-model="rawValue"
         @change="onChange()"
+        clearable
       :hint="getAttributeDescription(attribute)"
       persistent-hint
       ></v-autocomplete>
