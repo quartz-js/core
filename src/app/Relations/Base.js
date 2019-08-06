@@ -147,9 +147,13 @@ export class Base extends BaseAttribute {
    * @return {object}
    */
   filterIndexerParams (params) {
+
+    let relationable = this.getRelationable(params.value);
+
     return {
       show: 50,
-      query: this.executeQuery(params.query ? params.query : '', params.value)
+      query: this.executeQuery(params.query ? params.query : '', params.value),
+      include: relationable.query.include
     }
   }
 }

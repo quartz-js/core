@@ -175,7 +175,7 @@ export default {
 
       params.query = manager.getFinalQuery(params.query);
 
-      this.attribute.executeHooks('include', []).then(includes => {
+      this.attribute.executeHooks('include', params.include ? params.include : []).then(includes => {
         params.include = includes.join(",");
         return manager.manager.index(params)
       }).then(response => {

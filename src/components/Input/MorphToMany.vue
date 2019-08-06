@@ -232,7 +232,7 @@ export default {
         value: this.value
       });
 
-      this.attribute.executeHooks('include', []).then(includes => {
+      this.attribute.executeHooks('include', params.include ? params.include : []).then(includes => {
         params.include = includes.join(",");
         return this.attribute.indexerApi.index(params)
       }).then(response => {

@@ -23,8 +23,6 @@ export class MorphToMany extends Base {
    * @return {Callable}
    */
   persist (id, data) {
-
-
     let query;
 
     if (this.morphTypeColumn) {
