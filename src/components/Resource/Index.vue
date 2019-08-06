@@ -159,7 +159,6 @@ export default {
         totalPages: 0,
         page: 1
       },
-      listable: [],
       selected: [],
       showRemoveSelectedDialog: false,
       manager: null,
@@ -238,14 +237,6 @@ export default {
       return this.attributes.filter((attr) => {
         return this.showAttribute(attr);
       });
-    },
-    selectableListableAttributes(arr) {
-      return arr.map((attribute) => {
-        return {
-          value: attribute.name,
-          label: attribute.label
-        }
-      })
     },
     defineDefaultValue() {
     },
@@ -405,8 +396,8 @@ export default {
       }).map((attribute) => {
         return {
           attribute: attribute,
-          value: attribute.getName(),
-          text: attribute.getLabel(),
+          value: attribute.name,
+          text: attribute.label,
           align: 'left',
           sortable: true
         };

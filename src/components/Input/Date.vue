@@ -9,7 +9,7 @@
       <v-text-field
         slot="activator"
         v-model="rawValue" 
-        :label="attribute.getLabel()"
+        :label="attribute.label"
         :hint="attribute.getDescription()"
         @input="onChange()"
         persistent-hint

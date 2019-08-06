@@ -17,7 +17,7 @@ export var ResourceLocalization = {
       // return this.$t(this.getLocalizationPrefixData() + resource.name + '.description')
     },
     getLocalizationKeyAttribute (resource, attribute, suffix) {
-      return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.getLabel() + suffix;
+      return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.label + suffix;
     },
     getAttributeLabel(attribute) {
 
@@ -29,7 +29,7 @@ export var ResourceLocalization = {
         return this.$t(this.getLocalizationKeyAttribute('__common', attribute, '.label'))
       }
 
-      return this.humanize(attribute.getLabel());
+      return this.humanize(attribute.label);
     },
     getAttributeDescription(attribute) {
 

@@ -155,9 +155,7 @@ export default {
         this.checked = (this.items.length > 1 && val.id === this.items[1].id)
       }
 
-
       this.rawValue = val;
-
     },
     querySelections (v) {
       this.loading = true;

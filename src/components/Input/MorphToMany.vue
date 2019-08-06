@@ -160,6 +160,10 @@ export default {
   methods: {
     randomColor (str) {
 
+      if (!str) {
+        return str;
+      }
+
       var customHash = function(str) {
           var hash = 0;
           for(var i = 0; i < str.length; i++) {
@@ -234,6 +238,7 @@ export default {
       }).then(response => {
           this.items = response.body.data.map((item) => {
             item.label = this.attribute.getLabelByResource(item);
+            console.log(item.label)
             delete item['pivot'];
             return item;
           });

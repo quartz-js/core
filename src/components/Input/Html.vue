@@ -1,6 +1,6 @@
 <template>
   <div class="text-xs-left my-3">
-    <label class="label-show">{{ attribute.getLabel() }}</label>
+    <label class="label-show">{{ attribute.label }}</label>
     <form-html v-model="rawValue" @input="onChange()" />
   </div>
 </template>

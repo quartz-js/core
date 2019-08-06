@@ -1,8 +1,9 @@
-import lodash from 'lodash';
+import _ from 'lodash';
 var clone = require('clone');
 import Vue from 'vue'
 import { container } from '../Container';
 import { Translator } from '../Translator';
+import { Helper } from '../Helper';
 
 export class BaseAttribute {
   required = false;
@@ -37,15 +38,13 @@ export class BaseAttribute {
       return this.extractor(value);
     };
     this.extractor = (resource) => {
-      return lodash.get(resource, this.column);
+      return _.get(resource, this.column);
     };
     this.injector = (resource, value) => {
-      lodash.set(resource, this.column, value);
+      _.set(resource, this.column, value);
 
       return resource;
     };
-
-    this.listable = true;
     
     this.fixed = (resource) => {
       return undefined;
@@ -59,13 +58,34 @@ export class BaseAttribute {
   }
 
   set (name, value) {
-    this[name] = value
+    _.set(this, name, value)
 
     return this
   }
 
   get (name) {
-    return this[name];
+    return _.get(this, name)
+  }
+
+  setFixed (callback, query) {
+    this.set('fixed', callback);
+    this.manager().parserFinalQuery.push((query) => {
+
+      let fixed = this.fixed(null);
+      
+      // @todo: label of fixed
+      fixed = typeof fixed === 'object' && fixed ? fixed.id : fixed;
+
+      let newQuery = '';
+
+      if (fixed === null) {
+        newQuery = `${this.column} is null`;
+      } else {
+        newQuery = `${this.column} = '${fixed}'`
+      }
+
+      return Helper.mergePartsQuery([newQuery, query], 'and');
+    })
   }
   
   /**
@@ -145,42 +165,6 @@ export class BaseAttribute {
    */
   getDescription () {
     return this.description;
-  }
-
-  /**
-   * @param {string} name
-   *
-   * @return this
-   */
-  setName (name) {
-    this.name = name;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getName () {
-    return this.name;
-  }
-
-  /**
-   * @param {string} label
-   *
-   * @return this
-   */
-  setLabel (label) {
-    this.label = label;
-
-    return this;
-  }
-
-  /**
-   * @return {string}
-   */
-  getLabel () {
-    return this.label;
   }
 
   /**

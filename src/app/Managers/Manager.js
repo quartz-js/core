@@ -154,28 +154,7 @@ export class Manager {
   addAttribute (attribute) {
     this.attributes.push(attribute)
     attribute.manager = () => { return this };
-
     attribute.ini();
-
-    if (attribute.fixed(null) !== undefined) {
-      this.parserFinalQuery.push((query) => {
-
-        let fixed = attribute.fixed(null);
-        
-        // @todo: label of fixed
-        fixed = typeof fixed === 'object' && fixed ? fixed.id : fixed;
-
-        let newQuery = '';
-
-        if (fixed === null) {
-          newQuery = `${attribute.column} is null`;
-        } else {
-          newQuery = `${attribute.column} = '${fixed}'`
-        }
-
-        return this.mergePartsQuery([newQuery, query], 'and');
-      })
-    }
   }
 
   mergePartsQuery(parts, operator) {
@@ -353,7 +332,6 @@ export class Manager {
   }
 
   getQueryableAttributes() {
-
     if (this.hasAttribute('name')) {
       return [this.getAttribute('name')]
     }

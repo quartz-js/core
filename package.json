@@ -124,6 +124,7 @@
     "laravel-echo": "^1.4.0",
     "luxon": "^1.11.3",
     "moment": "^2.24.0",
+    "mustache": "^3.0.1",
     "set-value": "^3.0.0",
     "socket.io-client": "^2.1.1",
     "store2": "^2.7.0",

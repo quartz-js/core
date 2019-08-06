@@ -15,7 +15,7 @@ export class Translator {
   
   getLocalizationKeyAttribute (resource, attribute, suffix)
   {
-    return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.getLabel() + suffix;
+    return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.label + suffix;
   }
   
   translate(attribute, property)

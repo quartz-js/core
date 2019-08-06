@@ -52,7 +52,7 @@ export default {
 
 
       if (this.attribute.getClassName() === 'EnumAttribute') {
-        let key = `$quartz.data.${this.attribute.manager().name}.attributes.${this.attribute.getLabel()}.options.${val}`;
+        let key = `$quartz.data.${this.attribute.manager().name}.attributes.${this.attribute.label}.options.${val}`;
         if (this.$te(key)) {
           val = this.$t(key);
         }

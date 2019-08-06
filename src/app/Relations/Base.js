@@ -1,9 +1,11 @@
 import { BaseAttribute } from '../Attributes/BaseAttribute'
 import { Helper } from '../Helper'
+import Mustache from 'mustache'
 
 export class Base extends BaseAttribute {
-  listable = false;
-  
+
+  relationables = [];
+
   constructor (name) {
     super(name, {});
 
@@ -13,32 +15,19 @@ export class Base extends BaseAttribute {
 
     this.query = (key, resource) => {
 
+      let relationable = this.getRelationable(resource);
+
       let queries = [];
 
-      let manager = this.getRelationManager(resource);
-
-      if (manager) {
-        let str = manager.getQueryableAttributes().map(attribute => {
-          return attribute.name;
-        }).join(', ,')
-
-        queries.push(`concat(${str}) ct "${key}"`)
-      } else {
-        queries.push(`name ct "${key}"`)
-      }
-
-      if (this.style && this.style.query) {
-
-        var template = (tpl, args) => tpl.replace(/\${(\w+)}/g, (_, v) => {
-          return typeof args[v] !== 'undefined' ? args[v] : 'null'
-        });
-
-        let query = template(this.style.query, resource);
+      if (key) {
+        let query = Mustache.render(relationable.query.template, _.merge(resource, {'__key__': key}))
 
         query = query.split("eq null").join("is null");
         query = query.split("!= null").join("is not null");
+
         queries.push(query);
       }
+
 
       return Helper.mergePartsQuery(queries, "and");
 
@@ -47,50 +36,101 @@ export class Base extends BaseAttribute {
     this.priority = 0;
   }
 
+  /**
+   * @param {Closure} closure
+   */
+  setRelationableSwitcher (closure) {
+    this.relationableSwitcher = closure;
+  }
+
+  /**
+   * @param {object} relationable
+   */
+  addRelationable(relationable) {
+    this.relationables.push(relationable);
+  }
+
+  /**
+   * @param {object} resource
+   *
+   * @return {object}
+   */
+  getRelationManager (resource) {
+
+    if (!resource) {
+      return null;
+    }
+
+    let relationable = this.getCurrentRelationableByResource(resource)
+
+    if (!relationable) {
+      return null;
+    }
+
+    let manager = relationable.manager(resource);
+    relationable.onLoad(manager);
+
+    return manager;
+  }
+
+  /**
+   * @param {object} resource
+   *
+   * @return {object}
+   */
+  getCurrentRelationableByResource (resource) {
+    return this.relationables.find((relationable) => {
+      return relationable.key === this.relationableSwitcher(resource)
+    })
+  }
+
+  /**
+   * @param {object} resource
+   *
+   * @return {object}
+   */
+  getRelationableActions (resource) {
+    if (!resource) {
+      return null;
+    }
+
+    let relationable = this.getCurrentRelationableByResource(resource)
+
+    return relationable ? relationable.actions : null
+  }
+
+  /**
+   * @param {object} resource
+   *
+   * @return {object}
+   */
+  getRelationable (resource) {
+    if (!resource) {
+      return null;
+    }
+
+    let relationable = this.getCurrentRelationableByResource(resource)
+
+    return relationable
+  }
+
+  /**
+   * @param {object} resource
+   * @param {object} parentResource
+   *
+   * @return string
+   */
   getLabelByResource (resource, parentResource) {
 
     if (!resource) {
-      return;
+      return null;
     }
 
-    if (parentResource) {
-      let manager = this.getRelationManager(parentResource);
-      
-      if (manager) {
-        let names = [];
-
-        manager.getQueryableAttributes().map(attribute => {
-
-          if (resource[attribute.name]) {
-            names.push(resource[attribute.name]);
-          }
-        })
-
-        return names.join(" ");
-      }
-    }
-
-    return resource.name;
+    return this.getRelationable(resource)
+      ? Mustache.render(this.getRelationable(resource).label.template, resource)
+      : null;
   }
 
-  /**
-   * @return {string}
-   */
-  getQuery () {
-    return this.query;
-  }
-
-  /**
-   * @param {callable} query
-   *
-   * @return this
-   */
-  setQuery (query) {
-    this.query = query;
-
-    return this;
-  }
-  
   /**
    * @param {string} key
    * @param {object} resource
@@ -100,11 +140,12 @@ export class Base extends BaseAttribute {
   executeQuery (key, resource) {
     return this.query(key, resource);
   }
-    
-  getRelationManager (resource) {
-    return null;
-  }
 
+  /**
+   * @param {object} params
+   *
+   * @return {object}
+   */
   filterIndexerParams (params) {
     return {
       show: 50,

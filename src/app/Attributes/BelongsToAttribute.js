@@ -2,12 +2,9 @@ import { Base } from '../Relations/Base'
 
 export class BelongsToAttribute extends Base {
 
-  listable = true;
-  
   constructor (name, options) {
     super(name, options);
 
-    this.relationables = [];
     this.relationableSwitcher = (resource) => {
       return null;
     }
@@ -88,58 +85,6 @@ export class BelongsToAttribute extends Base {
 
   getRelationName () {
     return this.name.replace('_id', '');
-  }
-
-  setRelationableSwitcher (closure) {
-    this.relationableSwitcher = closure;
-  }
-
-  addRelationable(relationable) {
-    this.relationables.push(relationable);
-  }
-
-  getRelationManager (resource) {
-
-    if (!resource) {
-      return null;
-    }
-
-    let relationable = this.getCurrentRelationableByResource(resource)
-
-    if (!relationable) {
-      return null;
-    }
-
-    let manager = relationable.manager(resource);
-    relationable.onLoad(manager);
-
-    return manager;
-  }
-
-  getCurrentRelationableByResource (resource) {
-    return this.relationables.find((relationable) => {
-      return relationable.key === this.relationableSwitcher(resource)
-    })
-  }
-
-  getRelationableActions (resource) {
-    if (!resource) {
-      return null;
-    }
-
-    let relationable = this.getCurrentRelationableByResource(resource)
-
-    return relationable ? relationable.actions : null
-  }
-
-  getRelationable (resource) {
-    if (!resource) {
-      return null;
-    }
-
-    let relationable = this.getCurrentRelationableByResource(resource)
-
-    return relationable
   }
 
   onCreate(data) {
