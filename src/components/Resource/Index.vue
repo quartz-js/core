@@ -70,7 +70,7 @@
               <slot name="row" :resource="props.item" :config="config">
                 <td 
                   v-for="(attribute, index) in attributes" 
-                  v-if="attribute.show" 
+                  v-if="showAttribute(attribute)" 
                   :key="index" 
                   class="cell" 
                   :width="getAttributeWidth(attribute)" 
@@ -246,7 +246,7 @@ export default {
       }).length+2;
     },
     showAttribute: function (attribute) {
-      return attribute.show === true
+      return attribute.show === true && attribute.fixed(null) == undefined
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {
