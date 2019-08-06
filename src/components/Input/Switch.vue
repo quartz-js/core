@@ -50,10 +50,6 @@ export default {
     }
     
     this.reloadRawValue();
-
-    if (this.rawValue !== this.attribute.extractValue(this.value)) {
-      this.onChange(this.rawValue);
-    }
   },
   watch: {
     value: function (){
