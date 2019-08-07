@@ -1,6 +1,6 @@
 import { BaseAttribute } from '../Attributes/BaseAttribute'
 import { Helper } from '../Helper'
-import Mustache from 'mustache'
+import Twig from 'twig';
 
 export class Base extends BaseAttribute {
 
@@ -19,15 +19,12 @@ export class Base extends BaseAttribute {
 
       let queries = [];
 
-      if (key) {
-        let query = Mustache.render(relationable.query.template, _.merge(resource, {'__key__': key}))
+      let query = Twig.twig({data: relationable.query.template}).render(_.merge(resource, {'__key__': key}))
 
-        query = query.split("eq null").join("is null");
-        query = query.split("!= null").join("is not null");
+      query = query.split("eq null").join("is null");
+      query = query.split("!= null").join("is not null");
 
-        queries.push(query);
-      }
-
+      queries.push(query);
 
       return Helper.mergePartsQuery(queries, "and");
 
@@ -127,7 +124,7 @@ export class Base extends BaseAttribute {
     }
 
     return this.getRelationable(resource)
-      ? Mustache.render(this.getRelationable(resource).label.template, resource)
+      ? Twig.twig({data: this.getRelationable(resource).label.template}).render(resource)
       : null;
   }
 

@@ -259,16 +259,18 @@ export default {
             var groupedItems = {};
 
             this.items.map(item => {
-              let key = item[this.attribute.style.form.grouped_by].name;
+              if (item[this.attribute.style.form.grouped_by]) {
+                let key = item[this.attribute.style.form.grouped_by].name;
 
-              if (typeof groupedItems[key] === "undefined") {
-                groupedItems[key] = {
-                  key: key,
-                  items: []
+                if (typeof groupedItems[key] === "undefined") {
+                  groupedItems[key] = {
+                    key: key,
+                    items: []
+                  }
                 }
-              }
 
-              groupedItems[key].items.push(item);
+                groupedItems[key].items.push(item);
+              }
             });
             this.groupedItems = Object.values(groupedItems);
           }
