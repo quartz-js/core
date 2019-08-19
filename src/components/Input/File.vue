@@ -25,13 +25,13 @@
         </div>
         <div class="pa-4" v-if="fileType == 'image'">
           <div class='fluid fluid-vcenter' v-if='crop'>
-            <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="destroyCropImage()">{{ $t('Back')}}</v-btn>
-            <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="resetCropImage()">{{ $t('Reset')}}</v-btn>
-            <v-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="saveCropImage()">{{ $t('Save crop')}}</v-btn>
+            <q-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="destroyCropImage()">{{ $t('Back')}}</q-btn>
+            <q-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="resetCropImage()">{{ $t('Reset')}}</q-btn>
+            <q-btn color="primary" v-bind:class="{disabled: !rawValue.content}" @click="saveCropImage()">{{ $t('Save crop')}}</q-btn>
           </div>
 
           <div v-if="!crop">
-            <v-btn color="primary" @click="cropImage()">{{ $t('Crop')}}</v-btn>
+            <q-btn color="primary" @click="cropImage()">{{ $t('Crop')}}</q-btn>
           </div>
           <br>
           <v-layout v-if='crop'>

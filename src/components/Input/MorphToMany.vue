@@ -20,15 +20,15 @@
           >
           <template v-slot:item="data">
             <template v-if="typeof data.item !== 'object'">
-              <v-list-tile-content v-text="data.item"></v-list-tile-content>
+              <v-list-item-content v-text="data.item"></v-list-item-content>
             </template>
             <template v-else>
-              <v-list-tile-avatar v-if="data.item.avatar">
+              <v-list-item-avatar v-if="data.item.avatar">
                 <img :src="data.item.avatar">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title v-html="data.item.label"></v-list-tile-title>
-              </v-list-tile-content>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-html="data.item.label"></v-list-item-title>
+              </v-list-item-content>
             </template>
           </template>
           <template

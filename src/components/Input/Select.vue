@@ -7,8 +7,8 @@
         v-model="rawValue"
         @change="onChange()"
         clearable
-      :hint="getAttributeDescription(attribute)"
-      persistent-hint
+        :hint="getAttributeDescription(attribute)"
+        v-bind="globalAttributeProps()"
       ></v-autocomplete>
     <div
       v-if="error"

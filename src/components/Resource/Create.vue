@@ -2,12 +2,12 @@
   <div v-if="internalConfig.create === true" class="create">
     <div v-if="type === 'button-navigator'">
       <slot name="activator" v-if="activator">
-        <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</v-btn>
-        <v-btn v-if="activatorType === 'icon'" small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></v-btn>
+        <q-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</q-btn>
+        <q-btn v-if="activatorType === 'icon'" small text icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></q-btn>
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
-          <div class="content text-xs-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
+          <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
             <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
             <v-divider class='mb-45'></v-divider>
@@ -15,16 +15,16 @@
             <div>
               <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
             </div>
-            <div class='text-xs-right mt-5'>
-              <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
-              <v-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+            <div class='text-right mt-5'>
+              <q-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</q-btn>
+              <q-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</q-btn>
             </div>
           </div>
          </v-navigation-drawer>
       </slot>
     </div>
 
-    <v-card class="resource-card" v-if="type === 'box'">
+    <q-card class="" v-if="type === 'box'">
       <div class='content text-md-center'>
         <img :src='internalConfig.icon' width='218' class='my-3'>
         <h3 class='title my-3'>{{ this.getResourceTitle(internalConfig) }}</h3>
@@ -32,12 +32,12 @@
           {{ this.getResourceDescription(internalConfig) }}
           <br><br>
           <slot name="activator" v-if="activator">
-            <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</v-btn>
-            <v-btn v-if="activatorType === 'icon'" small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></v-btn>
+            <q-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</q-btn>
+            <q-btn v-if="activatorType === 'icon'" small text icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></q-btn>
           </slot>
           <slot :resource="data" name="main">
             <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
-              <div class="content text-xs-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
+              <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
                 <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
                 <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
                 <v-divider class='mb-45'></v-divider>
@@ -45,18 +45,18 @@
                 <div>
                   <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
                 </div>
-                <div class='text-xs-right mt-5'>
-                  <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
-                  <v-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+                <div class='text-right mt-5'>
+                  <q-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</q-btn>
+                  <q-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</q-btn>
                 </div>
               </div>
              </v-navigation-drawer>
           </slot>
         </p>
       </div>
-    </v-card>
+    </q-card>
     <div v-if="type === 'direct'">
-      <div class="text-xs-left">
+      <div class="text-left">
         <div v-if="details">
           <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
           <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
@@ -69,13 +69,13 @@
       </div>
     </div>
     <div v-if="type === 'fly'">
-      <div class="text-xs-left" v-if="data">
+      <div class="text-left" v-if="data">
         <errors :errors='errors' />
         <div>
           <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
         </div>
-        <div class='text-xs-right'>
-          <v-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</v-btn>
+        <div class='text-right'>
+          <q-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</q-btn>
         </div>
       </div>
     </div>

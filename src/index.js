@@ -64,22 +64,41 @@ module.exports = {
         Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
         Vue.component("QFormYaml", require('./components/Form/Yaml').default)
 
-        Vue.component("QMorphToMany", require('./components/Input/MorphToMany').default)
-        Vue.component("QBelongsToMany", require('./components/Input/BelongsToMany').default)
-        Vue.component("QBelongsTo", require('./components/Input/BelongsTo').default)
-        Vue.component("QBelongsToOne", require('./components/Input/BelongsToOne').default)
-        Vue.component("QHtml", require('./components/Input/Html').default)
-        Vue.component("QYaml", require('./components/Input/Yaml').default)
-        Vue.component("QDate", require('./components/Input/Date').default)
-        Vue.component("QDatetime", require('./components/Input/DateTime').default)
-        Vue.component("QJson", require('./components/Input/Json').default)
-        Vue.component("QSecret", require('./components/Input/Secret').default)
-        Vue.component("QSelect", require('./components/Input/Select').default)
-        Vue.component("QMorphTo", require('./components/Input/MorphTo').default)
-        Vue.component("QSwitch", require('./components/Input/Switch').default)
-        Vue.component("QText", require('./components/Input/Text').default)
-        Vue.component("QTextarea", require('./components/Input/Textarea').default)
-        Vue.component("QMatrix", require('./components/Input/Matrix').default)
-        Vue.component("QFile", require('./components/Input/File').default)
+        Vue.component("QAttrMorphToMany", require('./components/Input/MorphToMany').default)
+        Vue.component("QAttrBelongsToMany", require('./components/Input/BelongsToMany').default)
+        Vue.component("QAttrBelongsTo", require('./components/Input/BelongsTo').default)
+        Vue.component("QAttrBelongsToOne", require('./components/Input/BelongsToOne').default)
+        Vue.component("QAttrHtml", require('./components/Input/Html').default)
+        Vue.component("QAttrYaml", require('./components/Input/Yaml').default)
+        Vue.component("QAttrDate", require('./components/Input/Date').default)
+        Vue.component("QAttrDatetime", require('./components/Input/DateTime').default)
+        Vue.component("QAttrJson", require('./components/Input/Json').default)
+        Vue.component("QAttrSecret", require('./components/Input/Secret').default)
+        Vue.component("QAttrSelect", require('./components/Input/Select').default)
+        Vue.component("QAttrMorphTo", require('./components/Input/MorphTo').default)
+        Vue.component("QAttrSwitch", require('./components/Input/Switch').default)
+        Vue.component("QAttrText", require('./components/Input/Text').default)
+        Vue.component("QAttrTextarea", require('./components/Input/Textarea').default)
+        Vue.component("QAttrMatrix", require('./components/Input/Matrix').default)
+        Vue.component("QAttrFile", require('./components/Input/File').default)
+
+
+        let components = [
+          'QBtn', 
+          'QTextField', 
+          'QTextarea', 
+          'QAutocomplete', 
+          'QColorPicker', 
+          'QNavigationDrawer',
+          'QSidebar',
+          'QCard',
+          'QSheet'
+        ]
+
+        components.map(function(i) {
+          Vue.component(`${i}`, require(`./components/Components/${i}`).default)
+        })
+
+        Vue.prototype.$container = require('./app/Container').container
     }
 };

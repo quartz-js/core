@@ -11,12 +11,12 @@
             v-model="rawValue"
             @input="onChange"
             :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
-            persistent-hint
             :search-input="search"
             :search-input.sync="search"
             return-object
             editable
             clearable
+            v-bind="globalAttributeProps()"
           ></v-autocomplete>
         </v-spacer>
         <div class="pt-4">

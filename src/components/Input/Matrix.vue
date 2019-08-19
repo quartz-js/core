@@ -4,9 +4,9 @@
     <span>{{ getAttributeDescription(attribute) }}</span>
     <v-divider/>
     <v-layout row wrap align-center v-if="rawValue && items.length > 0" >
-      <v-data-table :items="items" hide-headers :pagination.sync="pagination" style='width:100%'>
+      <v-data-table :items="items" hide-default-headers :pagination.sync="pagination" style='width:100%'>
         <template slot="items" slot-scope="props">
-          <td v-for="(field, fieldKey) in props.item" class="text-xs-left">
+          <td v-for="(field, fieldKey) in props.item" class="text-left">
             <div v-if="!field.editable" style='white-space: nowrap'>
               {{ field.name }}
             </div>

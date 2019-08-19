@@ -1,7 +1,6 @@
 <template>
-  <div class="mt-4" v-if="show">
-    <span>{{ attribute.label }}</span>
-    <toggle-button :value="rawValue" @change="onChange($event)" :height='24' :width="50" :sync="true" color="#1976d2"></toggle-button>
+  <div class="mt-4 ml-3" v-if="show">
+    <v-switch :value="rawValue" inset @change="onChange($event)" :height='24' :width="50" :sync="true" color="#1976d2" :label="attribute.label"></v-switch>
   </div>
 </template>
 <script>

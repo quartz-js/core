@@ -5,7 +5,7 @@
         <a @click="$router.go(-1)">{{ $t('$quartz.core.back') }}</a>
       </div>
     </slot>
-    <v-card class="resource-card pa-3 my-4">
+    <q-card class="pa-3 my-4">
       <v-layout align-start>
         <img :src="config.icon" width='110'>
         <div class='ml-3'>
@@ -18,7 +18,7 @@
         </div>
       </v-layout>
 
-    </v-card>
+    </q-card>
 
     <slot :config="config" name="body"></slot>
   </div>

@@ -6,7 +6,7 @@
       @input="onChange()"
       :hint="hint !== undefined ? hint : getAttributeDescription(attribute) "
       :placeholder="placeholder"
-      persistent-hint
+      v-bind="globalAttributeProps()"
     ></v-textarea>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="data" class="resource-card"> 
+  <q-card v-if="data" class=""> 
     <div v-if="showContent" class="content">
       <div>
         <v-layout align-center justify-end style='position: absolute; top: 10px; right: 10px;'>
@@ -9,7 +9,7 @@
         <slot :resource="data" name="show" :config="config"></slot>
       </div>
     </div>
-  </v-card>
+  </q-card>
 </template>
 
 <script>

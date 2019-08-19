@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs-left my-3 mt-4">
+  <div class="text-left my-3 mt-4">
     <label class="label-show">{{ attribute.label }}</label>
     <yaml v-model="rawValue" @input="onChange()" />
   </div>

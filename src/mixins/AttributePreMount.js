@@ -1,3 +1,5 @@
+import { container } from '../app/Container'
+
 export var AttributePreMount = {
   data() {
     return {
@@ -6,6 +8,9 @@ export var AttributePreMount = {
     };
   },
   methods: {
+    globalAttributeProps() {
+      return container.get('$quartz.core.props.form', {});
+    },
     canShowDueToCondition()
     {
       if (this.attribute.get('style') && this.attribute.get('style').condition) {

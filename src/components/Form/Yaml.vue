@@ -48,7 +48,6 @@ export default {
   mounted () {
     this.rawValue = this.beautify(this.value);
   },
-
   methods: {
     reloadRawValue() {
       this.rawValue = this.beautify(this.value);

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs-left my-3">
+  <div class="text-left my-3">
     <label class="label-show">{{ attribute.label }}</label>
     <form-json v-model="rawValue" />
   </div>

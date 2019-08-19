@@ -1,8 +1,8 @@
 <template>
   <div class="remove" style='display:inline-block'>
-    <v-btn v-if="config.remove === true" small flat icon @click="showRemoveDialog = true" color="error" class="ma-0 mx-1"><v-icon>delete</v-icon></v-btn>
+    <q-btn v-if="config.remove === true" small text icon @click="showRemoveDialog = true" color="error" class="ma-0 mx-1"><v-icon>delete</v-icon></q-btn>
     <v-dialog v-model="showRemoveDialog" width='400'>
-      <v-card>
+      <q-card>
         <v-card-title class="headline grey lighten-2" primary-title>
           {{ $t('$quartz.core.irreversible_operation.title') }}
         </v-card-title>
@@ -15,10 +15,10 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="showRemoveDialog = false">{{ $t('$quartz.core.no') }}</v-btn>
-          <v-btn color="error" @click="showRemoveDialog = false; remove();">{{ $t('$quartz.core.yes') }}</v-btn>
+          <q-btn color="primary" @click="showRemoveDialog = false">{{ $t('$quartz.core.no') }}</q-btn>
+          <q-btn color="error" @click="showRemoveDialog = false; remove();">{{ $t('$quartz.core.yes') }}</q-btn>
         </v-card-actions>
-      </v-card>
+      </q-card>
     </v-dialog>
   </div>
 </template>

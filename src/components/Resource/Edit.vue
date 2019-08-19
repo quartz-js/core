@@ -2,22 +2,22 @@
   <div v-if="data !== 0 && data !== null && config.update === true">
     <div v-if="type === 'button-navigator'"  style='display:inline-block'>
       <slot name="activator" :drawer="drawer">
-        <v-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.edit') }}</v-btn>
-        <v-btn v-if="activatorType === 'icon'" small flat icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>edit</v-icon></v-btn>
+        <q-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.edit') }}</q-btn>
+        <q-btn v-if="activatorType === 'icon'" small text icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>edit</v-icon></q-btn>
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawer" fixed right width='1200' temporary stateless>
           <div style='overflow-y:auto; max-height: 100%'>
-            <div class="content text-xs-left" v-if="drawer">
+            <div class="content text-left" v-if="drawer">
               <h3 class='title'>{{ this.getResourceTitle(config) }} {{ data.id ? " - #" + data.id : null }}</h3>
               <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
               <v-divider class='mb-5'></v-divider>
               <errors :errors="errors" />
               <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
             </div>
-            <div class='content text-xs-right mt-5'>
-              <v-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</v-btn>
-              <v-btn @click="save()" color="primary" :loading="loading" :disabled="loading">{{ $t('$quartz.core.save') }}</v-btn>
+            <div class='content text-right mt-5'>
+              <q-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</q-btn>
+              <q-btn @click="save()" color="primary" :loading="loading" :disabled="loading">{{ $t('$quartz.core.save') }}</q-btn>
             </div>
           </div>
         </v-navigation-drawer>

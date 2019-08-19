@@ -1,15 +1,15 @@
 <template>
   <div>
-    <v-card class="resource-card pa-3 mb-4" v-if="loading || (pagination && pagination.totalItems !== 0) || query">
+    <q-card class="pa-3 mb-4" v-if="loading || (pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
-        <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details></v-text-field>
-        <v-btn color="primary" @click="load()">{{ $t('$quartz.core.search') }}</v-btn>
+        <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details name='search'></v-text-field>
+        <q-btn color="primary" @click="load()">{{ $t('$quartz.core.search') }}</q-btn>
 
-        <div class="text-xs-right"><slot name="top" :config="config"></slot></div>
+        <div class="text-right"><slot name="top" :config="config"></slot></div>
       </v-layout>
-    </v-card>
+    </q-card>
 
-    <v-card class="resource-card">
+    <q-card class="">
       <div v-if="showContent">
         <div v-if="loading || (pagination && pagination.totalItems !== 0) || query">
         
@@ -17,14 +17,19 @@
           v-model="selected"
           :headers="getHeaders()"
           :items="data"
-          select-all
+          show-select
           item-key="id"
           v-if="response"
-          :pagination.sync="pagination"
-          :total-items="pagination.totalItems"
+          :page.sync="pagination.page"
+          :server-items-length="pagination.totalItems"
           :loading="loading"
           :headers-length="countColumns()"
-          :rowsPerPageItems="rowsPerPageItems"
+
+          :sort-by="pagination.sortBy"
+          :sort-desc="pagination.descending"
+          :footer-props="{
+            'items-per-page-options': rowsPerPageItems
+          }"
           flat
         >
           <v-progress-linear slot="progress" color="blue" indeterminate style='margin-top: -1px; height: 3px'></v-progress-linear>
@@ -43,14 +48,14 @@
                 <th
                   v-for="header in props.headers"
                   :key="header.text"
-                   class="text-xs-left cell"
+                   class="text-left cell"
                   :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
                   @click="changeSort(header.value)"
                 >
                   {{ header.attribute.label }}
                   <v-icon small>arrow_upward</v-icon>
                 </th>
-                <th class="column sortable text-xs-right pr-4">
+                <th class="column sortable text-right pr-4">
                   <span class='pr-3'>
                     {{ $t('$quartz.core.actions') }} 
                   </span>
@@ -77,13 +82,13 @@
                   style='cursor: pointer' 
                   @click="switchRow(props.item);"
                 >
-                <q-text :resource="props.item" :attribute="attribute" :showLabel="false"/>
+                <q-attr-text :resource="props.item" :attribute="attribute" :showLabel="false"/>
                 </td>
               </slot>
               <td>
-                <div  class="justify-end align-center layout px-2 text-xs-right" :class="{'hide': !config.showRow(props.item)}">
+                <div  class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(props.item)}">
                   <slot name="actions" :resource="props.item" :config="config"></slot>
-                  <v-btn class='ma-0 mx-1' icon small color="primary" flat @click="goToShow(props.item)"><v-icon>visibility</v-icon></v-btn>
+                  <q-btn class='ma-0 mx-1' icon small color="primary" text @click="goToShow(props.item)"><v-icon>visibility</v-icon></q-btn>
                 </div>
               </td>
             </tr>
@@ -91,10 +96,16 @@
               <td :colspan="attributesShowable().length + 2">
                 <div class="mt-3"></div>
                 <div v-for="(attribute, index) in attributes">
-                  <q-text :resource="props.item" :attribute="attribute" v-if="attribute.show"></q-text>  
+                  <q-attr-text :resource="props.item" :attribute="attribute" v-if="attribute.show"></q-attr-text>  
                 </div>
               </td>
             </tr>
+          </template>
+          <template  v-slot:item.action="{ item }">
+            <div  class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(props.item)}">
+              <slot name="actions" :resource="props.item" :config="config"></slot>
+              <q-btn class='ma-0 mx-1' icon small color="primary" text @click="goToShow(props.item)"><v-icon>visibility</v-icon></q-btn>
+            </div>
           </template>
         </v-data-table>
 
@@ -112,7 +123,7 @@
           </div>
         </div>
       </div>
-    </v-card>
+    </q-card>
   </div>
 </template>
 

@@ -6,16 +6,20 @@
       full-width
       min-width="290px"
     >
-      <v-text-field
-        slot="activator"
-        v-model="rawValue" 
-        :label="attribute.label"
-        :hint="attribute.getDescription()"
-        @input="onChange()"
-        persistent-hint
-        clearable
-        readonly
-      ></v-text-field>
+      <template v-slot:activator="{ on }">
+        <v-text-field
+          v-on="on"
+          icon
+          v-model="rawValue" 
+          :label="attribute.label"
+          :hint="attribute.getDescription()"
+          @input="onChange()"
+          persistent-hint
+          clearable
+          readonly
+          v-bind="globalAttributeProps()"
+        ></v-text-field>
+      </template>
       <v-date-picker
         v-model="rawValue"
         @change="menu = false; onChange()"

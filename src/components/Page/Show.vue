@@ -5,7 +5,7 @@
         <a @click="$router.go(-1)">{{ $t('$quartz.core.back') }}</a>
       </div>
     </slot>
-    <v-card class="resource-card pa-3 mt-4" >
+    <q-card class="pa-3 mt-4" >
       <v-layout align-start>
         <img :src="config.icon" width='110'>
         <v-spacer class='ml-3'>
@@ -18,9 +18,11 @@
 
             <slot :resource="data" :config="config" name="actions"/>
             <v-menu v-if="!!$scopedSlots['actions-extra']">
-              <v-btn icon flat small slot="activator"  class='ma-0'  color="grey">
-                <v-icon>more_vert</v-icon>
-              </v-btn>
+              <template v-slot:activator="{ on }">
+                <q-btn icon text small v-on="on"  class='ma-0'  color="grey">
+                  <v-icon>more_vert</v-icon>
+                </q-btn>
+              </template>
               <v-list>
                 <slot :resource="data" :config="config" name="actions-extra" />
               </v-list>
@@ -35,7 +37,7 @@
         </v-spacer>
       </v-layout>
 
-    </v-card>
+    </q-card>
       
     <slot :resource="data" name="content" :config="config" />
 

@@ -11,5 +11,6 @@ export class QuartzServiceProvider extends ServiceProvider {
       'en': require('../../lang/en.json'),
       'it': require('../../lang/it.json')
     })
+
   }
 }
