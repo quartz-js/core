@@ -1,43 +1,41 @@
 <template>
   <div v-if="attribute && this.canShow()">
     <div v-if="!attribute.style.form">
-      <v-layout row wrap align-center>
-        <v-autocomplete
-            :loading="loading"
-            :items="items"
-            item-text="label"
-            :label="label !== undefined ? label : attribute.label"
-            :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
-            v-model="rawValue"
-            @input="onChange"
-            :search-input="search"
-            :search-input.sync="search"
-            return-object
-            editable
-            multiple
-            hide
-            clearable
+      <q-autocomplete
+          :loading="loading"
+          :items="items"
+          item-text="label"
+          :label="label !== undefined ? label : attribute.label"
+          :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
+          v-model="rawValue"
+          @input="onChange"
+          :search-input="search"
+          :search-input.sync="search"
+          return-object
+          editable
+          multiple
+          hide
+          clearable
+        >
+        <template v-slot:item="data">
+          <template v-if="typeof data.item !== 'object'">
+            <v-list-item-content v-text="data.item"></v-list-item-content>
+          </template>
+          <template v-else>
+            <v-list-item-avatar v-if="data.item.avatar">
+              <img :src="data.item.avatar">
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="data.item.label"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+        </template>
+        <template
+            slot="selection"
+            slot-scope="data"
           >
-          <template v-slot:item="data">
-            <template v-if="typeof data.item !== 'object'">
-              <v-list-item-content v-text="data.item"></v-list-item-content>
-            </template>
-            <template v-else>
-              <v-list-item-avatar v-if="data.item.avatar">
-                <img :src="data.item.avatar">
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-html="data.item.label"></v-list-item-title>
-              </v-list-item-content>
-            </template>
-          </template>
-          <template
-              slot="selection"
-              slot-scope="data"
-            >
-          </template>
-        </v-autocomplete>
-      </v-layout>
+        </template>
+      </q-autocomplete>
       <div class="mb-3" >
         <v-chip 
           class="chip--select-multi"

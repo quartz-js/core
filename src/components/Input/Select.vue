@@ -1,6 +1,6 @@
 <template>
   <div v-if="show" class="mt-4">
-    <v-autocomplete
+    <q-autocomplete
         :items="attribute.options"
         item-text="label"
         :label="attribute.label"
@@ -9,7 +9,7 @@
         clearable
         :hint="getAttributeDescription(attribute)"
         v-bind="globalAttributeProps()"
-      ></v-autocomplete>
+      ></q-autocomplete>
     <div
       v-if="error"
       class="error">{{ $t("API_" + error.code) }}&nbsp;</div>

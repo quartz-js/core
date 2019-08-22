@@ -1,9 +1,9 @@
 <template>
   <div v-if="show && attribute && attribute.getRelationManager(this.value)">
     <div v-if="!attribute.style.form">
-      <v-layout row align-top class="mt-4">
+      <v-layout row align-top class="mt-4 mx-0">
         <v-spacer>
-          <v-autocomplete 
+          <q-autocomplete 
             :loading="loading"
             :items="items"
             item-text="label"
@@ -17,7 +17,7 @@
             editable
             clearable
             v-bind="globalAttributeProps()"
-          ></v-autocomplete>
+          ></q-autocomplete>
         </v-spacer>
         <div class="pt-4">
           <component 
