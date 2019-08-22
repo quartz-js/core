@@ -88,7 +88,6 @@ import { utils } from '../../mixins/utils'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
-import Vue from 'vue'
 
 export default {
   mixins: [ 

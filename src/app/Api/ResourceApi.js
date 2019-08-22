@@ -1,14 +1,14 @@
-import Vue from 'vue';
 import { container } from '../Container';
 import _ from 'lodash';
+const axios = require('axios');
 
-import VueResource from 'vue-resource'
-Vue.use(VueResource);
 
 export class ResourceApi {
   constructor (language) {
-    this.url = container.get('config').app.api.url;
-    this.access_token = container.get('oauth').getToken();
+
+    console.log('Creating...')
+    this.http = axios.create({})
+
     this.params = {};
     this.filterQuery = function (query) {
 
@@ -19,20 +19,36 @@ export class ResourceApi {
       return query;
     }
 
-    this.headers = {
-      "Authorization": 'Bearer ' + this.access_token,
-      "Accept-Language": language
-    };
+    this.http.interceptors.response.use((response) => {
+      response.body = response.data
+      return this.parse(response);
+    }, (error) => {
+
+      response.body = response.data
+      return Promise.reject(error);
+    });
+  }
+
+  url (url) {
+    let parts = [
+      container.get('config').app.api.url.replace(/\/$/, '')
+    ]
+
+    if (this.resource_url) {
+      parts.push(this.resource_url.replace(/\/$/, '').replace(/^\//, ''))
+    }
+
+    if (url) {
+      parts.push(url.replace(/\/$/, '').replace(/^\//, ''))
+    }
+
+    return parts.join("/");
   }
 
   setParams (params) {
     this.params = params;
 
     return this;
-  }
-
-  getFullUrl () {
-    return this.url + this.resource_url;
   }
 
   getFullParams (params) {
@@ -57,6 +73,10 @@ export class ResourceApi {
       return null
     }
     
+    if (!data.id) {
+      return data
+    }
+    
     if (data.relationships) {
       _.map(data.relationships, (relationships, key) => {
 
@@ -75,6 +95,7 @@ export class ResourceApi {
 
       })
     }
+
     data = _.merge({id: data.id == parseInt(data.id) ? parseInt(data.id) : data.id}, data.attributes);
 
 
@@ -106,14 +127,14 @@ export class ResourceApi {
   }
 
   post (url, params, options) {
-    return Vue.http.post(this.getFullUrl() + url, params instanceof FormData ? params : this.getFullParams(params), _.merge({ headers: this.headers }, options))
+    return this.http.post(this.url(url), params instanceof FormData ? params : this.getFullParams(params), options)
       .then((response) => { 
         return this.parse(response) 
       });
   }
 
   get (url, options) {
-    return Vue.http.get(url, options)
+    return this.http.get(this.url(url))
   }
 
   /**
@@ -124,8 +145,10 @@ export class ResourceApi {
    * @return {Promise}
    */
   index (params) {
+    console.log(params);
+    console.log(this.http.headers)
     params.query = this.filterQuery(params.query);
-    return Vue.http.get(this.getFullUrl(), { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
+    return this.get('', { params: this.getFullParams(params) })
   }
 
   /**
@@ -137,7 +160,7 @@ export class ResourceApi {
    */
   store (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.put(this.getFullUrl(), { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
+    return this.http.put(this.url(), { params: this.getFullParams(params) })
   }
 
   /**
@@ -148,7 +171,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   create (params) {
-    return Vue.http.post(this.getFullUrl(), this.getFullParams(params), { headers: this.headers }).then((response) => { return this.parse(response) });
+    return this.post('', this.getFullParams(params))
   }
 
   /**
@@ -160,7 +183,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   show (id, params) {
-    return Vue.http.get(this.getFullUrl() + '/' + id, { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
+    return this.http.get(id, { params: this.getFullParams(params) })
   }
 
   /**
@@ -172,7 +195,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   update (id, params) {
-    return Vue.http.put(this.getFullUrl() + '/' + id, this.getFullParams(params), { headers: this.headers}).then((response) => { return this.parse(response) });
+    return this.http.put(this.url(id), this.getFullParams(params))
   }
 
   /**
@@ -183,7 +206,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   remove (id) {
-    return Vue.http.delete(this.getFullUrl() + '/' + id, { headers: this.headers});
+    return this.http.delete(this.url(id));
   }
 
   /**
@@ -195,6 +218,6 @@ export class ResourceApi {
    */
   erase (params) {
     params.query = this.filterQuery(params.query);
-    return Vue.http.delete(this.getFullUrl(), { params: this.getFullParams(params), headers: this.headers}).then((response) => { return this.parse(response) });
+    return this.http.delete(this.url(), { params: this.getFullParams(params)})
   }
 };

@@ -1,6 +1,5 @@
 import _ from 'lodash';
 var clone = require('clone');
-import Vue from 'vue'
 import { container } from '../Container';
 import { Translator } from '../Translator';
 import { Helper } from '../Helper';

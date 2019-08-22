@@ -19,18 +19,12 @@ import { BaseAttribute } from '../../app/Attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
-import { Datetime } from 'vue-datetime';
-import Vue from 'vue'
 import moment from 'moment'
 
-Vue.use(require('vue-datetime'))
 require('vue-datetime/dist/vue-datetime.css')
 
 
 export default {
-  components: {
-    Datetime
-  },
   mixins: [
     AttributePreMount,
     ResourceLocalization
