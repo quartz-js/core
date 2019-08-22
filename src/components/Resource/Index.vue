@@ -17,14 +17,13 @@
           v-model="selected"
           :headers="getHeaders()"
           :items="data"
-          show-select
+          :show-select="true"
           item-key="id"
           v-if="response"
           :page.sync="pagination.page"
           :server-items-length="pagination.totalItems"
           :loading="loading"
           :headers-length="countColumns()"
-
           :sort-by="pagination.sortBy"
           :sort-desc="pagination.descending"
           :footer-props="{
@@ -33,46 +32,32 @@
           flat
         >
           <v-progress-linear slot="progress" color="blue" indeterminate style='margin-top: -1px; height: 3px'></v-progress-linear>
-          <template slot="headers" slot-scope="props">
-            <slot name="head" :config="config">
+
+          <template v-slot:item.data-table-select="{ isSelected, select }">
+            <v-simple-checkbox color="primary" :value="isSelected" @input="select($event)"></v-simple-checkbox>
+          </template>
+
+          <template v-slot:header="{ headers }">
+            <thead>
               <tr>
-                <th width='80'>
-                  <v-checkbox
-                    :input-value="props.all"
-                    :indeterminate="props.indeterminate"
-                    primary
-                    hide-details
-                    @click.native="toggleAll"
-                  ></v-checkbox>
-                </th>
                 <th
-                  v-for="header in props.headers"
+                  v-for="header in headers"
                   :key="header.text"
-                   class="text-left cell"
                   :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
                   @click="changeSort(header.value)"
                 >
                   {{ header.attribute.label }}
                   <v-icon small>arrow_upward</v-icon>
                 </th>
-                <th class="column sortable text-right pr-4">
-                  <span class='pr-3'>
-                    {{ $t('$quartz.core.actions') }} 
-                  </span>
-                </th>
               </tr>
-            </slot>
+            </thead>
           </template>
-          <template slot="items" slot-scope="props" >
-            <tr :active="props.selected" :class="{'disable': !config.showRow(props.item)}">
-              <td>
-                <v-checkbox @change="props.selected = !props.selected"
-                  :input-value="props.selected"
-                  primary
-                  hide-details
-                ></v-checkbox>
-              </td>
-              <slot name="row" :resource="props.item" :config="config">
+
+
+          <template v-slot:body="{ items,select }" >
+            <tbody>
+              <tr v-for="item in items" :key="item.id" :class="{'disable': !config.showRow(item)}">
+                <td><v-checkbox color="primary"></v-checkbox></td>
                 <td 
                   v-for="(attribute, index) in attributes" 
                   v-if="showAttribute(attribute)" 
@@ -80,36 +65,20 @@
                   class="cell" 
                   :width="getAttributeWidth(attribute)" 
                   style='cursor: pointer' 
-                  @click="switchRow(props.item);"
+                  @click="switchRow(item);"
                 >
-                <q-attr-text :resource="props.item" :attribute="attribute" :showLabel="false"/>
+                  <q-show-text :resource="item" :attribute="attribute" :showLabel="false" class="ma-0"/>
                 </td>
-              </slot>
-              <td>
-                <div  class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(props.item)}">
-                  <slot name="actions" :resource="props.item" :config="config"></slot>
-                  <q-btn class='ma-0 mx-1' icon small color="primary" text @click="goToShow(props.item)"><v-icon>visibility</v-icon></q-btn>
-                </div>
-              </td>
-            </tr>
-            <tr v-if="currentRowOpened === props.item.id">
-              <td :colspan="attributesShowable().length + 2">
-                <div class="mt-3"></div>
-                <div v-for="(attribute, index) in attributes">
-                  <q-attr-text :resource="props.item" :attribute="attribute" v-if="attribute.show"></q-attr-text>  
-                </div>
-              </td>
-            </tr>
-          </template>
-          <template  v-slot:item.action="{ item }">
-            <div  class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(props.item)}">
-              <slot name="actions" :resource="props.item" :config="config"></slot>
-              <q-btn class='ma-0 mx-1' icon small color="primary" text @click="goToShow(props.item)"><v-icon>visibility</v-icon></q-btn>
-            </div>
+                <td>
+                  <div class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(item)}">
+                    <slot name="actions" :resource="item" :config="config"></slot>
+                    <q-btn class='ma-0 mx-1' icon small color="primary" text @click="goToShow(item)"><v-icon>visibility</v-icon></q-btn>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </template>
         </v-data-table>
-
-
       </div>
       <div v-else>
          <div class='content text-md-center'>
@@ -402,7 +371,7 @@ export default {
       }
     },
     getHeaders () {
-      return this.attributes.filter((attribute) => {
+      let headers = this.attributes.filter((attribute) => {
         return this.showAttribute(attribute);
       }).map((attribute) => {
         return {
@@ -413,6 +382,10 @@ export default {
           sortable: true
         };
       });
+
+      headers.push({ text: '', value: 'action', sortable: false,align:'right' })
+
+      return headers;
     },
     getAlternateLabel (count) {
         let plural = ''
