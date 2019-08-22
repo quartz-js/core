@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4 ml-3" v-if="show">
-    <v-switch :value="rawValue" inset @change="onChange($event)" :height='24' :width="50" :sync="true" color="#1976d2" :label="attribute.label"></v-switch>
+    <v-switch v-model="rawValue" inset :height='24' :width="50" :sync="true" color="#1976d2" :label="attribute.label" @change="onChange()"></v-switch>
   </div>
 </template>
 <script>
@@ -62,10 +62,8 @@ export default {
       this.rawValue = option ? !!option.value : false;
     },
     onChange: function (e) {
-      var index = e.value ? 1 : 0;
-      this.rawValue = e.value
 
-      this.attribute.injectValue(this.value, index);
+      this.attribute.injectValue(this.value, this.rawValue);
 
       this.$emit('input', this.value);
       this.$forceUpdate();
