@@ -6,23 +6,18 @@ import _ from 'lodash'
 export default {
   data() {
     return {
-      attributes: {},
+      now: new Date()
     }
   },
-  methods: {
-    reload() {
-      this.attributes = _.assignIn({}, this.$attrs, _.clone(container.get('$quartz.props.' + this.$vnode.componentOptions.tag, {})));
+  computed: {
+    attributes() {
+      return _.assignIn({},{now:this.now}, _.clone(container.get('$quartz.props.' + this.$vnode.componentOptions.tag, {})), this.$attrs);
     }
-  },
-  mounted() {
-    this.reload();
   },
   created() {
-    this.reload();
-
     window.bus.$on('component.update', () => {
       setTimeout((i) => {
-        this.reload();
+        this.now = new Date
       }, 10);
     });
   }
