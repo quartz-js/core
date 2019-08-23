@@ -85,6 +85,9 @@ module.exports = {
 
         let components = [
           'QBtn', 
+          'QBtnTable',
+          'QBtnInput',
+          'QBtnCompact',
           'QTextField',
           'QTextarea', 
           'QAutocomplete', 
