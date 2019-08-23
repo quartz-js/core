@@ -16,7 +16,7 @@
       </v-layout>
     </q-card>
 
-    <q-card class="">
+    <q-card>
       <div v-if="showContent">
         <div v-if="loading || (pagination && pagination.totalItems !== 0) || query">
         
