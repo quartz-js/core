@@ -96,7 +96,8 @@ module.exports = {
           'QAppBar',
           'QSidebar',
           'QCard',
-          'QSheet'
+          'QSheet',
+          'QTabs'
         ]
 
         components.map(function(i) {
