@@ -39,23 +39,7 @@
 
     </q-card>
       
-    <slot :resource="data" name="content" :config="config" />
-
-    <slot :resource="data" name="container-tabs" :config="config">
-      <div>
-        <v-tabs class='show-tabs my-4' v-model="tabs">
-          <slot :resource="data" name="tabs" :config="config" :tabs="tabs">
-            <v-tab>{{ $t('$quartz.core.overview') }}</v-tab>
-            <v-tab-item :transition="false" :reverse-transition="false">
-              <slot :resource="data" name="body"></slot>
-            </v-tab-item>
-          </slot>
-        </v-tabs>
-      </div>
-    </slot>
-    <slot :resource="data" name="footer" :config="config">
-
-    </slot>
+    <slot name="body" :resource="data" :config="config" />
   </div>
 </template>
 
