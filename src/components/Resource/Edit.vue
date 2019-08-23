@@ -2,8 +2,14 @@
   <div v-if="data !== 0 && data !== null && config.update === true">
     <div v-if="type === 'button-navigator'"  style='display:inline-block'>
       <slot name="activator" :drawer="drawer">
-        <q-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.edit') }}</q-btn>
-        <q-btn v-if="activatorType === 'icon'" small text icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>edit</v-icon></q-btn>
+        <component 
+          :is="activatorType"
+          color="primary" 
+          @click="drawer = true" 
+          v-bind="$attrs"
+          content-icon='edit'
+          :content-text="$t('$quartz.core.edit')"
+          />
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawer" fixed right width='1200' temporary stateless>
@@ -16,8 +22,24 @@
               <slot :resource="data" :errors="errors" :config="config" name="edit"></slot>
             </div>
             <div class='content text-right mt-5'>
-              <q-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</q-btn>
-              <q-btn @click="save()" color="primary" :loading="loading" :disabled="loading">{{ $t('$quartz.core.save') }}</q-btn>
+
+              <q-btn
+                @click="drawer = false" 
+                v-bind="$attrs"
+                content-icon='close'
+                :content-text="$t('$quartz.core.cancel')"
+              />
+
+              <q-btn
+                :loading="loading"
+                :disabled="loading"
+                color="primary" 
+                @click="save()"
+                v-bind="$attrs"
+                content-icon='save'
+                :content-text="$t('$quartz.core.save')"
+              />
+
             </div>
           </div>
         </v-navigation-drawer>
@@ -46,11 +68,14 @@ import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { utils } from '../../mixins/utils'
 import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
-
+import QBtn from '../../components/Components/QBtn'
+import QBtnInput from '../../components/Components/QBtnInput'
 
 export default {
   components: {
-    Errors
+    Errors,
+    QBtn,
+    QBtnInput
   },
   mixins: [ 
     LoadResource,
@@ -77,7 +102,7 @@ export default {
     },
     activatorType: {
       type: String,
-      default: "icon"
+      default: "q-btn"
     },
     type: {
       type: String,

@@ -93,6 +93,7 @@ module.exports = {
           'QAutocomplete', 
           'QColorPicker', 
           'QNavigationDrawer',
+          'QAppBar',
           'QSidebar',
           'QCard',
           'QSheet'

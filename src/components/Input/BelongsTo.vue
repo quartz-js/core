@@ -26,7 +26,7 @@
             :resource="rawValue"
             :config="attribute.getRelationManager(value).clone()" 
             :onManagerLoad="onRelationableManagerLoad"
-            activatorType="icon"
+            activatorType="q-btn-input"
           ></component>
         </div>
       </v-layout>

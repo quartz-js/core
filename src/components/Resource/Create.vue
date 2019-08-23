@@ -2,8 +2,14 @@
   <div v-if="internalConfig.create === true" class="create">
     <div v-if="type === 'button-navigator'">
       <slot name="activator" v-if="activator">
-        <q-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</q-btn>
-        <q-btn v-if="activatorType === 'icon'" small text icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></q-btn>
+        <component 
+          :is="activatorType"
+          color="primary" 
+          @click="drawer = true" 
+          v-bind="$attrs"
+          content-icon='add'
+          :content-text="$t('$quartz.core.create')"
+          />
       </slot>
       <slot :resource="data" name="main">
         <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
@@ -16,8 +22,23 @@
               <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
             </div>
             <div class='text-right mt-5'>
-              <q-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</q-btn>
-              <q-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</q-btn>
+              
+                <q-btn
+                  @click="drawer = false" 
+                  v-bind="$attrs"
+                  content-icon='close'
+                  :content-text="$t('$quartz.core.cancel')"
+                />
+
+                <q-btn
+                  :loading="loading"
+                  :disabled="loading"
+                  color="primary" 
+                  @click="create()"
+                  v-bind="$attrs"
+                  content-icon='add'
+                  :content-text="labelCreate ? labelCreate : $t('$quartz.core.create')"
+                />
             </div>
           </div>
          </v-navigation-drawer>
@@ -32,8 +53,14 @@
           {{ this.getResourceDescription(internalConfig) }}
           <br><br>
           <slot name="activator" v-if="activator">
-            <q-btn v-if="activatorType === 'btn'" color="primary" @click="drawer = true" v-bind="$attrs">{{ $t('$quartz.core.create') }}</q-btn>
-            <q-btn v-if="activatorType === 'icon'" small text icon color="primary" @click="drawer = true" class="ma-0 mx-1" v-bind="$attrs"><v-icon>add</v-icon></q-btn>
+            <component 
+              :is="activatorType"
+              color="primary" 
+              @click="drawer = true" 
+              v-bind="$attrs"
+              content-icon='add'
+              :content-text="$t('$quartz.core.create')"
+            />
           </slot>
           <slot :resource="data" name="main">
             <v-navigation-drawer v-model="drawable" fixed temporary right width='1200' stateless>
@@ -46,8 +73,24 @@
                   <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
                 </div>
                 <div class='text-right mt-5'>
-                  <q-btn @click="drawer = false">{{ $t('$quartz.core.cancel') }}</q-btn>
-                  <q-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</q-btn>
+
+                  <q-btn
+                    @click="drawer = false" 
+                    v-bind="$attrs"
+                    content-icon='cancel'
+                    :content-text="$t('$quartz.core.cancel')"
+                  />
+
+                  <q-btn
+                    :loading="loading"
+                    :disabled="loading"
+                    color="primary" 
+                    @click="create()"
+                    v-bind="$attrs"
+                    content-icon='add'
+                    :content-text="labelCreate ? labelCreate : $t('$quartz.core.create')"
+                  />
+
                 </div>
               </div>
              </v-navigation-drawer>
@@ -75,7 +118,15 @@
           <slot :resource="data" :errors="errors" :config="internalConfig" name="create"/>
         </div>
         <div class='text-right'>
-          <q-btn color="primary" @click="create()" :loading="loading">{{ labelCreate ? labelCreate : $t('$quartz.core.create') }}</q-btn>
+          <q-btn
+            :loading="loading"
+            :disabled="loading"
+            color="primary" 
+            @click="create()"
+            v-bind="$attrs"
+            content-icon='add'
+            :content-text="labelCreate ? labelCreate : $t('$quartz.core.create')"
+          />
         </div>
       </div>
     </div>
@@ -106,7 +157,7 @@ export default {
     },
     activatorType: {
       type: String,
-      default: "btn"
+      default: "q-btn"
     },
     activator: {
       type: Boolean,

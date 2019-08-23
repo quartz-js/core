@@ -2,13 +2,13 @@
   <div v-if="show" class="mt-4">
     <datetime v-model="rawValue" type="datetime" :minute-step="5" ref="dateTimePicker" input-style="display:none" @input="onChange">
       <template slot="after">
-        <v-text-field 
+        <q-text-field 
           :value="getDateFormat(rawValue)" 
           :label="attribute.label" 
           :hint="getAttributeDescription(attribute)"
           @click="$refs.dateTimePicker.isOpen = true"
           persistent-hint
-        ></v-text-field>
+        ></q-text-field>
       </template>
     </datetime>
   </div>
@@ -22,7 +22,6 @@ import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import moment from 'moment'
 
 require('vue-datetime/dist/vue-datetime.css')
-
 
 export default {
   mixins: [

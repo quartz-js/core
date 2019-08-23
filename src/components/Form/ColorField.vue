@@ -1,5 +1,5 @@
 <template>
-  <v-text-field
+  <q-text-field
     v-bind="$attrs"
     v-on="$listeners"
   />

@@ -3,7 +3,14 @@
     <q-card class="pa-3 mb-4" v-if="loading || (pagination && pagination.totalItems !== 0) || query">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details name='search'></v-text-field>
-        <q-btn color="primary" @click="load()">{{ $t('$quartz.core.search') }}</q-btn>
+        <q-btn
+          :loading="loading"
+          :disabled="loading"
+          color="primary" 
+          @click="load()"
+          content-icon='search'
+          :content-text="$t('$quartz.core.search')"
+        />
 
         <div class="text-right"><slot name="top" :config="config"></slot></div>
       </v-layout>
@@ -72,7 +79,14 @@
                 <td>
                   <div class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(item)}">
                     <slot name="actions" :resource="item" :config="config"></slot>
-                    <q-btn class='ma-0 mx-1' icon small color="primary" text @click="goToShow(item)"><v-icon>visibility</v-icon></q-btn>
+                    <q-btn-table
+                      :loading="loading"
+                      :disabled="loading"
+                      color="primary" 
+                      @click="goToShow(item)"
+                      content-icon='visibility'
+                      :content-text="$t('$quartz.core.show')"
+                    />
                   </div>
                 </td>
               </tr>
