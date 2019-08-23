@@ -19,6 +19,8 @@ export class ResourceApi {
   }
 
   url (url) {
+    url = `${url}`
+    
     let parts = [
       container.get('config').app.api.url.replace(/\/$/, '')
     ]
