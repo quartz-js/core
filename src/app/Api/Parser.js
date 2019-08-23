@@ -5,11 +5,9 @@ export class Parser {
 
     container.get('axios').interceptors.response.use((response) => {
       response.body = response.data
-      console.log(response)
       return Parser.parse(response);
     }, (response) => {
 
-      console.log(response)
       response.body = response.data
       return Promise.reject(response);
     });
