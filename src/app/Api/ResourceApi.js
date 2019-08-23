@@ -54,6 +54,10 @@ export class ResourceApi {
     return this.http.post(this.url(url), params instanceof FormData ? params : this.getFullParams(params), options)
   }
 
+  put (url, params, options) {
+    return this.http.put(this.url(url), params instanceof FormData ? params : this.getFullParams(params), options)
+  }
+
   get (url, options) {
     return this.http.get(this.url(url), options)
   }
