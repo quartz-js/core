@@ -21,7 +21,6 @@ import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 
 import moment from 'moment'
 
-require('vue-datetime/dist/vue-datetime.css')
 
 export default {
   mixins: [
