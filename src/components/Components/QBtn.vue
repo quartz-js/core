@@ -1,8 +1,8 @@
 <template>
   <v-btn v-bind='attributes' v-on="$listeners">
-	<v-icon v-if="attributes.hasIcon && contentIcon">{{ contentIcon }}</v-icon>
+	<v-icon v-if="!attributes.hideIcon && contentIcon">{{ contentIcon }}</v-icon>
 
-	<span v-if="attributes.hasText && contentText" v-bind:class="{'ml-2': attributes.hasIcon && contentIcon}">{{ contentText }}</span>
+	<span v-if="!attributes.hideText && contentText" v-bind:class="{'ml-2': !attributes.hideIcon && contentIcon}">{{ contentText }}</span>
   	<slot></slot>
   </v-btn>
 </template>
