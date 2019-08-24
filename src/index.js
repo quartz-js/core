@@ -50,7 +50,7 @@ module.exports = {
 
         Vue.component("QResourceCreate", require('./components/Resource/Create').default)
         Vue.component("QResourceEdit", require('./components/Resource/Edit').default)
-        Vue.component("QResourceIndex", require('./components/Resource/Index').default)
+        Vue.component("QDataIteratorTable", require('./components/Data/Iterator/Table').default)
         Vue.component("QResourceRemove", require('./components/Resource/Remove').default)
         Vue.component("QResourceShow", require('./components/Resource/Show').default)
 
