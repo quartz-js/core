@@ -40,7 +40,7 @@ export default {
   props: { 
     activatorType: {
       type: String,
-      default: "q-btn-table"
+      default: "q-btn"
     },
   },
   data() {
