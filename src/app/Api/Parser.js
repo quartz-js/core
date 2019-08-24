@@ -6,10 +6,9 @@ export class Parser {
     container.get('axios').interceptors.response.use((response) => {
       response.body = response.data
       return Parser.parse(response);
-    }, (response) => {
-
-      response.body = response.data
-      return Promise.reject(response);
+    }, (error) => {
+      error.response.body = error.response.data
+      return Promise.reject(error.response);
     });
   }
 
