@@ -112,10 +112,10 @@
 
 <script>
 
-import { utils } from '../../mixins/utils'
-import Remove from '../../components/Resource/Remove'
-import QText from '../../components/Show/Text'
-import { ResourceLocalization } from '../../mixins/ResourceLocalization'
+import { utils } from '../../../mixins/utils'
+import Remove from '../../Resource/Remove'
+import QText from '../../Show/Text'
+import { ResourceLocalization } from '../../../mixins/ResourceLocalization'
 var qs = require('qs');
 import _ from 'lodash'
 
