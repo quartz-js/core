@@ -108,7 +108,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   show (id, params) {
-    return this.http.get(id, { params: this.getFullParams(params) })
+    return this.get(id, { params: this.getFullParams(params) })
   }
 
   /**
@@ -120,7 +120,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   update (id, params) {
-    return this.http.put(this.url(id), this.getFullParams(params))
+    return this.put(id, this.getFullParams(params))
   }
 
   /**
