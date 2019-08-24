@@ -19,7 +19,7 @@
             v-bind="globalAttributeProps()"
           ></q-autocomplete>
         </v-spacer>
-        <div class="pt-4">
+        <div>
           <component 
             v-for="component in attribute.getRelationableActions(value)"
             v-bind:is="component"
