@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-bind='attributes' v-on='$listeners'><slot></slot></v-navigation-drawer>
+  <v-navigation-drawer v-bind='attributes' v-on='$listeners' app fixed><slot></slot></v-navigation-drawer>
 </template>
 <script>
 

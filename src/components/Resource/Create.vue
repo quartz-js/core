@@ -12,7 +12,7 @@
           />
       </slot>
       <slot :resource="data" name="main">
-        <q-drawer-form app v-model="drawable" fixed>
+        <q-form app v-model="drawable" fixed>
           <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
             <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
@@ -41,7 +41,7 @@
                 />
             </div>
           </div>
-         </q-drawer-form>
+         </q-form>
       </slot>
     </div>
 
@@ -63,7 +63,7 @@
             />
           </slot>
           <slot :resource="data" name="main">
-            <q-drawer-form v-model="drawable" fixed temporary right width='1200' stateless>
+            <q-form v-model="drawable" fixed temporary right width='1200' stateless>
               <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
                 <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
                 <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
@@ -93,7 +93,7 @@
 
                 </div>
               </div>
-             </q-drawer-form>
+             </q-form>
           </slot>
         </p>
       </div>

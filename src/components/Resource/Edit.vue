@@ -12,7 +12,7 @@
           />
       </slot>
       <slot :resource="data" name="main">
-        <q-drawer-form app v-model="drawer" fixed>
+        <q-form app v-model="drawer" fixed>
           <div style='overflow-y:auto; max-height: 100%'>
             <div class="content text-left" v-if="drawer">
               <h3 class='title'>{{ this.getResourceTitle(config) }} {{ data.id ? " - #" + data.id : null }}</h3>
@@ -42,7 +42,7 @@
 
             </div>
           </div>
-        </q-drawer-form>
+        </q-form>
       </slot>
       <slot :resource="data" name="extra"/>
     </div>

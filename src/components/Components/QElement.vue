@@ -11,7 +11,12 @@ export default {
   },
   computed: {
     attributes() {
-      return _.assignIn({},{now:this.now}, _.clone(container.get('$quartz.props.' + this.$vnode.componentOptions.tag, {})), this.$attrs);
+      return _.assignIn({},{now:this.now}, _.clone(this.getGlobalAttributes()), this.$attrs);
+    }
+  },
+  methods: {
+    getGlobalAttributes() {
+      return container.get('$quartz.props.' + this.$vnode.componentOptions.tag, {})
     }
   },
   created() {
