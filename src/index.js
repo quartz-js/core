@@ -51,6 +51,7 @@ module.exports = {
         Vue.component("QResourceCreate", require('./components/Resource/Create').default)
         Vue.component("QResourceEdit", require('./components/Resource/Edit').default)
         Vue.component("QDataIteratorTable", require('./components/Data/Iterator/Table').default)
+        Vue.component("QDataIteratorDiscussion", require('./components/Data/Iterator/Discussion').default)
         Vue.component("QResourceRemove", require('./components/Resource/Remove').default)
         Vue.component("QResourceShow", require('./components/Resource/Show').default)
 
