@@ -81,7 +81,7 @@ export default {
 
       var option = this.attribute.getOptionByValue(this.rawValue);
 
-      this.attribute.injectValue(this.value, option.value);
+      this.attribute.injectValue(this.value, option ? option.value : null);
 
       this.$emit('input', this.value);
 
