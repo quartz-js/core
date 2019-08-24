@@ -97,7 +97,8 @@ module.exports = {
           'QSidebar',
           'QCard',
           'QSheet',
-          'QTabs'
+          'QTabs',
+          'QSelect'
         ]
 
         components.map(function(i) {
