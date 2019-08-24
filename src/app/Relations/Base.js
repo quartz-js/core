@@ -119,7 +119,7 @@ export class Base extends BaseAttribute {
    */
   getLabelByResource (resource, parentResource) {
 
-    if (!resource) {
+    if (!resource || typeof resource.id === 'undefined') {
       return null;
     }
 
