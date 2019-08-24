@@ -98,7 +98,8 @@ module.exports = {
           'QCard',
           'QSheet',
           'QTabs',
-          'QSelect'
+          'QSelect',
+          'QSnackbar'
         ]
 
         components.map(function(i) {
