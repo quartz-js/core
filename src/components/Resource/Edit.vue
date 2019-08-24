@@ -12,7 +12,7 @@
           />
       </slot>
       <slot :resource="data" name="main">
-        <v-navigation-drawer v-model="drawer" fixed right width='1200' temporary stateless>
+        <q-drawer-form app v-model="drawer" fixed>
           <div style='overflow-y:auto; max-height: 100%'>
             <div class="content text-left" v-if="drawer">
               <h3 class='title'>{{ this.getResourceTitle(config) }} {{ data.id ? " - #" + data.id : null }}</h3>
@@ -42,7 +42,7 @@
 
             </div>
           </div>
-        </v-navigation-drawer>
+        </q-drawer-form>
       </slot>
       <slot :resource="data" name="extra"/>
     </div>
