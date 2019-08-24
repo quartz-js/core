@@ -80,8 +80,6 @@
                   <div class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(item)}">
                     <slot name="actions" :resource="item" :config="config"></slot>
                     <q-btn-table
-                      :loading="loading"
-                      :disabled="loading"
                       color="primary" 
                       @click="goToShow(item)"
                       content-icon='visibility'
