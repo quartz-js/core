@@ -66,7 +66,7 @@
               <tr v-for="item in items" :key="item.id" :class="{'disable': !config.showRow(item)}">
                 <td><v-checkbox color="primary"></v-checkbox></td>
                 <td 
-                  v-for="(attribute, index) in attributes" 
+                  v-for="(attribute, index) in attributesShowable()" 
                   v-if="showAttribute(attribute)" 
                   :key="index" 
                   class="cell" 
@@ -240,7 +240,7 @@ export default {
       }).length+2;
     },
     showAttribute: function (attribute) {
-      return attribute.show === true && attribute.fixed(null) == undefined
+      return attribute.show === true && attribute.fixed(null) == undefined && attribute.fixed(null) !== null
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {
