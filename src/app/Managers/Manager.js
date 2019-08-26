@@ -1,5 +1,7 @@
 var clone = require('clone');
 const lodash = require('lodash');
+import Twig from 'twig';
+
 
 export class Manager {
   constructor (params) {
@@ -11,6 +13,8 @@ export class Manager {
     this.show = true;
     this.parserFinalQuery = [];
     this.descriptor = params.descriptor || [];
+
+    this.readable = params.readable || {}
 
     this.actions = {
       basic: [],
@@ -52,10 +56,14 @@ export class Manager {
       return params.id;
     };
 
-    this.getFinalQuery = function (query) {
+    this.getFinalQuery = function (query, obj) {
       this.parserFinalQuery.map(parser => {
         query = parser(query)
       })
+
+      if (query && obj) {
+        query = Twig.twig({data: query}).render(obj)
+      }
 
       return query;
     };

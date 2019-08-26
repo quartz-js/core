@@ -1,5 +1,6 @@
 import { ServiceProvider } from './ServiceProvider'
 import { container } from '../../app/Container'
+import { Template } from '../../app/Template'
 import { Parser } from '../../app/Api/Parser'
 const axios = require('axios');
 import { Datetime } from 'vue-datetime';
@@ -13,6 +14,7 @@ export class QuartzServiceProvider extends ServiceProvider {
   	container.set('$quartz.tags', ['data', 'system'])
     container.set('$quartz.data', [])
     container.set('axios', axios.create({}))
+    container.set('template', new Template)
 
     this.registerComponent('datetime', Datetime)
 
