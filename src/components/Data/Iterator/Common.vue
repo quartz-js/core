@@ -35,8 +35,7 @@ export default {
         10, 25, 50, 100, 250, 500
       ],
       pagination: {
-        sortBy: "id",
-        descending: true,
+        sort: [],
         rowsPerPage: 25,
         totalPages: 0,
         page: 1
@@ -71,9 +70,19 @@ export default {
     this.manager = this.config;
     this.attributes = this.config.attributes;
 
-    if (this.config.hasAttribute('updated_at')) {
-      this.pagination.sort = "-updated_at";
+    console.log(this.pagination)
+    if (this.showAttribute(this.config.getAttribute('updated_at'))) {
+      this.pagination.sort.push({
+        attribute: 'updated_at',
+        descending: true
+      })
+    } else if (this.showAttribute(this.config.getAttribute('id'))) {
+      this.pagination.sort.push({
+        attribute: 'id',
+        descending: true
+      })
     }
+
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);
@@ -158,7 +167,7 @@ export default {
       //this.$router.replace({query: push});
     },
     filterPaginationUrl(pagination) {
-      return _.pick(pagination, ['sortBy', 'descending', 'page', 'rowsPerPage']);
+      return _.pick(pagination, ['sort', 'page', 'rowsPerPage']);
     },
     getQueryVars () {
       return {
@@ -184,7 +193,7 @@ export default {
         query: this.getQuery(),
         show: this.pagination.rowsPerPage,
         page: this.pagination.page,
-        sort: (this.pagination.descending ? "-" : "") + this.pagination.sortBy,
+        sort: this.pagination.sort.map(i => (i.descending ? '-' : '') + i.attribute).join(','),
       };
 
       if (!force && _.isEqual(this.params, params)) {
@@ -259,14 +268,6 @@ export default {
     },
     toggleAll () {
       this.selected = this.selected.length ? [] : this.data.slice();
-    },
-    changeSort (column) {
-      if (this.pagination.sortBy === column) {
-        this.pagination.descending = !this.pagination.descending
-      } else {
-        this.pagination.sortBy = column
-        this.pagination.descending = false
-      }
     },
     getHeaders () {
       let headers = this.attributes.filter((attribute) => {

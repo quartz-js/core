@@ -32,9 +32,8 @@
           :server-items-length="pagination.totalItems"
           :loading="loading"
           :headers-length="countColumns()"
-          :sort-by="pagination.sortBy"
-          :sort-desc="pagination.descending"
-          @pagination="updatePagination"
+          multi-sort
+          :options.sync="options"
           :footer-props="{
             'items-per-page-options': rowsPerPageItems
           }"
@@ -121,29 +120,43 @@ export default {
   extends: Common,
   data() {
     return {
-      showTable: true
+      showTable: true,
+      options: {}
     }
   },
   watch: {
-    pagination: {
+    options: {
       handler () {
-        
+        this.pagination.rowsPerPage = this.options.itemsPerPage;
+        this.pagination.page = this.options.page
+
+        this.pagination.sort = this.options.sortDesc.map((i, key) => {
+          return {
+            descending: i,
+            attribute: this.options.sortBy[key]
+          }
+        })
+
+        this.load();
       },
       deep: true
     }
   },
   methods: {
-    updatePagination ($event) {
-      this.pagination.rowsPerPage = $event.itemsPerPage;
-      this.pagination.page = $event.page
-      this.load();
-    },
     retrieved () {
       this.showTable = this.loading || (this.pagination && this.pagination.totalItems !== 0) || this.query
     }
   },
   mounted() {
     this.query = this.$route.query.query;
+
+    console.log(this.pagination.sort)
+
+    this.options = {
+      multiSort: true,
+      sortBy: this.pagination.sort.map(i => i.attribute),
+      sortDesc: this.pagination.sort.map(i => i.descending)
+    }
     this.load();
   }
 }
