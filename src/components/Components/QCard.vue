@@ -1,6 +1,6 @@
 <template>
   <v-card v-bind='attributes' v-on='$listeners' v-bind:style="{
-    border: $container.get('style.card.outlined') ? $container.get('style.card.borderSize') + 'px solid ' + $container.get('style.card.borderColor') : null
+    border: $container.get('style.q-card.outlined') ? $container.get('style.q-card.borderSize') + 'px solid ' + $container.get('style.q-card.borderColor') : null
   } "><slot></slot></v-card>
 </template>
 <script>
