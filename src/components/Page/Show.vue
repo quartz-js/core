@@ -20,7 +20,7 @@
             <v-menu v-if="!!$scopedSlots['actions-extra']">
               <template v-slot:activator="{ on }">
                 <q-btn icon text small v-on="on"  class='ma-0'  color="grey">
-                  <v-icon>more_vert</v-icon>
+                  <q-icon>more_vert</q-icon>
                 </q-btn>
               </template>
               <v-list>

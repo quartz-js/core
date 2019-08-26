@@ -27,7 +27,7 @@
           <v-card-text class="pa-1">
             <span class=" mx-2">
             <v-btn flat icon color="blue lighten-2" class="ma-0">
-              <v-icon>thumb_up</v-icon>
+              <q-icon>thumb_up</q-icon>
             </v-btn>
             <span class="ml-1" color="blue lighten-2">1</span>
             </span>

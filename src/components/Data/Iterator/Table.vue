@@ -54,7 +54,7 @@
                   @click="changeSort(header.value)"
                 >
                   {{ header.attribute.label }}
-                  <v-icon small>arrow_upward</v-icon>
+                  <q-icon small>arrow_upward</q-icon>
                 </th>
               </tr>
             </thead>
