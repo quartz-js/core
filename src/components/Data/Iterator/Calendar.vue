@@ -60,8 +60,41 @@
             @click:more="viewDay"
             @click:date="viewDay"
             @change="updateRange"
+          ></v-calendar>
+
+          <v-menu
+            v-model="selectedOpen"
+            :close-on-content-click="false"
+            :activator="selectedElement"
+            full-width
+            offset-x
           >
-          </v-calendar>
+            <v-card
+              color="grey lighten-4"
+              min-width="350px"
+              flat
+            >
+              <v-toolbar
+                :color="selectedEvent.color"
+                dark
+              >
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <div class="flex-grow-1"></div>
+              </v-toolbar>
+              <v-card-text>
+                <span v-html="selectedEvent.details"></span>
+
+                <div class='text-right'>
+                  <q-btn
+                    color="primary" 
+                    @click="goToShow(selectedEvent.resource)"
+                    content-icon='visibility'
+                    :content-text="$t('$quartz.core.show')"
+                  />
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
         </v-sheet>
       </v-col>
     </v-row>
@@ -100,10 +133,11 @@ export default {
         return this.data ? this.data.map(i => {
           return {
             name: this.$container.get('template').parse(this.config.readable.title, i),
-            details: this.$container.get('template').parse(this.config.readable.details, i),
+            details: this.$container.get('template').parse(this.config.readable.description, i),
             start: i.started_at,
             end: i.ended_at,
-            color: this.$container.get('template').parse(this.config.readable.color, i) || "primary"
+            color: this.$container.get('template').parse(this.config.readable.color, i) || "primary",
+            resource: i
           }
         }) : []
       }
