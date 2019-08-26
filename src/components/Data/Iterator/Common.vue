@@ -168,6 +168,9 @@ export default {
     getQuery () {
       return this.config.getFinalQuery(this.query, this.getQueryVars())
     },
+    retrieved () {
+
+    },
     load: function (force) {
 
       if (this.loading) {
@@ -205,6 +208,7 @@ export default {
         this.pagination.totalItems = response.body.meta.pagination.total;
         this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
 
+
         var body = response.body;
 
         return this.config.loadResources(response.body.data).then((r) => {
@@ -229,6 +233,7 @@ export default {
         this.response.data = [];
       }).finally(response => {
         this.loading = false;
+        this.retrieved()
       })
     },
 

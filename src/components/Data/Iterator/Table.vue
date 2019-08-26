@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card class="pa-3 mb-4" v-if="loading || (pagination && pagination.totalItems !== 0) || query">
+    <q-card class="pa-3 mb-4" v-if="showTable">
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details name='search'></v-text-field>
         <q-btn
@@ -18,12 +18,13 @@
 
     <q-card>
       <div v-if="showContent">
-        <div v-if="loading || (pagination && pagination.totalItems !== 0) || query">
+        <div v-if="showTable">
         
         <v-data-table
           v-model="selected"
           :headers="getHeaders()"
           :items="data"
+          :search="null"
           :show-select="true"
           item-key="id"
           v-if="response"
@@ -59,8 +60,6 @@
               </tr>
             </thead>
           </template>
-
-
           <template v-slot:body="{ items,select }" >
             <tbody>
               <tr v-for="item in items" :key="item.id" :class="{'disable': !config.showRow(item)}">
@@ -86,6 +85,11 @@
                       :content-text="$t('$quartz.core.show')"
                     />
                   </div>
+                </td>
+              </tr>
+              <tr v-if="items.length === 0">
+                <td :colspan='attributesShowable().length + 2' class='text-center'>
+                  {{ $t('$quartz.core.no-results.message') }}
                 </td>
               </tr>
             </tbody>
@@ -114,12 +118,22 @@ import Common from './Common'
 
 export default {
   extends: Common,
+  data() {
+    return {
+      showTable: true
+    }
+  },
   watch: {
     pagination: {
       handler () {
         this.load();
       },
       deep: true
+    }
+  },
+  methods: {
+    retrieved () {
+      this.showTable = this.loading || (this.pagination && this.pagination.totalItems !== 0) || this.query
     }
   },
   mounted() {
