@@ -104,7 +104,8 @@ module.exports = {
           'QSnackbar',
           'QForm',
           'QDialog',
-          'QComponentSelector'
+          'QComponentSelector',
+          'QIcon'
         ]
 
         components.map(function(i) {
