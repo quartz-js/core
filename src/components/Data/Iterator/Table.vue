@@ -4,8 +4,6 @@
       <v-layout align-start>
         <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="errors.search" single-line hide-details name='search'></v-text-field>
         <q-btn
-          :loading="loading"
-          :disabled="loading"
           color="primary" 
           @click="load()"
           content-icon='search'
