@@ -34,6 +34,7 @@
           :headers-length="countColumns()"
           :sort-by="pagination.sortBy"
           :sort-desc="pagination.descending"
+          @pagination="updatePagination"
           :footer-props="{
             'items-per-page-options': rowsPerPageItems
           }"
@@ -126,12 +127,17 @@ export default {
   watch: {
     pagination: {
       handler () {
-        this.load();
+        
       },
       deep: true
     }
   },
   methods: {
+    updatePagination ($event) {
+      this.pagination.rowsPerPage = $event.itemsPerPage;
+      this.pagination.page = $event.page
+      this.load();
+    },
     retrieved () {
       this.showTable = this.loading || (this.pagination && this.pagination.totalItems !== 0) || this.query
     }
