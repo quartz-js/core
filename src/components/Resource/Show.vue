@@ -2,7 +2,7 @@
   <q-card v-if="data" class=""> 
     <div v-if="showContent" class="content">
       <div>
-        <v-layout align-center justify-end style='position: absolute; top: 10px; right: 10px;'>
+        <v-layout align-center justify-end style='z-index:1; position: absolute; top: 10px; right: 10px;'>
           <slot :resource="data" :config="config" name="actions"/>
         </v-layout>
 
