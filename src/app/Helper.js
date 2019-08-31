@@ -7,4 +7,11 @@ export class Helper {
     })
     return sub.join(` ${operator} `)
   }
+
+  static handleResponse(response)
+  {
+     if (response instanceof Error) {
+        throw response
+      }
+  }
 };

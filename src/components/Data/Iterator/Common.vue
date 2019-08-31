@@ -1,6 +1,7 @@
 <script>
 
 import { utils } from '../../../mixins/utils'
+import { Helper } from '../../../app/Helper'
 import Remove from '../../Resource/Remove'
 import QText from '../../Show/Text'
 import { ResourceLocalization } from '../../../mixins/ResourceLocalization'
@@ -209,6 +210,7 @@ export default {
         params.include = includes.join(",");
         return manager.index(params)
       }).then(response => {
+
         this.errors.search = null
 
         this.pagination.totalPages = response.body.meta.pagination.total_pages;
@@ -226,6 +228,8 @@ export default {
         })
 
       }).catch(response => {
+
+        Helper.handleResponse(response)
 
         if (response.body && response.body.code === 'QUERY_SYNTAX_ERROR') {
           this.errors.search = response.body.message;

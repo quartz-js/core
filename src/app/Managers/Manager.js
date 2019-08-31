@@ -1,7 +1,7 @@
 var clone = require('clone');
 const lodash = require('lodash');
 import Twig from 'twig';
-
+import { Helper } from '../Helper'
 
 export class Manager {
   constructor (params) {
@@ -258,7 +258,8 @@ export class Manager {
         return response;
       });
     }).catch(error => {
-      console.log(error);
+      Helper.handleResponse(response);
+
       return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
         throw error
       })
@@ -309,7 +310,8 @@ export class Manager {
         return response;
       });
     }).catch(error => {
-      console.log(error);
+      Helper.handleResponse(response);
+
       return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
         throw error
       })

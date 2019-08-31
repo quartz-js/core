@@ -1,3 +1,5 @@
+import { Helper } from '../app/Helper'
+
 export var LoadResource = {
   props: {
     config: {
@@ -48,6 +50,8 @@ export var LoadResource = {
       }).then((data) => {
         this.setData(data[0]);
       }).catch(response => {
+        Helper.handleResponse(response);
+
         this.setData(null);
       });
     },
@@ -74,7 +78,10 @@ export var LoadResource = {
 
       }).then((data) => {
         this.setData(data[0]);
+
       }).catch(response => {
+        Helper.handleResponse(response)
+        
         this.setData(null);
       });
     },
@@ -90,7 +97,8 @@ export var LoadResource = {
         return this.config.loadResources([this.resource]).then((data) => {
           this.setData(data[0]);
         }).catch(response => {
-          console.log(response)
+          Helper.handleResponse(response);
+
           this.setData(null);
         });
       } else if (this.id) {

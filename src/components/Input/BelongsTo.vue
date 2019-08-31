@@ -41,6 +41,7 @@
 import { BelongsToAttribute } from '../../app/Attributes/BelongsToAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
+import { Helper } from '../../app/Helper'
 
 export default {
   mixins: [
@@ -197,6 +198,7 @@ export default {
 
       })
       .catch(() => {
+        Helper.handleResponse(response);
         // this.items = [];
         // this.loadByVal();
 

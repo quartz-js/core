@@ -67,6 +67,7 @@ import { LoadResource } from '../../mixins/LoadResource'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { utils } from '../../mixins/utils'
 import { hooks } from '../../mixins/hooks'
+import { Helper } from '../../app/Helper'
 import Errors from '../../components/Errors'
 import QBtn from '../../components/Components/QBtn'
 import QBtnInput from '../../components/Components/QBtnInput'
@@ -166,6 +167,8 @@ export default {
         this.errors = [];
         this.drawer = false;
       }).catch(response => {
+        Helper.handleResponse(response);
+        
         this.errors = response.body.errors || response.body.message
       }).finally(response => {
         this.loading = false;

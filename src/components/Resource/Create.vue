@@ -136,6 +136,7 @@
 <script>
 
 import { utils } from '../../mixins/utils'
+import { Helper } from '../../app/Helper'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
@@ -243,6 +244,8 @@ export default {
         this.drawer = false;
         this.load()
       }).catch(response => {
+        Helper.handleResponse(response);
+
         this.errors = response.body.errors
       }).finally(response => {
         this.loading = false;
