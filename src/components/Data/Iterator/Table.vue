@@ -148,8 +148,6 @@ export default {
   mounted() {
     this.query = this.$route.query.query;
 
-    console.log(this.pagination.sort)
-
     this.options = {
       multiSort: true,
       sortBy: this.pagination.sort.map(i => i.attribute),

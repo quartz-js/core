@@ -70,7 +70,6 @@ export default {
     this.manager = this.config;
     this.attributes = this.config.attributes;
 
-    console.log(this.pagination)
     if (this.showAttribute(this.config.getAttribute('updated_at'))) {
       this.pagination.sort.push({
         attribute: 'updated_at',
