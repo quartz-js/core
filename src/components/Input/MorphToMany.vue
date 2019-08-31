@@ -200,7 +200,7 @@ export default {
         val = val.filter(resource => { return resource});
 
         val.map(resource => {
-          return resource.label = this.attribute.getLabelByResource(resource)
+          return resource.label = this.attribute.getLabelByResource(resource, this.value)
           
           this.items.push(resource);
         })
@@ -235,7 +235,7 @@ export default {
         return this.attribute.indexerApi.index(params)
       }).then(response => {
           this.items = response.body.data.map((item) => {
-            item.label = this.attribute.getLabelByResource(item);
+            item.label = this.attribute.getLabelByResource(item, this.value);
             delete item['pivot'];
             return item;
           });

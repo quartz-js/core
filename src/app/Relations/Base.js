@@ -123,8 +123,8 @@ export class Base extends BaseAttribute {
       return null;
     }
 
-    return this.getRelationable(resource)
-      ? Twig.twig({data: this.getRelationable(resource).label.template}).render(resource)
+    return this.getRelationable(parentResource)
+      ? Twig.twig({data: this.getRelationable(parentResource).label.template}).render(resource)
       : null;
   }
 
