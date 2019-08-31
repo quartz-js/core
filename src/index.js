@@ -53,6 +53,7 @@ module.exports = {
         Vue.component("QDataIteratorTable", require('./components/Data/Iterator/Table').default)
         Vue.component("QDataIteratorDiscussion", require('./components/Data/Iterator/Discussion').default)
         Vue.component("QDataIteratorCalendar", require('./components/Data/Iterator/Calendar').default)
+        Vue.component("QDataCameraBarcode", require('./components/Data/CameraBarcode').default)
         Vue.component("QResourceRemove", require('./components/Resource/Remove').default)
         Vue.component("QResourceShow", require('./components/Resource/Show').default)
 
