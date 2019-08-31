@@ -39,6 +39,10 @@ export class Parser {
             let val = Parser.parseData(Parser.parseRelationship(relationship, response), response);
 
             if (val !== null && typeof val === 'object') {
+              if (typeof data.attributes[key] === 'undefined') {
+                data.attributes[key] = [];
+              }
+              
               data.attributes[key][keyRelation] = val;
             }
           })
