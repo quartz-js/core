@@ -7,8 +7,12 @@ export class Parser {
       response.body = response.data
       return Parser.parse(response);
     }, (error) => {
-      error.response.body = error.response.data
-      return Promise.reject(error.response);
+      if (error.response) {
+        error.response.body = error.response.data
+        return Promise.reject(error.response);
+      } else {
+        throw error
+      }
     });
   }
 

@@ -258,7 +258,7 @@ export class Manager {
         return response;
       });
     }).catch(error => {
-      Helper.handleResponse(response);
+      Helper.handleResponse(error);
 
       return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
         throw error
@@ -310,7 +310,7 @@ export class Manager {
         return response;
       });
     }).catch(error => {
-      Helper.handleResponse(response);
+      Helper.handleResponse(error);
 
       return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
         throw error
