@@ -1,42 +1,61 @@
 <template>
-  <div id="quagga">
-    
-  </div>
+  <q-card class="content">
+    <div>
+      <video id="video" style="border: 1px solid gray"></video>
+    </div>
+    <pre class='mt-5'>{{ textContent }}</pre>
+  </q-card>
 </template>
 
 <script>
-import Quagga from 'quagga';
+const ZXing = require('@zxing/library')
 
 export default {
-  name: 'VueBarcodeTest',
-  data () {
+  data() {
     return {
-      readerSize: {
-        width: 640,
-        height: 480
-      },
-      detecteds: []
+      textContent: null,
+      codeReader: null
     }
   },
-    mounted (data) {
-
-      Quagga.init({
-        inputStream : {
-          name : "Live",
-          type : "LiveStream",
-          target: document.querySelector('#quagga')    // Or '#yourElement' (optional)
-        },
-        decoder : {
-          readers : ["code_128_reader"]
+  methods: {
+    decodeContinuously(codeReader, selectedDeviceId) {
+      codeReader.decodeFromInputVideoDeviceContinuously(selectedDeviceId, 'video', (result, err) => {
+        if (result) {
+          this.textContent = result
         }
-      }, function(err) {
-          if (err) {
-              console.log(err);
-              return
+        if (err) {
+          if (err instanceof ZXing.NotFoundException) {
+            console.log('No code found.')
           }
-          console.log("Initialization finished. Ready to start");
-          Quagga.start();
-      });
+          if (err instanceof ZXing.ChecksumException) {
+            console.log('A code was found, but it\'s read value was not valid.')
+          }
+          if (err instanceof ZXing.FormatException) {
+            console.log('A code was found, but it was in a invalid format.')
+          }
+        }
+      })
     }
+  },
+  mounted () {
+    let selectedDeviceId;
+    this.codeReader = new ZXing.BrowserMultiFormatReader();
+
+    // const codeReader = new ZXing.BrowserQRCodeReader()
+
+    this.codeReader.getVideoInputDevices()
+      .then((videoInputDevices) => {
+        selectedDeviceId = videoInputDevices[0].deviceId
+        
+        this.decodeContinuously(this.codeReader, selectedDeviceId);
+
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  },
+  beforeDestroy() {
+    this.codeReader.reset()
+  }
 }
 </script>
