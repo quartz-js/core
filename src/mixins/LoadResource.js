@@ -35,7 +35,7 @@ export var LoadResource = {
     },
     loadDataByQuery(query)
     {
-      this.config.executeHooks('include', []).then(includes => {
+      return this.config.executeHooks('include', []).then(includes => {
         return this.config.manager.index({
           include: includes.join(","),
           query: query, 
