@@ -67,7 +67,7 @@ export var LoadResource = {
     },
     loadDataById (id) {
 
-      this.config.executeHooks('include', []).then(includes => {
+      return this.config.executeHooks('include', []).then(includes => {
         return this.config.manager.show(id, {
           include: includes.join(",")
         })
@@ -87,8 +87,6 @@ export var LoadResource = {
     },
 
     loadDataByProps () {
-
-
       if (this.resource) {
         if (JSON.stringify(this.resource) === JSON.stringify(this.data)) {
           return;
@@ -131,8 +129,11 @@ export var LoadResource = {
         }
       });
       bus.$on(this.config.resourceEvent("removed"), data => {
+
+        console.log(data)
+        
         if (parseInt(data.id) === parseInt(this.data.id)) {
-          // this.data = null;
+          this.data = null;
         }
       });
     },
