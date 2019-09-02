@@ -1,7 +1,7 @@
 <template>
   <div v-if="show && attribute && attribute.getRelationManager(this.value)">
     <div v-if="!attribute.style.form">
-      <v-layout row align-top class="mt-4 mx-0">
+      <v-layout row align-center class="mt-4 mx-0">
         <v-spacer>
           <q-autocomplete 
             :loading="loading"
