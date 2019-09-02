@@ -219,7 +219,7 @@ export class Manager {
 
     return this.manager.remove(data.id).then(response => {
       this.onRemoveSuccess(this, response);
-      bus.$emit(this.resourceEvent("removed"), data.id);
+      bus.$emit(this.resourceEvent("removed"), data);
 
       this.attributes.map((attribute) => {
         attribute.onRemove(data);

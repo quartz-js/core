@@ -5,7 +5,6 @@
         <v-layout align-center justify-end >
           <slot :resource="data" :config="config" name="actions"/>
         </v-layout>
-
         <slot :resource="data" name="show" :config="config"></slot>
       </div>
     </div>
