@@ -33,11 +33,11 @@ export default {
       showContent: true,
       query: '',
       rowsPerPageItems: [
-        10, 25, 50, 100, 250, 500
+        5, 10, 25, 50, 100, 250, 500
       ],
       pagination: {
         sort: [],
-        rowsPerPage: 25,
+        rowsPerPage: 5,
         totalPages: 0,
         page: 1
       },

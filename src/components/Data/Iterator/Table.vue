@@ -26,6 +26,7 @@
           :show-select="true"
           item-key="id"
           v-if="response"
+          :items-per-page="pagination.rowsPerPage"
           :page.sync="pagination.page"
           :server-items-length="pagination.totalItems"
           :loading="loading"
