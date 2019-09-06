@@ -286,6 +286,10 @@ export class Manager {
       return this.executeHooks('beforePersist', data.resource);
     }).then(params => {
 
+      params = _.pickBy(params, (val, key) => {
+        return this.hasAttribute(key) && this.getAttribute(key).fillable
+      })
+
       this.attributes.map(attribute => {
         params = attribute.preUpdate(params);
       });
