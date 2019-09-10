@@ -3,6 +3,7 @@ var clone = require('clone');
 import { container } from '../Container';
 import { Translator } from '../Translator';
 import { Helper } from '../Helper';
+import Twig from 'twig';
 
 export class BaseAttribute {
   required = false;
@@ -15,45 +16,64 @@ export class BaseAttribute {
     
     this.translator = new Translator();
 
-    this.required = false;
     this.hooks = [];
-    this.name = name;
-    this.column = name;
     this.priority = 1;
-    this.show = true;
+
     this.descriptor = options.descriptor || [];
-    this.retrievers = {
-    };
+    this.retrievers = {};
 
     this.default = () => {
       return null;
-    };
-
-    if (options && options.column) {
-      this.column = options.column;
-    }
-
-    this.mutator = (value) => {
-      return this.extractor(value);
-    };
-    this.extractor = (resource) => {
-      return _.get(resource, this.column);
-    };
-    this.injector = (resource, value) => {
-      _.set(resource, this.column, value);
-
-      return resource;
     };
     
     this.fixed = (resource) => {
       return undefined;
     }
+
+    this.mutator = (resource) => {
+      return this.getLabelByResource(this.extractor(resource), resource)
+    }
+
+    this.query = (key, resource) => {
+
+      let relationable = this.getRelationable(resource);
+
+      let queries = [];
+
+      let query = Twig.twig({data: relationable.query.template}).render(_.merge(resource, {'__key__': key}))
+
+      query = query.split("eq null").join("is null");
+      query = query.split("!= null").join("is not null");
+
+      queries.push(query);
+
+      return Helper.mergePartsQuery(queries, "and");
+
+    };
+  }
+
+  extractor (resource) {
+    return _.get(resource, this.extract);
+  }
+
+  injector  (resource, value) {
+    _.set(resource, this.inject, value);
+
+    return resource;
   }
 
   ini () {
     if (!this.label) {
       this.label = this.translator.translate(this, 'label');
     }
+  }
+
+  fill (vars) {
+    _.map(vars, (val, key) => {
+      this.set(key, val)
+    })
+
+    return this
   }
 
   set (name, value) {
@@ -305,6 +325,7 @@ export class BaseAttribute {
   onRemove(data) {
 
   }
+
   onCreate(data) {
 
   }
@@ -313,4 +334,110 @@ export class BaseAttribute {
     return 'BaseAttribute'
   }
 
+  /**
+   * @param {object} resource
+   *
+   * @return string
+   */
+  getLabelByResource (resource) {
+
+    if (!resource || typeof resource.id === 'undefined') {
+      return null;
+    }
+
+    console.log(this.readable)
+
+    return this.readable.label ? Twig.twig({data: this.readable.label}).render(resource) : resource
+  }
+
+  /**
+   * @param {string} key
+   * @param {object} resource
+   *
+   * @return this
+   */
+  executeQuery (key, resource) {
+    return this.query(key, resource);
+  }
+
+  /**
+   * @param {object} params
+   *
+   * @return {object}
+   */
+  filterIndexerParams (params) {
+
+    let relationable = this.getRelationable(params.value);
+
+    return {
+      show: 50,
+      query: this.executeQuery(params.query ? params.query : '', params.value),
+      include: relationable.query.include
+    }
+  }
+  
+  /**
+   * @return {Callable}
+   */
+  persist (id, data) {
+    let query;
+
+    if (this.morphTypeColumn) {
+      query = `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id}`;
+    } else {
+      query = `${this.morphKeyColumn} eq ${id}`;
+    }
+
+    return this.storageApi.index({
+      query: query, 
+      show: 999
+    }).then(responseR => {
+      
+      var idsOriginal = responseR.body.data.map(resource => {
+        return parseInt(resource[this.relationId])
+      });
+
+      var idsDefined = typeof data[this.column] !== "undefined" && data[this.column] ? data[this.column].filter(resource => resource).map(resource => {
+        return parseInt(resource.id)
+      }) : [];
+      
+      var idsToAdd = idsDefined.filter(rId => {
+          return idsOriginal.indexOf(rId) < 0;
+      });
+
+      var idsToRemove = idsOriginal.filter(rId => {
+          return idsDefined.indexOf(rId) < 0;
+      });
+
+      var promises = idsToAdd.map((resourceId) => {
+        var params = {};
+
+        if (this.morphTypeColumn) {
+          params[this.morphTypeColumn] = this.morphTypeValue
+        }
+
+        params[this.morphKeyColumn] = id
+        params[this.relationId] = resourceId
+
+        return this.storageApi.create(params);
+      });
+
+      if (idsToRemove.length > 0) {
+
+        let query;
+
+        if (this.morphTypeColumn) {
+          query = `${this.morphTypeColumn} = '${this.morphTypeValue}' and ${this.morphKeyColumn} eq ${id} and ${this.relationId} in (${idsToRemove.join(',')})`
+        } else {
+          query = `${this.morphKeyColumn} eq ${id} and ${this.relationId} in (${idsToRemove.join(',')})`
+        }
+
+        promises.push(this.storageApi.erase({
+          query: query
+        }));
+      }
+
+      return Promise.all(promises);
+    });
+  }
 }

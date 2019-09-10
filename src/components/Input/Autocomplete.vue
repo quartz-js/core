@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show && attribute && attribute.getRelationManager(this.value)">
+  <div v-if="show && attribute">
     <div v-if="!attribute.style.form">
       <v-layout row align-center class="mt-4 mx-0">
         <v-spacer>
@@ -7,10 +7,10 @@
             :loading="loading"
             :items="items"
             item-text="label"
-            :label="label !== undefined ? label : attribute.label"
+            :label="attribute.label"
             v-model="rawValue"
             @input="onChange"
-            :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
+            :hint="attribute.hint"
             :search-input="search"
             :search-input.sync="search"
             return-object
@@ -21,24 +21,20 @@
         </v-spacer>
         <div>
           <component 
-            v-for="component in attribute.getRelationableActions(value)"
+            v-for="component in attribute.actions"
             v-bind:is="component"
             :resource="rawValue"
-            :config="attribute.getRelationManager(value).clone()" 
             :onManagerLoad="onRelationableManagerLoad"
             activatorType="q-btn-input"
           ></component>
         </div>
       </v-layout>
     </div>
-    <div v-if="attribute.style.form && attribute.style.form.name === 'checker'" style='margin-bottom:-25px'>
-      <v-checkbox v-model="checked" :label="getAttributeLabel(attribute)" @change="onChange()"></v-checkbox>
-    </div>
   </div>
 </template>
 <script>
 
-import { BelongsToAttribute } from '../../app/Attributes/BelongsToAttribute'
+import { BaseAttribute } from '../../app/Attributes/BaseAttribute'
 import { AttributePreMount } from '../../mixins/AttributePreMount'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { Helper } from '../../app/Helper'
@@ -52,14 +48,8 @@ export default {
     value: {
       required: true,
     },
-    label: {
-      default: undefined
-    },
-    hint: {
-      default: undefined
-    },
     attribute: {
-      type: BelongsToAttribute,
+      type: BaseAttribute,
       required: true
     },
     errors: {
@@ -80,7 +70,7 @@ export default {
   },
   mounted () {
 
-    if (!this.canMount() || !this.attribute.getRelationManager(this.value)) {
+    if (!this.canMount()) {
       return;
     }
 
@@ -94,18 +84,7 @@ export default {
     
     var val = this.attribute.extractValue(this.value);
     
-    if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-      this.querySelections(''); 
-    } 
-
-    if (val === null && this.value[this.name] !== null) {
-      this.loading = true;
-      this.attribute.load([JSON.parse(JSON.stringify(this.value))]).then((data) => {
-        this.loading = false;
-        this.rawValue = this.attribute.extractValue(data[0]);
-        this.onChange();
-      });
-    } else if (val && val.id) {
+    if (val && val.id) {
       this.loadByVal(val);
     } else {
       this.querySelections();
@@ -115,10 +94,6 @@ export default {
     value: {
       handler: function (val) {
         this.loadByVal(this.attribute.extractValue(this.value));
-
-        if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-          this.querySelections(''); 
-        }
       },
       deep: true
     },
@@ -152,8 +127,6 @@ export default {
         if (val.label) {
           this.items.push(val);
         }
-
-        this.checked = (this.items.length > 1 && val.id === this.items[1].id)
       }
 
       this.rawValue = val;
@@ -161,22 +134,14 @@ export default {
     querySelections (v) {
       this.loading = true;
 
-      if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-        v = null;
-      }
-
       this.lastRawValue = this.rawValue;
 
-      let manager = this.attribute.getRelationManager(this.value);
+      let manager = this.attribute.select.manager(this.rawValue)
+      let params = {
+        query: v
+      }
 
-      let params = this.attribute.filterIndexerParams({
-        query: v, 
-        value: this.value
-      });
-
-      params.query = manager.getFinalQuery(params.query);
-
-      this.attribute.executeHooks('include', params.include ? params.include : []).then(includes => {
+      this.attribute.executeHooks('include', []).then(includes => {
         params.include = includes.join(",");
         return manager.manager.index(params)
       }).then(response => {
@@ -185,19 +150,8 @@ export default {
           return item;
         });
 
-
-        if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-
-          if (this.rawValue && this.rawValue.label != '') {
-            this.loadByVal(this.rawValue)
-          } else {
-            this.loadByVal(this.items[0])
-            this.onChange();
-          }
-        }
-
       })
-      .catch(() => {
+      .catch((response) => {
         Helper.handleResponse(response);
         // this.items = [];
         // this.loadByVal();
@@ -205,12 +159,6 @@ export default {
       }).finally(() => { this.loading = false});
     },
     onChange: function (val) {
-
-      if (this.attribute.style.form && this.attribute.style.form.name === 'checker') {
-        this.rawValue = this.items.filter((item, key)=> {
-          return (this.checked === false && key === 0) || (this.checked === true && key === 1);
-        })[0]
-      }
 
       this.query = this.attribute.mutator(this.rawValue);
 

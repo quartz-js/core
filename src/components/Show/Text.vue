@@ -2,7 +2,7 @@
   <p v-if="show">
     <label class="label-show" v-if="showLabel">{{ attribute.label }}</label>
     <span v-if="attribute.getClassName() === 'BelongsToAttribute' && attribute.extractValue(resource) !== null">
-      <router-link :to="attribute.getRelationManager(resource).getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value" />
+      <router-link :to="attribute.getSelectManager(resource).getRouteShow(attribute.extractValue(resource))" v-html="html" class="show-value" />
     </span>
     <span v-else-if="(attribute.getClassName() === 'BelongsToMany' || attribute.getClassName() === 'MorphToMany') && attribute.extractValue(resource) !== null" class="py-2 px-0" style='display:block'>
       <v-chip color="primary" v-for="item in attribute.extractValue(resource)">{{ item.name }}</v-chip>

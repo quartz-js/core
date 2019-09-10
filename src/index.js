@@ -1,8 +1,6 @@
 module.exports = {
     Attributes: {
         Base: require('./app/Attributes/BaseAttribute').BaseAttribute,
-        BelongsTo: require('./app/Attributes/BelongsToAttribute').BelongsToAttribute,
-        MorphTo: require('./app/Attributes/MorphToAttribute').MorphToAttribute,
         DateTime: require('./app/Attributes/DateTimeAttribute').DateTimeAttribute,
         CreatedAt: require('./app/Attributes/CreatedAtAttribute').CreatedAtAttribute,
         UpdatedAt: require('./app/Attributes/UpdatedAtAttribute').UpdatedAtAttribute,
@@ -26,11 +24,6 @@ module.exports = {
         Email: require('./app/Attributes/EmailAttribute').EmailAttribute,
         Password: require('./app/Attributes/PasswordAttribute').PasswordAttribute,
         Html: require('./app/Attributes/HtmlAttribute').HtmlAttribute,
-    },
-    Relations: {
-        MorphToMany: require('./app/Relations/MorphToMany').MorphToMany,
-        BelongsToMany: require('./app/Relations/BelongsToMany').BelongsToMany,
-        Matrix: require('./app/Relations/Matrix').Matrix,
     },
     Interceptor: require('./app/Interceptor').Interceptor,
     ProviderLoader: require('./app/Providers/ProviderLoader').ProviderLoader,
@@ -67,10 +60,7 @@ module.exports = {
         Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
         Vue.component("QFormYaml", require('./components/Form/Yaml').default)
 
-        Vue.component("QAttrMorphToMany", require('./components/Input/MorphToMany').default)
-        Vue.component("QAttrBelongsToMany", require('./components/Input/BelongsToMany').default)
-        Vue.component("QAttrBelongsTo", require('./components/Input/BelongsTo').default)
-        Vue.component("QAttrBelongsToOne", require('./components/Input/BelongsToOne').default)
+        Vue.component("QAttrAutocomplete", require('./components/Input/Autocomplete').default)
         Vue.component("QAttrHtml", require('./components/Input/Html').default)
         Vue.component("QAttrYaml", require('./components/Input/Yaml').default)
         Vue.component("QAttrDate", require('./components/Input/Date').default)
@@ -78,11 +68,9 @@ module.exports = {
         Vue.component("QAttrJson", require('./components/Input/Json').default)
         Vue.component("QAttrSecret", require('./components/Input/Secret').default)
         Vue.component("QAttrSelect", require('./components/Input/Select').default)
-        Vue.component("QAttrMorphTo", require('./components/Input/MorphTo').default)
         Vue.component("QAttrSwitch", require('./components/Input/Switch').default)
         Vue.component("QAttrText", require('./components/Input/Text').default)
         Vue.component("QAttrTextarea", require('./components/Input/Textarea').default)
-        Vue.component("QAttrMatrix", require('./components/Input/Matrix').default)
         Vue.component("QAttrFile", require('./components/Input/File').default)
 
 
