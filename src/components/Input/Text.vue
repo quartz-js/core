@@ -64,8 +64,8 @@ export default {
     }
   },
   methods: {
-  	reloadRawValue() {
-    	this.rawValue = this.attribute.extractValue(this.value);
+  	async reloadRawValue() {
+    	this.rawValue = await this.attribute.extractValue(this.value);
   	},
     onChange () {
       var val = this.rawValue !== "" ? this.rawValue : null;

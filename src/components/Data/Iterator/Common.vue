@@ -83,7 +83,8 @@ export default {
       })
     }
 
-
+    console.log(this.config.resourceEvent("updated"));
+    
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);
     });
@@ -122,7 +123,7 @@ export default {
       }).length+2;
     },
     showAttribute: function (attribute) {
-      return attribute.show === true && attribute.fixed(null) == undefined && attribute.fixed(null) !== null
+      return attribute.hide === false && attribute.fixed(null) == undefined && attribute.fixed(null) !== null
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {
@@ -206,10 +207,7 @@ export default {
 
       this.selected = [];
 
-      this.config.executeHooks('include', []).then(includes => {
-        params.include = includes.join(",");
-        return manager.index(params)
-      }).then(response => {
+      this.config.index(params).then(response => {
 
         this.errors.search = null
 

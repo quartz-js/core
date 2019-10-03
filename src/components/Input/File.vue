@@ -112,8 +112,8 @@ export default {
     pickFile () {
       this.$refs.image.click ()
     },
-  	reloadRawValue() {
-    	this.rawValue = this.attribute.extractValue(this.value);
+  	async reloadRawValue() {
+    	this.rawValue = await this.attribute.extractValue(this.value);
   	},
     onChange () {
       this.attribute.injectValue(this.value, this.rawValue);

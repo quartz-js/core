@@ -33,6 +33,7 @@ module.exports = {
     Helper: require('./app/Helper').Helper,
     ResourceApi: require('./app/Api/ResourceApi').ResourceApi,
     container: require('./app/Container').container,
+    Translator: require('./app/Translator').Translator,
     AttributePreMount: require('./mixins/AttributePreMount').AttributePreMount,
     HandleResource: require('./mixins/HandleResource').HandleResource,
     mixins: {

@@ -9,17 +9,11 @@ export class BaseAttribute {
   required = false;
   
   constructor (name, options) {
-
-    if (!options) {
-      options = [];
-    }
-    
     this.translator = new Translator();
 
     this.hooks = [];
     this.priority = 1;
 
-    this.descriptor = options.descriptor || [];
     this.retrievers = {};
 
     this.default = () => {
@@ -31,7 +25,7 @@ export class BaseAttribute {
     }
 
     this.mutator = (resource) => {
-      return this.getLabelByResource(this.extractor(resource), resource)
+      return this.getLabelByResource(resource)
     }
 
     this.query = (key, resource) => {
@@ -52,20 +46,26 @@ export class BaseAttribute {
     };
   }
 
-  extractor (resource) {
-    return _.get(resource, this.extract);
-  }
+  async extractor (resource) {
+    for (let i in this.extract.attributes) {
 
-  injector  (resource, value) {
-    _.set(resource, this.inject, value);
+      let val = this.extract.attributes;
 
-    return resource;
+      if (val.path && _.exists(resource, val.path)) {
+          return Promise.resolve(_.get(resource, val.path))
+      }
+
+      if (val.query) {
+        return this.attribute.select.manager(resource).index({
+          query: Twig.twig({data: val.query}).render({resource: resource})
+        })
+      }
+    }
+
+    return Promise.resolve(1)
   }
 
   ini () {
-    if (!this.label) {
-      this.label = this.translator.translate(this, 'label');
-    }
   }
 
   fill (vars) {
@@ -107,15 +107,10 @@ export class BaseAttribute {
     })
   }
   
-  /**
-   * @param {Closure} callback
-   *
-   * @return this
-   */
-  setDefault (callback) {
-    this.default = callback;
+  toPage (resource) {
+    return null
 
-    return this;
+    // this.getSelectManager(resource).getRouteShow(this.extractValue(resource))
   }
 
   injectDefault (data, route) {
@@ -169,32 +164,10 @@ export class BaseAttribute {
 
 
   /**
-   * @param {string} description
-   *
-   * @return this
-   */
-  setDescription (description) {
-    this.description = description;
-
-    return this;
-  }
-
-  /**
    * @return {string}
    */
   getDescription () {
     return this.description;
-  }
-
-  /**
-   * @param {Callable} mutator
-   *
-   * @return this
-   */
-  setMutator (mutator) {
-    this.mutator = mutator;
-
-    return this;
   }
 
   /**
@@ -205,40 +178,11 @@ export class BaseAttribute {
   }
 
   /**
-   * @param {Callable} extractor
-   *
-   * @return this
-   */
-  setExtractor (extractor) {
-    this.extractor = extractor;
-
-    return this;
-  }
-
-  /**
-   * @param {Callable} injector
-   *
-   * @return this
-   */
-  setInjector (injector) {
-    this.injector = injector;
-
-    return this;
-  }
-
-  /**
-   * @return {Callable}
-   */
-  getExtractor () {
-    return this.extractor;
-  }
-
-  /**
    * Extract value from resource
    *
    * @param {object} resource
    *
-   * @return mixed
+   * @return Promise
    */
   extractValue (resource) {
     return this.extractor(resource);
@@ -256,7 +200,7 @@ export class BaseAttribute {
   }
 
   /**
-   * Inject value from resource
+   * Inject value to resource
    *
    * @param {object} resource
    * @param {mixed} value
@@ -269,7 +213,20 @@ export class BaseAttribute {
       return;
     }
 
-    return this.injector(resource, value);
+    _.map(this.persist.attributes, (val, key) => {
+
+      if (val.template) {
+        let parsed = Twig.twig({data: val.template}).render({value: value, resource: resource})
+
+        _.set(resource, key, parsed);
+      }
+
+      if (val.path) {
+        _.set(resource, key, _.get({value: value}, val.path));
+      }
+    })
+
+    return resource;
   }
 
   /**
@@ -277,13 +234,6 @@ export class BaseAttribute {
    */
   load (resources) {
     return Promise.resolve(resources);
-  }
-
-  /**
-   * @return {Callable}
-   */
-  persist (id, data) {
-    return null;
   }
   
   clone () {
@@ -318,6 +268,10 @@ export class BaseAttribute {
     return data;
   }
 
+  onSave(id, data) {
+    return Promise.resolve(1)
+  }
+
   onUpdate(data) {
 
   }
@@ -340,14 +294,25 @@ export class BaseAttribute {
    * @return string
    */
   getLabelByResource (resource) {
+    return Twig.twig({data: this.readable.label}).render(resource ? resource : {})
+  }
 
-    if (!resource || typeof resource.id === 'undefined') {
-      return null;
-    }
+  /**
+   * @param {object} resource
+   *
+   * @return string
+   */
+  getSelectByResource (resource) {
+    return Twig.twig({data: this.select.label}).render(resource ? resource : {})
+  }
 
-    console.log(this.readable)
-
-    return this.readable.label ? Twig.twig({data: this.readable.label}).render(resource) : resource
+  /**
+   * @param {object} resource
+   *
+   * @return string
+   */
+  filterQuery (resource) {
+    return Twig.twig({data: this.select.query}).render(resource ? resource : {})
   }
 
   /**
@@ -361,25 +326,11 @@ export class BaseAttribute {
   }
 
   /**
-   * @param {object} params
-   *
-   * @return {object}
-   */
-  filterIndexerParams (params) {
-
-    let relationable = this.getRelationable(params.value);
-
-    return {
-      show: 50,
-      query: this.executeQuery(params.query ? params.query : '', params.value),
-      include: relationable.query.include
-    }
-  }
-  
-  /**
    * @return {Callable}
    */
-  persist (id, data) {
+  /*persist (id, data) {
+    return;
+    
     let query;
 
     if (this.morphTypeColumn) {
@@ -439,5 +390,5 @@ export class BaseAttribute {
 
       return Promise.all(promises);
     });
-  }
+  }*/
 }

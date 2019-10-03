@@ -6,10 +6,10 @@ export var LoadResource = {
   },
   watch: {
     value: function (){
-      this.rawValue = this.attribute.extractValue(this.value);
+      this.rawValue = await this.attribute.extractValue(this.value);
     }
   },
   mounted () {
-      this.rawValue = this.attribute.extractValue(this.value);
+      this.rawValue = await this.attribute.extractValue(this.value);
   }
 }

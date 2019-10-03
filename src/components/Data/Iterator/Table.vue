@@ -13,7 +13,6 @@
         <div class="text-right"><slot name="top" :config="config"></slot></div>
       </v-layout>
     </q-card>
-
     <q-card>
       <div v-if="showContent">
         <div v-if="showTable">
@@ -40,10 +39,6 @@
         >
           <v-progress-linear slot="progress" color="blue" indeterminate style='margin-top: -1px; height: 3px'></v-progress-linear>
 
-          <template v-slot:item.data-table-select="{ isSelected, select }">
-            <v-simple-checkbox color="primary" :value="isSelected" @input="select($event)"></v-simple-checkbox>
-          </template>
-
           <template v-slot:header="{ headers }">
             <thead>
               <tr>
@@ -62,7 +57,7 @@
           <template v-slot:body="{ items,select }" >
             <tbody>
               <tr v-for="item in items" :key="item.id" :class="{'disable': !config.showRow(item)}">
-                <td><v-checkbox color="primary"></v-checkbox></td>
+                <td><v-checkbox color="primary" class="mt-2"></v-checkbox></td>
                 <td 
                   v-for="(attribute, index) in attributesShowable()" 
                   v-if="showAttribute(attribute)" 

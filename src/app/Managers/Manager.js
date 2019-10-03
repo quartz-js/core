@@ -155,6 +155,17 @@ export class Manager {
     this.hooks = [];
   }
 
+  index (params) {
+    this.attributes.map(attr => {
+      params.include = _.merge(params.include, attr.include)
+    })
+    
+    params.include = Object.values(params.include ? params.include : [])
+    params.include = params.include.join(",")
+
+    return this.manager.index(params)
+  }
+
   addAction(type, component) {
     this.actions[type].push(component)
   }
@@ -241,7 +252,7 @@ export class Manager {
     }).then(response => {
 
       let promises = this.attributes.map(attribute => {
-        return attribute.persist(response.body.data.id, data);
+        return attribute.onSave(response.body.data.id, data);
       });
 
 
@@ -300,7 +311,7 @@ export class Manager {
       data = _.merge(data, response.body.data);
 
       let promises = this.attributes.map(attribute => {
-        return attribute.persist(data.id, data);
+        return attribute.onSave(data.id, data);
       });
 
       return Promise.all(promises).then(() => {

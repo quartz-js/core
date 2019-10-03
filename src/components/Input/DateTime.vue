@@ -62,8 +62,8 @@ export default {
     {
       return date ? moment(date).format('MMMM Do YYYY, HH:mm') : null
     },
-  	reloadRawValue() {
-      let val = this.attribute.extractValue(this.value)
+  	async reloadRawValue() {
+      let val = await this.attribute.extractValue(this.value)
     	this.rawValue = val ? moment(val).format() : null
   	},
     onChange () {

@@ -15,22 +15,22 @@ export class Translator {
   
   getLocalizationKeyAttribute (resource, attribute, suffix)
   {
-    return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute.name + '.' + suffix;
+    return this.getLocalizationPrefixData() + resource + '.attributes.' + attribute + '.' + suffix;
   }
   
-  translate(attribute, property)
+  translate(data, attribute, property)
   {
     let translator = container.get('translator');
 
-    if (translator.te(this.getLocalizationKeyAttribute(attribute.manager().name, attribute, property))) {
-      return translator.t(this.getLocalizationKeyAttribute(attribute.manager().name, attribute, property))
+    if (translator.te(this.getLocalizationKeyAttribute(data, attribute, property))) {
+      return translator.t(this.getLocalizationKeyAttribute(data, attribute, property))
     }
 
     if (translator.te(this.getLocalizationKeyAttribute('__common', attribute, property))) {
       return translator.t(this.getLocalizationKeyAttribute('__common', attribute, property))
     }
 
-    return this.humanize(attribute.name)
+    return this.humanize(attribute)
   }
 
 }

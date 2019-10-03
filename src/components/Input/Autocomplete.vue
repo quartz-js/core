@@ -1,6 +1,7 @@
 <template>
   <div v-if="show && attribute">
-    <div v-if="!attribute.style.form">
+    <div>
+      {{ value }}
       <v-layout row align-center class="mt-4 mx-0">
         <v-spacer>
           <q-autocomplete 
@@ -82,13 +83,14 @@ export default {
       })
     })
     
-    var val = this.attribute.extractValue(this.value);
     
-    if (val && val.id) {
-      this.loadByVal(val);
-    } else {
-      this.querySelections();
-    }
+    attribute.extractValue(this.value).then(value => {
+      if (value) {
+        this.loadByVal(value)
+      } else {
+        this.querySelections();
+      }
+    })
   },
   watch: {
     value: {
@@ -104,8 +106,8 @@ export default {
   methods: {
     onRelationableManagerLoad(t) {
 
-      let relationable = this.attribute.getRelationable(this.value);
-      relationable.onLoad(t);
+      let relationable = this.attribute.select.manager(this.value)
+      // relationable.onLoad(t);
 
       t.onUpdateSuccess = (vue, response) => {
         this.unload(response.body.data);
@@ -122,7 +124,7 @@ export default {
     loadByVal (val) {
 
       if (val) {
-        val.label = this.attribute.getLabelByResource(val, this.value);
+        val.label = this.attribute.getSelectByResource(val);
 
         if (val.label) {
           this.items.push(val);
@@ -136,17 +138,15 @@ export default {
 
       this.lastRawValue = this.rawValue;
 
-      let manager = this.attribute.select.manager(this.rawValue)
+      let manager = this.attribute.select.manager(this.value)
+
       let params = {
-        query: v
+        query: this.attribute.filterQuery(this.value)
       }
 
-      this.attribute.executeHooks('include', []).then(includes => {
-        params.include = includes.join(",");
-        return manager.manager.index(params)
-      }).then(response => {
+      manager.index(params).then(response => {
         this.items = response.body.data.map((item) => {
-          item.label = this.attribute.getLabelByResource(item, this.value);
+          item.label = this.attribute.getSelectByResource(item);
           return item;
         });
 
@@ -162,9 +162,9 @@ export default {
 
       this.query = this.attribute.mutator(this.rawValue);
 
-      this.attribute.injectValue(this.value, this.rawValue);
+      let currVal = this.attribute.injectValue(this.value, this.rawValue);
   
-      this.$emit('input', this.value);
+      this.$emit('input', currVal);
 
     },
 

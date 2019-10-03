@@ -56,8 +56,8 @@ export default {
     }
   },
   methods: {
-    reloadRawValue() {
-      var option = this.attribute.extractValue(this.value);
+    async reloadRawValue() {
+      var option = await this.attribute.extractValue(this.value);
 
       this.rawValue = option ? !!option.value : false;
     },
