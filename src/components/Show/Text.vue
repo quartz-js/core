@@ -52,7 +52,7 @@ export default {
     }
   },
   async created() {
-    this.value = await this.attribute.extractValue(resource)
+    this.value = await this.attribute.extractValue(this.resource)
   },
   computed: {
     html: function () {
