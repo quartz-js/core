@@ -95,7 +95,9 @@ module.exports = {
           'QForm',
           'QDialog',
           'QComponentSelector',
-          'QIcon'
+          'QIcon',
+          'QContent',
+          'QContainer'
         ]
 
         components.map(function(i) {
