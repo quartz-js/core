@@ -47,11 +47,12 @@ export class BaseAttribute {
   }
 
   async extractor (resource) {
+
     for (let i in this.extract.attributes) {
 
-      let val = this.extract.attributes;
+      let val = this.extract.attributes[i];
 
-      if (val.path && _.exists(resource, val.path)) {
+      if (val.path && _.has(resource, val.path)) {
           return Promise.resolve(_.get(resource, val.path))
       }
 
@@ -62,7 +63,7 @@ export class BaseAttribute {
       }
     }
 
-    return Promise.resolve(1)
+    throw new Error("cannot resolve " + this.name)
   }
 
   ini () {

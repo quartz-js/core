@@ -84,7 +84,7 @@ export default {
     })
     
     
-    attribute.extractValue(this.value).then(value => {
+    this.attribute.extractValue(this.value).then(value => {
       if (value) {
         this.loadByVal(value)
       } else {

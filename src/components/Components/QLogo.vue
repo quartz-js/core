@@ -1,5 +1,5 @@
 <template>
-  <div v-bind='attributes' v-on='$listeners' style='margin: 0 auto' :style="attributes.style"><slot></slot></div>
+  <img v-bind='attributes' v-on='$listeners' />
 </template>
 <script>
 
