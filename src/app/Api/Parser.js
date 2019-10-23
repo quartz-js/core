@@ -16,7 +16,6 @@ export class Parser {
     });
   }
 
-
   static parseRelationship (relationship, response) {
     return response.body.included.find((include) => {
       return include.type === relationship.type && parseInt(include.id) === parseInt(relationship.id)
@@ -35,10 +34,12 @@ export class Parser {
 
     if (data.relationships) {
       _.map(data.relationships, (relationships, key) => {
-
         if (!Array.isArray(relationships.data)) {
-          data.attributes[key] = Parser.parseData(Parser.parseRelationship(relationships.data, response), response);
+          if (typeof data.attributes[key] === 'undefined') {
+            data.attributes[key] = Parser.parseData(Parser.parseRelationship(relationships.data, response), response);
+          }
         } else {
+
           relationships.data.map((relationship, keyRelation) => {
             let val = Parser.parseData(Parser.parseRelationship(relationship, response), response);
 
@@ -47,10 +48,12 @@ export class Parser {
                 data.attributes[key] = [];
               }
               
+
+              if (typeof data.attributes[key][keyRelation] === 'undefined') {
               data.attributes[key][keyRelation] = val;
+              }
             }
           })
-
         }
 
       })
