@@ -47,6 +47,11 @@ export class BaseAttribute {
   }
 
   async extractor (resource) {
+
+    if (!this.extract) {
+      return Promise.resolve(null)
+    }
+
     for (let i in this.extract.attributes) {
 
       let val = this.extract.attributes[i];
