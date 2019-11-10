@@ -72,7 +72,6 @@
                   v-for="(attribute, index) in attributesShowable()" 
                   v-if="showAttribute(attribute)" 
                   :key="index" 
-                  class="cell" 
                   :width="getAttributeWidth(attribute)" 
                   style='cursor: pointer' 
                   @click="switchRow(item);"
@@ -173,6 +172,5 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 400px;
-    padding: 0 12px !important;
   }
 </style>
