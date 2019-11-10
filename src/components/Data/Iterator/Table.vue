@@ -2,7 +2,17 @@
   <div>
     <q-card class="pa-3 mb-4" v-if="showTable">
       <v-layout align-start>
-        <v-text-field v-model="query" class="search" :placeholder="$t('$quartz.core.search-placeholder')" :error="!!errors.search" single-line hide-details name='search'></v-text-field>
+        <v-text-field
+          id="search"
+          v-model="query" 
+          class="search" 
+          :placeholder="$t('$quartz.core.search-placeholder')" 
+          :error="!!errors.search" 
+          single-line 
+          hide-details 
+          name='search'
+          @keydown.enter="load()"
+        ></v-text-field>
         <q-btn
           color="primary" 
           @click="load()"
