@@ -1,7 +1,7 @@
 <template>
   <div class="text-left my-3">
     <label class="label-show">{{ attribute.label }}</label>
-    <form-json v-model="rawValue" />
+    <form-json v-model="rawValue" @input="onChange()"/>
   </div>
 </template>
 <script>

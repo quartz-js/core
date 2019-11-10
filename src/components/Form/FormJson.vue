@@ -87,7 +87,7 @@ export default {
     },
 
     onInput ($event) {
-      if (this.isJson($event)) {
+      if (this.isJson($event) && this.doc) {
         this.$emit('input', JSON.parse($event));
         // $event = this.beautify($event);
 
