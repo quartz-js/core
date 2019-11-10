@@ -1,73 +1,18 @@
 <template>
   <div class="mt-4 ml-3" v-if="show">
     <v-switch v-model="rawValue" inset :height='24' :width="50" :sync="true" color="#1976d2" :label="attribute.label" @change="onChange()"></v-switch>
+    
   </div>
 </template>
 <script>
 
-import { BaseAttribute } from '../../app/Attributes/BaseAttribute'
-import { AttributePreMount } from '../../mixins/AttributePreMount'
-import { ResourceLocalization } from '../../mixins/ResourceLocalization'
-
 import { ToggleButton } from 'vue-js-toggle-button'
+import Text from './Text';
 
 export default {
+  extends: Text,
   components: {
     ToggleButton
-  },
-  mixins: [
-    ResourceLocalization,
-    AttributePreMount
-  ],
-  props: {
-    value: {
-      required: true,
-    },
-    label: {
-      default: undefined
-    },
-    hint: {
-      default: undefined
-    },
-    attribute: {
-      type: BaseAttribute,
-      required: true
-    },
-    errors: {
-      required: true
-    }
-  },
-  data () {
-    return {
-      rawValue: false
-    }
-  },
-  mounted () {
-
-    if (!this.canMount()) {
-      return;
-    }
-    
-    this.reloadRawValue();
-  },
-  watch: {
-    value: function (){
-      this.reloadRawValue();
-    }
-  },
-  methods: {
-    async reloadRawValue() {
-      var option = await this.attribute.extractValue(this.value);
-
-      this.rawValue = option ? !!option.value : false;
-    },
-    onChange: function (e) {
-
-      this.attribute.injectValue(this.value, this.rawValue);
-
-      this.$emit('input', this.value);
-      this.$forceUpdate();
-    }
   }
 }
 
