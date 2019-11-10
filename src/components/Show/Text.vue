@@ -2,16 +2,16 @@
   <p v-if="show">
     <label class="label-show" v-if="showLabel">{{ attribute.label }}</label>
     <span v-if="attribute.toPage(resource)">
-      <router-link :to="attribute.toPage(resource)" v-html="html" class="show-value" />
+      <router-link :to="attribute.toPage(resource)" v-html="value" class="show-value" />
     </span>
     <span v-else-if="Array.isArray(value)" class="py-2 px-0" style='display:block'>
       <v-chip color="primary" v-for="item in value">{{ item.name }}</v-chip>
     </span>
     <span v-else>
       <span>
-        <span v-if="html !== null" class="show-value" v-html="html"/>
+        <span v-if="value !== null" class="show-value" v-html="value"/>
       </span>
-      <span v-if="html === null" class="show-value font-italic " v-html="$t('$quartz.core.no-information')"/>
+      <span v-if="value === null" class="show-value font-italic " v-html="$t('$quartz.core.no-information')"/>
     </span>
     <span v-if="showLabel" style='display:block; height: 10px'></span>
   </p>
@@ -52,22 +52,7 @@ export default {
     }
   },
   async created() {
-    this.value = await this.attribute.extractValue(this.resource)
-  },
-  computed: {
-    html: function () {
-      let val = this.attribute.extractReadableValue(this.resource);
-
-
-      if (this.attribute.getClassName() === 'EnumAttribute') {
-        let key = `$quartz.data.${this.attribute.manager().name}.attributes.${this.attribute.label}.options.${val}`;
-        if (this.$te(key)) {
-          val = this.$t(key);
-        }
-      }
-
-      return val;
-    }
+    this.value = await this.attribute.extractReadableValue(this.resource)
   }
 }
 

@@ -47,7 +47,6 @@ export class BaseAttribute {
   }
 
   async extractor (resource) {
-
     for (let i in this.extract.attributes) {
 
       let val = this.extract.attributes[i];
@@ -197,7 +196,9 @@ export class BaseAttribute {
    * @return mixed
    */
   extractReadableValue (resource) {
-    return this.mutator(resource);
+    return this.extractValue(resource).then(value => {
+      return this.getLabelByResource({value: value})
+    })
   }
 
   /**
