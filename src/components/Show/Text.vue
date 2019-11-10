@@ -11,7 +11,7 @@
       <span>
         <span v-if="value !== null" class="show-value" v-html="value"/>
       </span>
-      <span v-if="value === null" class="show-value font-italic " v-html="$t('$quartz.core.no-information')"/>
+      <span v-if="value === null" class="show-value font-italic " style='opacity:0.5'v-html="$t('$quartz.core.no-information')"/>
     </span>
     <span v-if="showLabel" style='display:block; height: 10px'></span>
   </p>
