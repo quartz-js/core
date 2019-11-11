@@ -17,77 +17,10 @@
 </template>
 <script>
 
-import { SelectAttribute } from '../../app/Attributes/SelectAttribute'
-import { ResourceLocalization } from '../../mixins/ResourceLocalization'
-import { AttributePreMount } from '../../mixins/AttributePreMount'
+import Text from './Text';
 
 export default {
-  mixins: [
-    ResourceLocalization,
-    AttributePreMount,
-  ],
-  props: {
-    placeholder: {
-
-    },
-    label: {
-      default: undefined
-    },
-    hint: {
-      default: undefined
-    },
-    value: {
-      required: true,
-    },
-    attribute: {
-      type: SelectAttribute,
-      required: true
-    },
-    errors: {
-      required: true
-    }
-  },
-  data: function () {
-    return {
-      rawValue: null
-    }
-  },
-  watch: {
-    value: function (){
-      this.reloadRawValue();
-    }
-  },
-  created () {
-    if (!this.canMount()) {
-      return;
-    }
-    
-    this.reloadRawValue();
-
-  },
-  methods: {
-    async reloadRawValue() {
-      var option = await this.attribute.extractValue(this.value);
-
-      this.rawValue = null;
-
-      if (option) {
-        this.query = option.label;
-        this.rawValue = option.value;
-      }
-
-    },
-    onChange: function (oldVal, newVal) {
-
-      var option = this.attribute.getOptionByValue(this.rawValue);
-
-      this.attribute.injectValue(this.value, option ? option.value : null);
-
-      this.$emit('input', this.value);
-
-    },
-
-  }
+  extends: Text
 }
 
 </script>
