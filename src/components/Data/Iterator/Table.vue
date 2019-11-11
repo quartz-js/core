@@ -30,7 +30,7 @@
         <v-data-table
           v-model="selected"
           :headers="getHeaders()"
-          :items="data"
+          :items="response.body.data || []"
           :search="null"
           :show-select="true"
           item-key="id"

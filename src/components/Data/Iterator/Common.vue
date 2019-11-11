@@ -55,16 +55,6 @@ export default {
       loading: false
     }
   },
-  computed: {
-    data: {
-      get: function() {
-        return this.response.data;
-      }, 
-      set: function(val) {
-        this.response.data = val;
-      }
-    }
-  },
   created () {
     this.reload();
     this.defineDefaultValue();
@@ -83,8 +73,6 @@ export default {
       })
     }
 
-    console.log(this.config.resourceEvent("updated"));
-    
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);
     });
@@ -216,13 +204,16 @@ export default {
         this.pagination.totalItems = response.body.meta.pagination.total;
         this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
 
-
         var body = response.body;
 
         return this.config.loadResources(response.body.data).then((r) => {
           body.data = r;
-          this.response = body;
-          this.updateUrl();
+          this.response = null;
+
+          setTimeout((i) => {
+            this.response = response;
+            this.updateUrl();
+          }, 1)
         })
 
       }).catch(response => {
