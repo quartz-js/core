@@ -1,7 +1,6 @@
 <template>
   <div v-if="show && attribute">
     <div>
-      {{ value }}
       <v-layout row align-center class="mt-4 mx-0">
         <v-spacer>
           <q-autocomplete 
