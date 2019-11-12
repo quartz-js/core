@@ -34,7 +34,7 @@
           :search="null"
           :show-select="true"
           item-key="id"
-          v-if="response"
+          v-if="response && response.body"
           :items-per-page="pagination.rowsPerPage"
           :page.sync="pagination.page"
           :server-items-length="pagination.totalItems"

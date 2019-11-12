@@ -210,10 +210,13 @@ export default {
           body.data = r;
           this.response = null;
 
-          setTimeout((i) => {
-            this.response = response;
-            this.updateUrl();
-          }, 1)
+          return new Promise((resolve) => {
+            return setTimeout((i) => {
+              this.response = response;
+              this.updateUrl();
+              resolve();
+            }, 1)
+          })
         })
 
       }).catch(response => {
