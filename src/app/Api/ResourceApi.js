@@ -143,6 +143,6 @@ export class ResourceApi {
    */
   erase (params) {
     params.query = this.filterQuery(params.query);
-    return this.http.delete(this.url(), { params: this.getFullParams(params)})
+    return this.http.delete(this.url(''), { params: this.getFullParams(params)})
   }
 };
