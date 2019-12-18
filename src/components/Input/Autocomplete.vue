@@ -93,8 +93,8 @@ export default {
   },
   watch: {
     value: {
-      handler: function (val) {
-        this.loadByVal(this.attribute.extractValue(this.value));
+      handler: async function (val) {
+        this.loadByVal(await this.attribute.extractValue(this.value));
       },
       deep: true
     },
