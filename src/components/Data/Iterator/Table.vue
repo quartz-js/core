@@ -4,6 +4,7 @@
       <v-layout align-start>
         <v-text-field
           id="search"
+          type="search"
           v-model="query" 
           class="search" 
           :placeholder="$t('$quartz.core.search-placeholder')" 
