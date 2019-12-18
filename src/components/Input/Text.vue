@@ -40,6 +40,10 @@ export default {
     },
     errors: {
       required: true
+    },
+    height: {
+      type: Number,
+      default: 90
     }
   },
   data() {

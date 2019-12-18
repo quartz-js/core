@@ -4,8 +4,10 @@
       :value="rawValue"
       :options="options"
       @input="onInput($event)"
+      v-on="$listeners"
       @cursorActivity="onCursorActivity"
       @blur = "fix"
+      :style="'height:'+height+'px'"
     />
   </div>
 </template>
@@ -23,7 +25,7 @@ export default {
     codemirror
   },
 
-  props: ['json', 'value'],
+  props: ['json', 'value', 'height'],
   data () {
     return {
       rawValue: '',
@@ -72,8 +74,3 @@ export default {
 }
 
 </script>
-<style>
-.CodeMirror {
-  height: 800px;
-}
-</style>

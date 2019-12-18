@@ -1,7 +1,6 @@
 <template>
   <div class="mt-4 ml-3" v-if="show">
     <v-switch v-model="rawValue" inset :height='24' :width="50" :sync="true" color="#1976d2" :label="attribute.label" @change="onChange()"></v-switch>
-    
   </div>
 </template>
 <script>

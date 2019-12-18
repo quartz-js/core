@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <codemirror
       :value="rawValue"
@@ -9,7 +8,7 @@
       @blur = "fix"
       class=""
       v-bind:class="{'error' : error }"
-
+      :style="'height:'+height+'px'"
     />
   <div v-if="error" class='alert alert-danger error-text content'>
     An error has been detected in your json. Please fix it before saving
@@ -105,34 +104,3 @@ export default {
 }
 
 </script>
-<style scoped>
-.editor .CodeMirror {
-  height: 800px;
-}
-
-.editor iframe {
-  height: 800px;
-}
-
-.editor iframe {
-  overflow-y: scroll;
-  min-height: 0;
-}
-
-.editor {
-  height: 800px;
-}
-
-.editor > * {
-  height:auto !important;
-}
-
-.vue-codemirror {
-  border: 2px solid #232f35
-}
-
-.vue-codemirror.error {
-  border: 2px solid #dc3545;
-}
-
-</style>
