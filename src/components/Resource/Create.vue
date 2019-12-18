@@ -138,14 +138,12 @@
 import { utils } from '../../mixins/utils'
 import { Helper } from '../../app/Helper'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
-import { hooks } from '../../mixins/hooks'
 import Errors from '../../components/Errors'
 
 export default {
   mixins: [ 
     utils,
-    ResourceLocalization,
-    hooks
+    ResourceLocalization
   ],
   components: { 'errors': Errors },
   props: {
@@ -175,27 +173,11 @@ export default {
     config: {
       type: Object,
       required: true,
-    },
-    hooks: {
-      type: Object
     }
   },
   watch: {
     resource: function (){
       this.data = JSON.parse(JSON.stringify(this.resource));
-    },
-    data: {
-      handler: function (val) {
-
-        if (this.type === 'direct') {
-
-          let promise = this.getHooks('OnChange', {
-            resource: this.data
-          });
-
-        }
-      },
-      deep: true
     },
     drawer: function (val) {
       if (!val) {
@@ -236,10 +218,8 @@ export default {
       this.loading = true;
       this.errors = [];
 
-      var resource = this.data; // Remove all null values.
-      this.executeHooks('BeforeCreate', {resource: resource}).then((data) => {
-        return this.internalConfig.createResource(data.resource);
-      }).then((response) => {
+      var resource = this.data;
+      this.internalConfig.createResource(resource).then((response) => {
         this.errors = [];
         this.drawer = false;
         this.load()

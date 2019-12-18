@@ -74,7 +74,7 @@ export default {
       return;
     }
 
-    this.attribute.executeHooks('watchToReload', []).then((arr) => {
+    this.attribute.hook.execute('watchToReload', []).then((arr) => {
       return arr.map(field => {
         this.$watch("value." + field, (newValue, oldValue) => {
           this.unload(null)

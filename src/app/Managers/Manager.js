@@ -2,9 +2,12 @@ var clone = require('clone');
 const lodash = require('lodash');
 import Twig from 'twig';
 import { Helper } from '../Helper'
+import { Hook } from '../Hook'
 
 export class Manager {
   constructor (params) {
+
+    this.hook = new Hook();
 
     this.attributes = [];
     this.create = true;
@@ -151,19 +154,12 @@ export class Manager {
     for (var i in params) {
       this[i] = params[i];
     }
-
-    this.hooks = [];
   }
 
   index (params) {
-    this.attributes.map(attr => {
-      params.include = _.merge(params.include, attr.include)
+    return this.hook.execute('include', []).then(includes => {
+      return this.manager.index(_.merge(params, {include: includes.join(',')}))
     })
-    
-    params.include = Object.values(params.include ? params.include : [])
-    params.include = params.include.join(",")
-
-    return this.manager.index(params)
   }
 
   addAction(type, component) {
@@ -190,37 +186,6 @@ export class Manager {
 
     return this
   }
-  
-  addHook($event, callback) {
-    if (typeof this.hooks[$event] === "undefined") {
-      this.hooks[$event] = [];
-    }
-
-    this.hooks[$event].push(callback)
-
-  }
-
-  getHooks($event, data){ 
-    var hooks = typeof this.hooks[$event] !== "undefined" ? this.hooks[$event] : [];
-
-    this.attributes.map(attribute => {
-      hooks = hooks.concat(attribute.getHooks($event, data))
-    });
-
-    return hooks;
-  }
-
-  executeHooks($event, data) {
-
-    var hooks = this.getHooks($event, data);
-
-    return hooks.reduce(function (prev, curr) {
-      return prev.then((data) => {
-        return curr(data);
-      });
-    }, Promise.resolve(data));
-  }
-
 
   clone () {
     return clone(this);
@@ -240,8 +205,8 @@ export class Manager {
 
   createResource (data) {
 
-    return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
-      return this.executeHooks('beforePersist', data.resource);
+    return this.hook.execute('BeforeCreate', {resource: data}).then((data) => {
+      return this.hook.execute('beforePersist', data.resource);
     }).then(params => {
       
       params = _.pickBy(params, (value) => {
@@ -271,7 +236,7 @@ export class Manager {
     }).catch(error => {
       Helper.handleResponse(error);
 
-      return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
+      return this.hook.execute('AfterCreateError', {resource: data}).then((data) => {
         throw error
       })
     })
@@ -293,8 +258,8 @@ export class Manager {
 
   updateResource (id, data) {
     
-    return this.executeHooks('BeforeCreate', {resource: data}).then((data) => {
-      return this.executeHooks('beforePersist', data.resource);
+    return this.hook.execute('BeforeCreate', {resource: data}).then((data) => {
+      return this.hook.execute('beforePersist', data.resource);
     }).then(params => {
 
       params = _.pickBy(params, (val, key) => {
@@ -327,7 +292,7 @@ export class Manager {
     }).catch(error => {
       Helper.handleResponse(error);
 
-      return this.executeHooks('AfterCreateError', {resource: data}).then((data) => {
+      return this.hook.execute('AfterCreateError', {resource: data}).then((data) => {
         throw error
       })
     })

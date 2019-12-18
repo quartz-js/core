@@ -65,14 +65,15 @@ export var LoadResource = {
     },
     loadDataById (id) {
 
-      return this.config.executeHooks('include', []).then(includes => {
-        return this.config.manager.show(id, {
+      return this.config.hook.execute('include', []).then(includes => {
+        return this.config.manager.index({
+          query: 'id='+id,
           include: includes.join(",")
         })
       }).then(response => {
         var resource = response.body;
 
-        return this.config.loadResources([resource.data])
+        return this.config.loadResources(resource.data)
 
       }).then((data) => {
         this.setData(data[0]);

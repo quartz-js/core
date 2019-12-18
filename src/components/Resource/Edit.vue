@@ -66,7 +66,6 @@
 import { LoadResource } from '../../mixins/LoadResource'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import { utils } from '../../mixins/utils'
-import { hooks } from '../../mixins/hooks'
 import { Helper } from '../../app/Helper'
 import Errors from '../../components/Errors'
 import QBtn from '../../components/Components/QBtn'
@@ -81,8 +80,7 @@ export default {
   mixins: [ 
     LoadResource,
     ResourceLocalization,
-    utils,
-    hooks
+    utils
   ],
   data() {
     return {
@@ -108,35 +106,16 @@ export default {
     type: {
       type: String,
       default: 'button-navigator'
-    },
-    hooks: {
-      type: Object
     }
   },
   created() {
-    this.loadDataByProps().then((data) => {
-      this.getHooks('OnChange', {
-        resource: this.data
-      });
-    })
+    this.loadDataByProps()
 
     if (!this.activator) {
       this.drawer = true;
     }
   },
   watch: {
-    data: {
-      handler: function (val) {
-        if (this.type === 'direct') {
-
-          let promise = this.getHooks('OnChange', {
-            resource: this.data
-          });
-
-        }
-      },
-      deep: true
-    },
     drawer: function (val) {
       if (!val) {
 
@@ -161,9 +140,7 @@ export default {
 
       this.loading = true;
 
-      this.executeHooks('BeforeCreate', {id: this.data.id, resource: this.data}).then((data) => {
-        return this.config.updateResource(data.id, data.resource);
-      }).then(response => {
+      this.config.updateResource(this.data.id, this.data).then(response => {
         this.errors = [];
         this.drawer = false;
       }).catch(response => {

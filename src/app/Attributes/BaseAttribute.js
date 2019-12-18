@@ -3,6 +3,7 @@ var clone = require('clone');
 import { container } from '../Container';
 import { Translator } from '../Translator';
 import { Helper } from '../Helper';
+import { Hook } from '../Hook';
 import Twig from 'twig';
 
 export class BaseAttribute {
@@ -10,8 +11,7 @@ export class BaseAttribute {
   
   constructor (name, options) {
     this.translator = new Translator();
-
-    this.hooks = [];
+    this.hook = new Hook();
     this.priority = 1;
 
     this.retrievers = {};
@@ -66,8 +66,8 @@ export class BaseAttribute {
         })
       }
     }
-
-    throw new Error("cannot resolve " + this.name)
+    return Promise.resolve(null)
+    // throw new Error("It seems that the extraction of the resource to retrieve the attribute value failed. Please check your 'extract' attribute in the attribute: " + this.name)
   }
 
   ini () {
@@ -139,34 +139,6 @@ export class BaseAttribute {
   getDefault () {
     return this.fixed(null) || this.default();
   }
-  
-  addHook($event, callback) {
-    if (typeof this.hooks[$event] === "undefined") {
-      this.hooks[$event] = [];
-    }
-
-    this.hooks[$event].push(callback)
-
-  }
-
-  getHooks($event){
-    var hooks = typeof this.hooks[$event] !== "undefined" ? this.hooks[$event] : [];
-
-    return hooks
-  }
-
-
-  executeHooks($event, data) {
-
-    var hooks = this.getHooks($event, data);
-
-    return hooks.reduce(function (prev, curr) {
-      return prev.then((data) => {
-        return curr(data);
-      });
-    }, Promise.resolve(data));
-  }
-
 
   /**
    * @return {string}
