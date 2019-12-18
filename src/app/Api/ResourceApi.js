@@ -100,18 +100,6 @@ export class ResourceApi {
   }
 
   /**
-   * Index
-   *
-   * @param {int} id
-   * @param {Object} params
-   *
-   * @return {Promise}
-   */
-  show (id, params) {
-    return this.get(id, { params: this.getFullParams(params) })
-  }
-
-  /**
    * update
    *
    * @param {int} id
