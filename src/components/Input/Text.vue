@@ -1,5 +1,5 @@
 <template>
-  <v-flex v-if="show" class="mt-4" >
+  <v-flex v-if="show">
     <q-text-field 
       v-model="rawValue" 
       :label="label !== undefined ? label : attribute.label"

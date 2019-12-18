@@ -1,5 +1,5 @@
 <template>
-  <div class="text-left my-3 mt-4">
+  <div class="text-left my-3">
     <label class="label-form mb-2">{{ attribute.label }}</label>
     <yaml 
     	v-model="rawValue"
