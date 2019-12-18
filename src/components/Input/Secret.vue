@@ -2,6 +2,7 @@
   <div v-if="show" class="mt-4">
     <q-text-field 
       type="password"
+      autocomplete="new-password"
       v-model="rawValue" 
       :label="label !== undefined ? label : attribute.label"
       @input="onChange()"
