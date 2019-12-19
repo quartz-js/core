@@ -74,6 +74,11 @@ export class Parser {
   static parse (response) {
 
     let body = response.body;
+
+    if (typeof body !== 'object' || typeof body.data === 'undefined') {
+      return response
+    }
+    
     let data = _.clone(body.data)
 
     if (Array.isArray(body.data)) {
