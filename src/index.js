@@ -70,6 +70,7 @@ module.exports = {
         Vue.component("QAttrSecret", require('./components/Input/Secret').default)
         Vue.component("QAttrSelect", require('./components/Input/Select').default)
         Vue.component("QAttrSwitch", require('./components/Input/Switch').default)
+        Vue.component("QAttrCheckbox", require('./components/Input/Checkbox').default)
         Vue.component("QAttrText", require('./components/Input/Text').default)
         Vue.component("QAttrTextarea", require('./components/Input/Textarea').default)
         Vue.component("QAttrFile", require('./components/Input/File').default)
@@ -81,8 +82,9 @@ module.exports = {
           'QBtnInput',
           'QBtnCompact',
           'QTextField',
-          'QTextarea', 
-          'QAutocomplete', 
+          'QTextarea',
+          'QAutocomplete',
+          'QCheckbox',
           'QColorPicker', 
           'QNavigationDrawer',
           'QAppBar',
