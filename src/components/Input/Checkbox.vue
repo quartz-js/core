@@ -1,9 +1,9 @@
 <template>
   <div v-if="show">
     <q-checkbox 
-      v-model="rawValue" 
+      v-model="rawValue"
+      @change="changes"
       :label="label !== undefined ? label : attribute.label"
-      @change="onChange()"
       :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
       v-bind="globalAttributeProps()"
     ></q-checkbox>
@@ -14,7 +14,13 @@
 import Text from './Text';
 
 export default {
-  extends: Text
+  extends: Text,
+  methods: {
+    changes($e) {
+      this.rawValue = $e
+      this.onChange()
+    }
+  }
 }
 
 </script>
