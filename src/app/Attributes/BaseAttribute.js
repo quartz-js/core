@@ -254,7 +254,7 @@ export class BaseAttribute {
     }
 
 
-    this.extractValue(data).then(val => {
+    return this.extractValue(data).then(val => {
 
       let calls = this.multiple ? val || [] : [val]
 
