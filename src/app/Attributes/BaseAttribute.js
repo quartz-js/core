@@ -275,7 +275,6 @@ export class BaseAttribute {
       });
 
 
-      let promises = [];
 
       let scopes = _.mapValues(this.persist.data.scopes, (val, key) => {
         return Twig.twig({data: val}).render({
@@ -295,15 +294,17 @@ export class BaseAttribute {
 
       console.log(query)
 
-      promises.push(this.persist.manager(data).manager.erase({
+      this.persist.manager(data).manager.erase({
         query: query
-      }))
+      }).then(i => {
 
-      queries.map(value => {
-        promises.push(this.persist.manager(data).manager.create(_.merge(scopes, value)))
+        let promises = [];
+        queries.map(value => {
+          promises.push(this.persist.manager(data).manager.create(_.merge(scopes, value)))
+        })
+
+        return Promise.all(promises)
       })
-
-      return Promise.all(promises)
     })
 
   }
