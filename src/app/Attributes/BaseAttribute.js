@@ -174,7 +174,7 @@ export class BaseAttribute {
    */
   extractReadableValue (resource) {
     return this.extractValue(resource).then(value => {
-      return this.getLabelByResource({value: value})
+      return this.getLabelByResource(value)
     })
   }
 
@@ -248,7 +248,64 @@ export class BaseAttribute {
   }
 
   onSave(id, data) {
-    return Promise.resolve(1)
+
+    if (!this.persist.data) {
+      return Promise.resolve(1)
+    }
+
+
+    this.extractValue(data).then(val => {
+
+      let calls = this.multiple ? val || [] : [val]
+
+      // Searching by criteria, remove all that doesn't have criteria + id.
+
+      let queries = [];
+
+
+      calls.map(value => {
+        let attrs = _.mapValues(this.persist.data.attributes, (i) => {
+          return Twig.twig({data: i}).render({
+            value: value,
+            resource: data
+          })
+        })
+
+        queries.push(attrs)
+      });
+
+
+      let promises = [];
+
+      let scopes = _.mapValues(this.persist.data.scopes, (val, key) => {
+        return Twig.twig({data: val}).render({
+          resource: data
+        })
+      })
+
+      let query = _.map(scopes, (val, key) => {
+        return `${key} eq "${val}"`
+      }).join(" and ")
+
+      /*query = query + " and " + queries.map(i => {
+        return _.map(i, (val, key) => {
+          return `${key} != "${val}"`
+        }).join(" and ")
+      }).join(" and ")*/
+
+      console.log(query)
+
+      promises.push(this.persist.manager(data).manager.erase({
+        query: query
+      }))
+
+      queries.map(value => {
+        promises.push(this.persist.manager(data).manager.create(_.merge(scopes, value)))
+      })
+
+      return Promise.all(promises)
+    })
+
   }
 
   onUpdate(data) {
@@ -273,7 +330,9 @@ export class BaseAttribute {
    * @return string
    */
   getLabelByResource (resource) {
-    return Twig.twig({data: this.readable.label}).render(resource ? resource : {})
+    let resources = this.multiple ? (resource || []) : [resource]
+
+    return resources.map(resource => Twig.twig({data: this.readable.label}).render(resource ? { value: resource} : {})).join("\n");
   }
 
   /**

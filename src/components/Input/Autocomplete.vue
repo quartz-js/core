@@ -6,6 +6,7 @@
           <q-autocomplete 
             :loading="loading"
             :items="items"
+            :multiple="attribute.multiple"
             item-text="label"
             :label="attribute.label"
             v-model="rawValue"
@@ -122,13 +123,20 @@ export default {
     },
     loadByVal (val) {
 
-      if (val) {
+      let values = this.attribute.multiple ? (val || []) : [val]
+
+      values.map(val => {
+
+        if (!val) {
+          return;
+        }
+
         val.label = this.attribute.getSelectByResource(val);
 
         if (val.label) {
           this.items.push(val);
         }
-      }
+      })
 
       this.rawValue = val;
     },
