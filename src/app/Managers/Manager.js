@@ -279,13 +279,15 @@ export class Manager {
         return attribute.onSave(data.id, data);
       });
 
-      return Promise.all(promises).then(() => {
-        this.onUpdateSuccess(this, response);
-        bus.$emit(this.resourceEvent("updated"), data);
+      this.attributes.map((attribute) => {
+        attribute.onUpdate(data);
+      });
 
-        this.attributes.map((attribute) => {
-          attribute.onUpdate(data);
-        });
+      return Promise.all(promises).then(() => {
+
+        this.onUpdateSuccess(this, response);
+
+        bus.$emit(this.resourceEvent("updated"), data);
 
         return response;
       });
