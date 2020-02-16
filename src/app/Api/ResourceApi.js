@@ -83,9 +83,16 @@ export class ResourceApi {
    *
    * @return {Promise}
    */
-  store (params) {
-    params.query = this.filterQuery(params.query);
-    return this.http.put(this.url(), { params: this.getFullParams(params) })
+  store (query, params) {
+    return this.http.put(
+      this.url(''),
+      this.getFullParams(params),
+      { 
+        params: {
+          query: this.filterQuery(query)
+        }
+      }
+    )
   }
 
   /**
@@ -100,6 +107,17 @@ export class ResourceApi {
   }
 
   /**
+   * Erase
+   *
+   * @param {string} query
+   *
+   * @return {Promise}
+   */
+  erase (query) {
+    return this.http.delete(this.url(''), { params: this.filterQuery(query)})
+  }
+
+  /**
    * update
    *
    * @param {int} id
@@ -108,7 +126,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   update (id, params) {
-    return this.put(id, this.getFullParams(params))
+    return this.store(`id eq ${id}`, params)
   }
 
   /**
@@ -119,18 +137,6 @@ export class ResourceApi {
    * @return {Promise}
    */
   remove (id) {
-    return this.http.delete(this.url(id));
-  }
-
-  /**
-   * Erase
-   *
-   * @param {Object} params
-   *
-   * @return {Promise}
-   */
-  erase (params) {
-    params.query = this.filterQuery(params.query);
-    return this.http.delete(this.url(''), { params: this.getFullParams(params)})
+    return this.erase(`id eq ${id}`)
   }
 };

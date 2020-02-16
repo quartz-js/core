@@ -294,9 +294,7 @@ export class BaseAttribute {
 
       console.log(query)
 
-      this.persist.manager(data).manager.erase({
-        query: query
-      }).then(i => {
+      this.persist.manager(data).manager.erase(query).then(i => {
 
         let promises = [];
         queries.map(value => {
