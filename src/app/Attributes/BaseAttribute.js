@@ -292,9 +292,7 @@ export class BaseAttribute {
         }).join(" and ")
       }).join(" and ")*/
 
-      console.log(query)
-
-      this.persist.manager(data).manager.erase(query).then(i => {
+      return this.persist.manager(data).manager.erase(query).then(i => {
 
         let promises = [];
         queries.map(value => {
