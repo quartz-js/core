@@ -101,7 +101,8 @@ module.exports = {
           'QContent',
           'QContainer',
           'QLogo',
-          'QApp'
+          'QApp',
+          'QViewIcon'
         ]
 
         components.map(function(i) {

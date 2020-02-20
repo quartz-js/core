@@ -7,7 +7,7 @@
     </slot>
     <q-card class="pa-3 my-4">
       <v-layout align-start>
-        <img :src="config.icon" width='110'>
+        <q-view-icon :src="config.icon" width='110' />
         <div class='ml-3'>
           <h2 class='headline font-weight-thin'>
             {{ this.getResourceTitle(config) }}

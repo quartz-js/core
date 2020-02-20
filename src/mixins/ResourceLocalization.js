@@ -9,7 +9,7 @@ export var ResourceLocalization = {
       return s.humanize(str);
     },
     getResourceTitle(resource) {
-      return this.$t(this.getLocalizationPrefixData() + resource.name + '.name')
+      return this.humanize(resource.name); // this.$t(this.getLocalizationPrefixData() + resource.name + '.name')
     },
     getResourceDescription(resource) {
       return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor."
