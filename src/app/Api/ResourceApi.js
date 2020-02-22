@@ -114,7 +114,7 @@ export class ResourceApi {
    * @return {Promise}
    */
   erase (query) {
-    return this.http.delete(this.url(''), { params: this.filterQuery(query)})
+    return this.http.delete(this.url(''), { params: {query: this.filterQuery(query) }})
   }
 
   /**
