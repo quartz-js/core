@@ -169,11 +169,13 @@ export default {
     retrieved () {
 
     },
-    load: function (force) {
+    load (force) {
 
       if (this.loading) {
         return;
       }
+
+      this.errors.search = false;
 
       var manager = this.config.manager;
 

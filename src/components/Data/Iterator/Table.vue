@@ -8,9 +8,8 @@
           v-model="query" 
           class="search" 
           :placeholder="$t('$quartz.core.search-placeholder')" 
-          :error="!!errors.search" 
+          :error-messages="errors.search"  
           single-line 
-          hide-details 
           name='search'
           @keydown.enter="load()"
         ></v-text-field>
@@ -102,7 +101,7 @@
       </div>
       <div v-else>
          <div class='content text-md-center'>
-            <img :src='config.icon' width='218' class='my-3'>
+            <q-view-icon :src='config.icon' width='218' class='my-3 mx-auto' />
             <h3 class='title my-3'>{{ $t('$quartz.core.no-results.message') }}</h3>
             <p class='my-4' style='max-width: 800px; margin: 0 auto'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis in arcu at pellentesque. Sed at porta odio. Vivamus sollicitudin euismod justo id ornare. Suspendisse a metus orci. Cras tempor finibus metus, nec dictum enim sollicitudin sit amet. Vestibulum et suscipit lacus. Nam vestibulum tempus dolor.
