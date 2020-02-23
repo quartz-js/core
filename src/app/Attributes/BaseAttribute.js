@@ -194,10 +194,10 @@ export class BaseAttribute {
       return;
     }
 
-    _.map(this.persist.attributes, (val, key) => {
+    _.map(this.inject.attributes, (val, key) => {
 
       if (val.template) {
-        let parsed = Twig.twig({data: val.template}).render({value: value, resource: resource})
+        let parsed = container.get('template').parse(val.template, {value: value, resource: resource})
 
         _.set(resource, key, parsed);
       }
@@ -205,6 +205,16 @@ export class BaseAttribute {
       if (val.path) {
         _.set(resource, key, _.get({value: value}, val.path));
       }
+    })
+
+
+    return resource;
+  }
+
+  injectPersist(resource, value) {
+
+    _.map(this.persist.attributes, (name) => {
+      _.set(resource, name, _.get(value, name));
     })
 
     return resource;
@@ -332,6 +342,10 @@ export class BaseAttribute {
    * @return string
    */
   getLabelByResource (value, resource) {
+    if (typeof value === 'undefined' || typeof resource === 'undefined') {
+      return null;
+    }
+
     let resources = this.multiple ? (value || []) : [value]
     return resources.map(value => container.get('template').parse(this.readable.label, value ? {resource: resource, value: value} : {})).join("\n");
   }

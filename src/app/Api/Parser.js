@@ -22,7 +22,7 @@ export class Parser {
     })
   }
 
-  static parseData (data, response) {
+  static parseData (data, response, parsed) {
 
     if (!data) {
       return null
@@ -32,22 +32,25 @@ export class Parser {
       return data
     }
 
+    if (!parsed) {
+      parsed = {}
+    }
+
     if (data.relationships) {
       _.map(data.relationships, (relationships, key) => {
         if (!Array.isArray(relationships.data)) {
           if (typeof data.attributes[key] === 'undefined') {
-            data.attributes[key] = Parser.parseData(Parser.parseRelationship(relationships.data, response), response);
+            data.attributes[key] =  Parser.parseData(Parser.parseRelationship(relationships.data, response), response, parsed);
           }
         } else {
 
           relationships.data.map((relationship, keyRelation) => {
-            let val = Parser.parseData(Parser.parseRelationship(relationship, response), response);
+            let val = Parser.parseData(Parser.parseRelationship(relationship, response), response, parsed);
 
             if (val !== null && typeof val === 'object') {
               if (typeof data.attributes[key] === 'undefined') {
                 data.attributes[key] = [];
               }
-              
 
               if (typeof data.attributes[key][keyRelation] === 'undefined') {
                 data.attributes[key][keyRelation] = val;

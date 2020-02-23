@@ -186,6 +186,21 @@ export class Manager {
     attribute.ini();
   }
 
+  async getParamsToPersist (original) {
+    let resource = {}
+
+    for (let attr in this.attributes) {
+      attr = this.attributes[attr]
+      console.log(attr.name)
+      console.log(await attr.extractValue(original))
+      attr.injectPersist(resource, original)
+    }
+
+    console.log(JSON.stringify(resource))
+
+    return resource
+  }
+
   mergePartsQuery(parts, operator) {
     let sub = parts.filter((part) => {
       return part
@@ -221,11 +236,13 @@ export class Manager {
 
     return this.hook.execute('BeforeCreate', {resource: data}).then((data) => {
       return this.hook.execute('beforePersist', data.resource);
-    }).then(params => {
+    }).then(async params => {
       
       params = _.pickBy(params, (value) => {
         return value !== null
       })
+
+      params = await this.getParamsToPersist(params)
 
       return this.manager.create(params);
     }).then(response => {
@@ -274,11 +291,9 @@ export class Manager {
     
     return this.hook.execute('BeforeCreate', {resource: data}).then((data) => {
       return this.hook.execute('beforePersist', data.resource);
-    }).then(params => {
+    }).then(async params => {
 
-      params = _.pickBy(params, (val, key) => {
-        return this.hasAttribute(key) && this.getAttribute(key).fillable
-      })
+      params = await this.getParamsToPersist(params)
 
       this.attributes.map(attribute => {
         params = attribute.preUpdate(params);
