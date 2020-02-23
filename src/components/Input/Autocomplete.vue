@@ -23,7 +23,7 @@
         <div>
           <component 
             v-for="component in attribute.actions"
-            v-bind:is="component"
+            v-bind:is="$container.get('template').parse(component, {resource:value})"
             :resource="rawValue"
             :onManagerLoad="onRelationableManagerLoad"
             activatorType="q-btn-input"
@@ -88,7 +88,7 @@ export default {
       if (value) {
         this.loadByVal(value)
       } else {
-        this.querySelections();
+        this.querySelections('');
       }
     })
   },
@@ -123,6 +123,10 @@ export default {
     },
     loadByVal (val) {
 
+      if (typeof val === 'undefined') {
+        return this.querySelections('')
+      }
+
       let values = this.attribute.multiple ? (val || []) : [val]
 
       values.map(val => {
@@ -131,12 +135,13 @@ export default {
           return;
         }
 
-        val.label = this.attribute.getSelectByResource(val);
+        val.label = this.attribute.getSelectByResource(val, this.value);
 
         if (val.label) {
           this.items.push(val);
         }
       })
+
 
       this.rawValue = val;
     },
@@ -148,12 +153,12 @@ export default {
       let manager = this.attribute.select.manager(this.value)
 
       let params = {
-        query: this.attribute.filterQuery(this.value)
+        query: this.attribute.filterQuery(null, this.value, v)
       }
 
       manager.index(params).then(response => {
         this.items = response.body.data.map((item) => {
-          item.label = this.attribute.getSelectByResource(item);
+          item.label = this.attribute.getSelectByResource(item, this.value);
           return item;
         });
 

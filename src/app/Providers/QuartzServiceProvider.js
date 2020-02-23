@@ -4,6 +4,8 @@ import { Template } from '../../app/Template'
 import { Parser } from '../../app/Api/Parser'
 const axios = require('axios');
 import { Datetime } from 'vue-datetime';
+import Twig from 'twig';
+import _ from 'lodash'
 
 require('vue-datetime/dist/vue-datetime.css')
 

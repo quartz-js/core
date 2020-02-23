@@ -24,6 +24,7 @@ module.exports = {
         Email: require('./app/Attributes/EmailAttribute').EmailAttribute,
         Password: require('./app/Attributes/PasswordAttribute').PasswordAttribute,
         Html: require('./app/Attributes/HtmlAttribute').HtmlAttribute,
+        DataName: require('./app/Attributes/DataNameAttribute').DataNameAttribute,
     },
     Interceptor: require('./app/Interceptor').Interceptor,
     ProviderLoader: require('./app/Providers/ProviderLoader').ProviderLoader,

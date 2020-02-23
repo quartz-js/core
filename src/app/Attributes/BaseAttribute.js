@@ -34,6 +34,7 @@ export class BaseAttribute {
 
       let queries = [];
 
+
       let query = Twig.twig({data: relationable.query.template}).render(_.merge(resource, {'__key__': key}))
 
       query = query.split("eq null").join("is null");
@@ -56,13 +57,14 @@ export class BaseAttribute {
 
       let val = this.extract.attributes[i];
 
+
       if (val.path && _.has(resource, val.path)) {
           return Promise.resolve(_.get(resource, val.path))
       }
 
       if (val.query) {
         return this.attribute.select.manager(resource).index({
-          query: Twig.twig({data: val.query}).render({resource: resource})
+          query: container.get('template').parse(val.query, {resource: resource})
         })
       }
     }
@@ -174,7 +176,7 @@ export class BaseAttribute {
    */
   extractReadableValue (resource) {
     return this.extractValue(resource).then(value => {
-      return this.getLabelByResource(value)
+      return this.getLabelByResource(value, resource)
     })
   }
 
@@ -253,7 +255,6 @@ export class BaseAttribute {
       return Promise.resolve(1)
     }
 
-
     return this.extractValue(data).then(val => {
 
       let calls = this.multiple ? val || [] : [val]
@@ -305,6 +306,10 @@ export class BaseAttribute {
 
   }
 
+  boot () {
+
+  }
+  
   onUpdate(data) {
 
   }
@@ -326,10 +331,9 @@ export class BaseAttribute {
    *
    * @return string
    */
-  getLabelByResource (resource) {
-    let resources = this.multiple ? (resource || []) : [resource]
-
-    return resources.map(resource => Twig.twig({data: this.readable.label}).render(resource ? { value: resource} : {})).join("\n");
+  getLabelByResource (value, resource) {
+    let resources = this.multiple ? (value || []) : [value]
+    return resources.map(value => container.get('template').parse(this.readable.label, value ? {resource: resource, value: value} : {})).join("\n");
   }
 
   /**
@@ -337,8 +341,8 @@ export class BaseAttribute {
    *
    * @return string
    */
-  getSelectByResource (resource) {
-    return Twig.twig({data: this.select.label}).render(resource ? resource : {})
+  getSelectByResource (value, resource) {
+    return container.get('template').parse(this.select.label, {value: value, resource: resource})
   }
 
   /**
@@ -346,8 +350,8 @@ export class BaseAttribute {
    *
    * @return string
    */
-  filterQuery (resource) {
-    return Twig.twig({data: this.select.query}).render(resource ? resource : {})
+  filterQuery (value, resource, key) {
+    return container.get('template').parse(this.select.query, {value: value, resource: resource, '__key__': key})
   }
 
   /**

@@ -11,23 +11,8 @@ export var AttributePreMount = {
     globalAttributeProps() {
       return container.get('$quartz.core.props.form', {});
     },
-    canShowDueToCondition()
-    {
-      if (this.attribute.get('style') && this.attribute.get('style').condition) {
-
-        for (let key in this.attribute.get('style').condition) {
-          let value = this.attribute.get('style').condition[key];
-
-          if (value != this.value[key]) {
-            return false;
-          }
-        }
-      }
-
-      return true;
-    },
     canShow() {
-      return this.show && this.canShowDueToCondition();
+      return this.show;
     },
     canMount() {
 

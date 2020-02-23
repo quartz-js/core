@@ -65,7 +65,7 @@ export class Manager {
       })
 
       if (query && obj) {
-        query = Twig.twig({data: query}).render(obj)
+        query = container.get('template').parse(query, obj)
       }
 
       return query;
@@ -144,6 +144,20 @@ export class Manager {
     this.getAttributes = function(names) {
       return this.attributes.filter(function (attribute) {
         return names.indexOf(attribute.name) !== -1;
+      });
+    };
+
+
+    /**
+     * Get attributes by namesyay
+     *
+     * @param {string} name
+     *
+     * @return {BaseAttribute}
+     */
+    this.getPrimaryAttributes = function() {
+      return this.attributes.filter(function (attribute) {
+        return attribute.required
       });
     };
 

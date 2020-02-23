@@ -175,7 +175,7 @@ export default {
         return;
       }
 
-      this.errors.search = false;
+      this.errors.search = '';
 
       var manager = this.config.manager;
 
