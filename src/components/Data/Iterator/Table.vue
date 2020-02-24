@@ -76,7 +76,7 @@
                   style='cursor: pointer' 
                   @click="switchRow(item);"
                 >
-                  <q-show-text :resource="item" :attribute="attribute" :showLabel="false" class="ma-0"/>
+                  <q-show-text :resource="item" :attribute="attribute" :showLabel="false" class="cell ma-0"/>
                 </td>
                 <td>
                   <div class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(item)}">
@@ -171,6 +171,6 @@ export default {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 400px;
+    max-width: 600px;
   }
 </style>
