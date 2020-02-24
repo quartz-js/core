@@ -2,6 +2,7 @@ module.exports = {
     Attributes: {
         Base: require('./app/Attributes/BaseAttribute').BaseAttribute,
         DateTime: require('./app/Attributes/DateTimeAttribute').DateTimeAttribute,
+        Date: require('./app/Attributes/DateAttribute').DateAttribute,
         CreatedAt: require('./app/Attributes/CreatedAtAttribute').CreatedAtAttribute,
         UpdatedAt: require('./app/Attributes/UpdatedAtAttribute').UpdatedAtAttribute,
         DeletedAt: require('./app/Attributes/DeletedAtAttribute').DeletedAtAttribute,
