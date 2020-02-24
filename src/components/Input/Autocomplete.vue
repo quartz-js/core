@@ -20,7 +20,6 @@
             v-bind="globalAttributeProps()"
           ></q-autocomplete>
         </v-spacer>
-        {{ rawValue }}
         <div>
           <component 
             v-for="component in attribute.actions"
