@@ -264,7 +264,6 @@ export class BaseAttribute {
     if (!this.persist.data) {
       return Promise.resolve(1)
     }
-
     return this.extractValue(data).then(val => {
 
       let calls = this.multiple ? val || [] : [val]
@@ -273,6 +272,9 @@ export class BaseAttribute {
 
       let queries = [];
 
+      if (!Array.isArray(calls)) {
+        return 1;
+      }
 
       calls.map(value => {
         let attrs = _.mapValues(this.persist.data.attributes, (i) => {
@@ -284,8 +286,6 @@ export class BaseAttribute {
 
         queries.push(attrs)
       });
-
-
 
       let scopes = _.mapValues(this.persist.data.scopes, (val, key) => {
         return Twig.twig({data: val}).render({
