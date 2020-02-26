@@ -1,6 +1,6 @@
 <template>
   <div v-if="show" class="mt-4">
-    <datetime v-model="rawValue" type="datetime" :minute-step="5" ref="dateTimePicker" input-style="display:none" @input="onChange">
+    <datetime v-model="rawValue" type="datetime" :minute-step="5" ref="dateTimePicker" input-style="display:none" @input="onChange" v-if="loaded">
       <template slot="after">
         <q-text-field 
           :value="getDateFormat(rawValue)" 
@@ -41,21 +41,27 @@ export default {
   },
   data() {
     return {
-    	rawValue: null
+      rawValue: null,
+      loaded: false
     }
   },
-  created () {
+  mounted () {
 
     if (!this.canMount()) {
       return;
     }
     
-    this.reloadRawValue();
+    this.reloadRawValue().then(i => {
+      this.loaded = true
+    })
   },
   watch: {
-  	value: function (){
-    	this.reloadRawValue();
-  	},
+    value: {
+      handler: function (){
+        this.reloadRawValue();
+      },
+      deep: true
+    }
   },
   methods: {
     getDateFormat(date)
