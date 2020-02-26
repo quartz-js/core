@@ -1,4 +1,6 @@
 import { container } from '../Container';
+import { RawResource } from './RawResource'
+var util = require('util')
 
 export class Parser {
   static interceptors () {
@@ -16,55 +18,55 @@ export class Parser {
     });
   }
 
-  static parseRelationship (relationship, response) {
-    return [].concat(response.body.data, response.body.included).find((include) => {
-      return include.type === relationship.type && parseInt(include.id) === parseInt(relationship.id)
-    })
-  }
+  static parseData (resources, response) {
 
-  static parseData (data, response, parsed) {
-
-    if (!data) {
+    if (!resources) {
       return null
     }
 
-    if (!data.id) {
-      return data
-    }
 
-    if (!parsed) {
-      parsed = {}
-    }
+    let objects = [].concat(resources, response.body.included || [] ).map(obj => {
+      return new RawResource(obj)
+    })
 
-    if (data.relationships) {
-      _.map(data.relationships, (relationships, key) => {
-        if (!Array.isArray(relationships.data)) {
-          if (typeof data.attributes[key] === 'undefined') {
-            data.attributes[key] =  Parser.parseData(Parser.parseRelationship(relationships.data, response), response, parsed);
-          }
-        } else {
+    objects.map((data, keyData) => {
 
-          relationships.data.map((relationship, keyRelation) => {
-            let val = Parser.parseData(Parser.parseRelationship(relationship, response), response, parsed);
+      if (data.relationships) {
+        _.map(data.relationships, (relationships, key) => {
 
-            if (val !== null && typeof val === 'object') {
-              if (typeof data.attributes[key] === 'undefined') {
-                data.attributes[key] = [];
-              }
-
-              if (typeof data.attributes[key][keyRelation] === 'undefined') {
-                data.attributes[key][keyRelation] = val;
-              }
+          if (!Array.isArray(relationships.data)) {
+            if (typeof data.attributes[key] === 'undefined') {
+              data.attributes[key] = objects.find(i => i.type === relationships.data.type && i.id == relationships.data.id)
             }
-          })
-        }
+          } else {
 
-      })
-    }
+            relationships.data.map((relationship, keyRelation) => {
 
-    data = _.merge({id: data.id == parseInt(data.id) ? parseInt(data.id) : data.id}, data.attributes);
+              let val = objects.find(i => i.type === relationship.type && i.id == relationship.id)
 
-    return data;
+              if (val !== null && typeof val === 'object') {
+                if (typeof data.attributes[key] === 'undefined') {
+                  objects[keyData].attributes[key] = [];
+                }
+
+                if (typeof data.attributes[key][keyRelation] === 'undefined') {
+                  objects[keyData].attributes[key][keyRelation] = val;
+                }
+              }
+            })
+          }
+
+        })
+      }
+    })
+    
+    objects.map(data => {
+      data.convert()
+    })
+
+    return resources.map(data => {
+      return objects.find(i => i.getType() === data.type && i.id == data.id)
+    })
   }
 
   /**
@@ -82,18 +84,14 @@ export class Parser {
       return response
     }
     
-    let data = _.clone(body.data)
+    if (body.data && Array.isArray(body.data)) {
+      let data = _.clone(body.data)
 
-    if (Array.isArray(body.data)) {
-      for (let i in body.data) {
-        data[i] = Parser.parseData(data[i], response);
-      }
-    } else if (_.isObject(body.data)) {
-        data = Parser.parseData(data, response);
+      data = Parser.parseData(data, response);
+
+      response.body = body;
+      response.body.data = data
     }
-
-    response.body = body;
-    response.body.data = data
 
     return response;
   }

@@ -1,4 +1,5 @@
 import { Helper } from '../app/Helper'
+var util = require('util')
 
 export var LoadResource = {
   props: {
@@ -31,7 +32,7 @@ export var LoadResource = {
       this.setData(this.resource);
     },
     setData (object) {
-      this.data = JSON.parse(JSON.stringify(object));
+      this.data = _.clone(object);
     },
     loadDataByQuery(query)
     {
@@ -87,7 +88,7 @@ export var LoadResource = {
 
     loadDataByProps () {
       if (this.resource) {
-        if (JSON.stringify(this.resource) === JSON.stringify(this.data)) {
+        if (util.inspect(this.resource) === util.inspect(this.data)) {
           return;
         }
 
@@ -128,8 +129,6 @@ export var LoadResource = {
         }
       });
       bus.$on(this.config.resourceEvent("removed"), data => {
-
-        console.log(data)
         
         if (parseInt(data.id) === parseInt(this.data.id)) {
           this.data = null;

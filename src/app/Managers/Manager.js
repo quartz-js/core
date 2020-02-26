@@ -191,12 +191,9 @@ export class Manager {
 
     for (let attr in this.attributes) {
       attr = this.attributes[attr]
-      console.log(attr.name)
-      console.log(await attr.extractValue(original))
       attr.injectPersist(resource, original)
     }
 
-    console.log(JSON.stringify(resource))
 
     return resource
   }
@@ -246,6 +243,8 @@ export class Manager {
 
       return this.manager.create(params);
     }).then(response => {
+
+      data.id = response.body.data.id
 
       let promises = this.attributes.map(attribute => {
         return attribute.onSave(response.body.data.id, data);
