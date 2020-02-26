@@ -15,6 +15,11 @@
           <p class='caption font-weight-thin'>
             {{ this.getResourceDescription(config) }}
           </p>
+          <p class="mt-4 pr-2" style='margin-left: -8px'>
+            <v-chip color="pink" label small text-color="white" class='mx-2'>System</v-chip>
+            <v-chip color="purple" label small text-color="white" class='mx-2'>Schema</v-chip>
+            <v-chip color="blue" label small text-color="white" class='mx-2'>Data</v-chip>
+          </p>
         </div>
       </v-layout>
 
