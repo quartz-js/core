@@ -186,14 +186,13 @@ export class Manager {
     attribute.ini();
   }
 
-  async getParamsToPersist (original) {
+  async getParamsToPersist (original, action) {
     let resource = {}
 
     for (let attr in this.attributes) {
       attr = this.attributes[attr]
-      attr.injectPersist(resource, original)
+      attr.injectPersist(resource, original, action)
     }
-
 
     return resource
   }
@@ -239,7 +238,7 @@ export class Manager {
         return value !== null
       })
 
-      params = await this.getParamsToPersist(params)
+      params = await this.getParamsToPersist(params, 'create')
 
       return this.manager.create(params);
     }).then(response => {
@@ -292,7 +291,7 @@ export class Manager {
       return this.hook.execute('beforePersist', data.resource);
     }).then(async params => {
 
-      params = await this.getParamsToPersist(params)
+      params = await this.getParamsToPersist(params, 'update')
 
       this.attributes.map(attribute => {
         params = attribute.preUpdate(params);

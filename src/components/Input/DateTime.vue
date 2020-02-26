@@ -7,6 +7,7 @@
           :label="attribute.label" 
           :hint="getAttributeDescription(attribute)"
           @click="$refs.dateTimePicker.isOpen = true"
+          :disabled="isDisabled()"
           persistent-hint
         ></q-text-field>
       </template>

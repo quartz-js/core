@@ -6,6 +6,7 @@
       @input="onChange()"
       :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
       v-bind="globalAttributeProps()"
+      :disabled="isDisabled()"
     ></q-text-field>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </v-flex>

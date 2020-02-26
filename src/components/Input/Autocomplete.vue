@@ -18,6 +18,7 @@
             editable
             clearable
             v-bind="globalAttributeProps()"
+            :disabled="isDisabled()"
           ></q-autocomplete>
         </v-spacer>
         <div>

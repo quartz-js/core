@@ -9,6 +9,7 @@
         clearable
         :hint="getAttributeDescription(attribute)"
         v-bind="globalAttributeProps()"
+        :disabled="isDisabled()"
       ></q-autocomplete>
     <div
       v-if="error"

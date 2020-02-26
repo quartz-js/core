@@ -6,6 +6,7 @@
       :label="label !== undefined ? label : attribute.label"
       :hint="hint !== undefined ? hint : getAttributeDescription(attribute)"
       v-bind="globalAttributeProps()"
+      :disabled="isDisabled()"
     ></q-checkbox>
   </div>
 </template>

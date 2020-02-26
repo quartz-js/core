@@ -211,7 +211,11 @@ export class BaseAttribute {
     return resource;
   }
 
-  injectPersist(resource, value) {
+  injectPersist(resource, value, action) {
+
+    if (action === 'update' && !this.mutable) {
+      return resource
+    }
 
     _.map(this.persist.attributes, (name) => {
       _.set(resource, name, _.get(value, name));

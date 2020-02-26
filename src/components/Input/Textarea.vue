@@ -10,6 +10,7 @@
       :placeholder="placeholder"
       no-resize
       v-bind="globalAttributeProps()"
+      :disabled="isDisabled()"
     ></q-textarea>
     <div v-if="error" class="error">{{ $t("API_" + error.code) }}&nbsp;</div>
   </div>

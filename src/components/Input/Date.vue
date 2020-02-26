@@ -13,6 +13,7 @@
           v-model="rawValue" 
           :label="attribute.label"
           :hint="attribute.getDescription()"
+          :disabled="isDisabled()"
           @input="onChange()"
           persistent-hint
           clearable
