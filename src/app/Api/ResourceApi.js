@@ -77,6 +77,25 @@ export class ResourceApi {
   }
 
   /**
+   * Persist
+   *
+   * @param {Object} params
+   *
+   * @return {Promise}
+   */
+  persist (query, params) {
+    return this.http.post(
+      this.url(''),
+      this.getFullParams(params),
+      { 
+        params: {
+          query: this.filterQuery(query)
+        }
+      }
+    )
+  }
+
+  /**
    * Store
    *
    * @param {Object} params
