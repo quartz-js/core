@@ -1,24 +1,17 @@
 <template>
   <div>
     <q-card>
-      <v-layout align-start class="pa-5"  v-if="showTable">
-        <div><q-view-icon :src="config.icon" width='110' /></div>
-        <div class='ml-7'>
+      <v-layout align-center class="pa-3"  v-if="showTable">
+        <div><q-view-icon :src="config.icon" width='50' /></div>
+        <div class='mx-5'>
           <h2 class='headline font-weight-thin'>
-            {{ this.getResourceTitle(config) }}
-          </h2>
-          <p class='caption font-weight-thin'>
-            {{ this.getResourceDescription(config) }}
-          </p>
-          <p class="mt-4 pr-2" style='margin-left: -8px'>
+            {{ config.name }}
             <v-chip color="pink" label small text-color="white" class='mx-2'>System</v-chip>
             <v-chip color="purple" label small text-color="white" class='mx-2'>Schema</v-chip>
             <v-chip color="blue" label small text-color="white" class='mx-2'>Data</v-chip>
-          </p>
+          </h2>
         </div>
-      </v-layout>
-      <v-divider></v-divider>
-      <v-layout align-start class="pa-5"  v-if="showTable">
+        <v-spacer />
         <div ><slot name="top" :config="config"></slot></div>
       </v-layout>
       <v-divider></v-divider>
