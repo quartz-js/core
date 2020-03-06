@@ -25,6 +25,10 @@ export default {
     url: {
       type: Boolean,
       default: true
+    },
+    vars: {
+      type: Object,
+      default: {}
     }
   },
   data: function () {
@@ -52,7 +56,8 @@ export default {
         search: null
       },
       timeout: null,
-      loading: false
+      loading: false,
+      queryTimeout: null
     }
   },
   created () {
@@ -158,18 +163,15 @@ export default {
     filterPaginationUrl(pagination) {
       return _.pick(pagination, ['sort', 'page', 'rowsPerPage']);
     },
-    getQueryVars () {
-      return {
-        a:1
-      }
-    },
     getQuery () {
-      return this.config.getFinalQuery(this.query, this.getQueryVars())
+      return this.config.getFinalQuery(this.query, this.manager.vars)
     },
     retrieved () {
 
     },
     load (force) {
+
+      clearTimeout(this.queryTimeout)
 
       if (this.loading) {
         return;

@@ -32,7 +32,11 @@ export var LoadResource = {
       this.setData(this.resource);
     },
     setData (object) {
-      this.data = _.clone(object);
+      this.data = null
+    
+      setTimeout(() => {
+        this.data = _.clone(object);
+      }, 1)
     },
     loadDataByQuery(query)
     {
@@ -111,7 +115,7 @@ export var LoadResource = {
     createListeners() {
 
       bus.$on(this.config.resourceEvent("changed"), data => {
-        if (this.data.id) {
+        if (parseInt(data.id) === parseInt(this.data.id)) {
           this.loadDataById(this.data.id);
         }
       });

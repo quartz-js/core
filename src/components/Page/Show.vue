@@ -1,53 +1,9 @@
 <template>
   <div>
-    <div v-if="data" class="px-2">
-      <slot :resource="data" name="breadcrumb">
-        <div class='mt-4' flat>
-          <a @click="$router.go(-1)">{{ $t('$quartz.core.back') }}</a>
-        </div>
-      </slot>
-      <q-card class="pa-3 mt-4" >
-        <v-layout align-start>
-          <img :src="config.icon" width='110'>
-          <v-spacer class='ml-3'>
-            <v-layout align-center>
-
-              <h2 class='headline font-weight-thin pa-1'>
-                {{ this.getResourceTitle(config) }} - #{{ data.id }} {{ data.name }}
-              </h2>
-              <v-spacer></v-spacer>
-
-              <slot :resource="data" :config="config" name="actions"/>
-              <v-menu v-if="!!$scopedSlots['actions-extra']">
-                <template v-slot:activator="{ on }">
-                  <q-btn icon text small v-on="on"  class='ma-0'  color="grey">
-                    <q-icon>more_vert</q-icon>
-                  </q-btn>
-                </template>
-                <v-list>
-                  <slot :resource="data" :config="config" name="actions-extra" />
-                </v-list>
-              </v-menu>
-            </v-layout>
-
-            <slot :resource="data" :config="config" name="subtitle"/>
-
-            <p class='caption font-weight-thin pa-1'>
-              <slot :resource="data" name="description" :config="config">{{ data.description }}</slot>
-            </p>
-          </v-spacer>
-        </v-layout>
-
-      </q-card>
-        
+    <div v-if="data" class="px-2" >
       <slot name="body" :resource="data" :config="config" />
     </div>
     <div v-if="!data && !loading" class="px-2">
-      <slot :resource="data" name="breadcrumb">
-        <div class='mt-4' flat>
-          <a @click="$router.go(-1)">{{ $t('$quartz.core.back') }}</a>
-        </div>
-      </slot>
       <q-card class="mt-5"> 
         <div class='content text-md-center'>
           <img :src='config.icon' width='218' class='my-3'>

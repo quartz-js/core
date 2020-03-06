@@ -3,6 +3,7 @@ const lodash = require('lodash');
 import Twig from 'twig';
 import { Helper } from '../Helper'
 import { Hook } from '../Hook'
+import { container } from '../Container'
 
 export class Manager {
   constructor (params) {
@@ -79,7 +80,23 @@ export class Manager {
 
     };
 
-    this.onCreateSuccess = function (vue, response) {
+    this.onCreateSuccess = function (vue, data) {
+
+      if (!this.persist || !this.persist.data || !this.vars.containerResource) {
+        return Promise.resolve(1)
+      }
+
+      let params = _.mapValues(this.persist.data.attributes, (val, key) => {
+        return Twig.twig({data: val}).render({
+          containerResource: this.vars.containerResource,
+          resource: data
+        })
+      })
+
+      return this.persist.manager(data).manager.create(params).then(i => {
+        bus.$emit(this.getKeyResourceEvent(this.vars.containerResource.getType(), 'changed'), this.vars.containerResource);
+      })
+
     };
 
     this.onUpdateSuccess = function (vue, response) {
@@ -161,13 +178,19 @@ export class Manager {
       });
     };
 
-    this.resourceEvent = function(label) {
-      return this.data + ":" + label;
-    }
 
     for (var i in params) {
       this[i] = params[i];
     }
+  }
+  
+  resourceEvent (label) {
+    return this.getKeyResourceEvent(this.data, label)
+  }
+
+  getKeyResourceEvent(nameData, nameEvent)
+  {
+      return nameData + ":" + nameEvent;
   }
 
   index (params) {
@@ -256,12 +279,12 @@ export class Manager {
 
 
       return Promise.all(promises).then(() => {
-        this.onCreateSuccess(this, response);
 
+        return this.onCreateSuccess(this, response.body.data);
+
+      }).then(i => {
         bus.$emit(this.resourceEvent("created"), response.body.data);
-
-        return response;
-      });
+      })
     }).catch(error => {
       Helper.handleResponse(error);
 

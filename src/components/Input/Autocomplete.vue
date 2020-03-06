@@ -130,7 +130,8 @@ export default {
 
       let values = this.attribute.multiple ? (val || []) : [val]
 
-      values.map(val => {
+
+      _.map(values, val => {
 
         if (!val) {
           return;
