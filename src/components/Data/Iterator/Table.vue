@@ -12,7 +12,7 @@
           </h2>
         </div>
         <v-spacer />
-        <div ><slot name="top" :config="config"></slot></div>
+        <slot name="top" :config="config"></slot>
       </v-layout>
       <v-divider></v-divider>
       <v-layout align-start class="pl-5 pt-5 pr-5" :class="{'noBottomMargin': !errors.search}" v-if="showTable">
