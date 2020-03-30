@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div v-if="show && rawValue" class="mt-4">
+    <div v-if="show && rawValue" class="mt-4">
       <v-text-field 
         :value="rawValue.filename" prepend-icon='attach_file'
         :label="label !== undefined ? label : attribute.label"
@@ -20,7 +20,7 @@
             </canvas>
           </div>
           <div v-else>
-            Nope
+            No preview available
           </div>
         </div>
         <div class="pa-4" v-if="fileType == 'image'">
@@ -100,20 +100,34 @@ export default {
     if (!this.canMount()) {
       return;
     }
+
     
     this.reloadRawValue();
   },
   watch: {
-  	value: function (){
-    	this.reloadRawValue();
-  	}
+    value: {
+      handler: function (){
+        this.reloadRawValue();
+      },
+      deep: true
+    }
   },
   methods: {
     pickFile () {
       this.$refs.image.click ()
     },
   	async reloadRawValue() {
-    	this.rawValue = await this.attribute.extractValue(this.value);
+    	let val = await this.attribute.extractValue(this.value)
+
+      if (!val) {
+        val = {
+          content: null,
+          filename: null,
+          filetype: null
+        }
+      }
+
+      this.rawValue = val
   	},
     onChange () {
       this.attribute.injectValue(this.value, this.rawValue);
@@ -147,7 +161,6 @@ export default {
       });
     },
     loadImage (blob) {
-
 
       this.rawValue.file = new File([blob], this.rawValue.filename);
 

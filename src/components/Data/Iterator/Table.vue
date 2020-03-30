@@ -84,7 +84,7 @@
                   style='cursor: pointer' 
                   @click="switchRow(item);"
                 >
-                  <q-show-text :resource="item" :attribute="attribute" :showLabel="false" class="cell ma-0"/>
+                  <component :is="attribute.showComponent" :resource="item" :attribute="attribute" :showLabel="false" class="cell ma-0"/>
                 </td>
                 <td>
                   <div class="justify-end align-center layout px-2 text-right" :class="{'hide': !config.showRow(item)}">

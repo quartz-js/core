@@ -8,6 +8,7 @@ import Twig from 'twig';
 
 export class BaseAttribute {
   required = false;
+  showComponent = 'q-show-text'
   
   constructor (name, options) {
     this.translator = new Translator();

@@ -58,6 +58,7 @@ module.exports = {
 
         Vue.component("QShowJson", require('./components/Show/Json').default)
         Vue.component("QShowText", require('./components/Show/Text').default)
+        Vue.component("QShowFile", require('./components/Show/File').default)
 
         Vue.component("QFormJson", require('./components/Form/FormJson').default)
         Vue.component("QFormHtml", require('./components/Form/FormHtml').default)
