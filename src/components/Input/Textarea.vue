@@ -24,3 +24,8 @@ export default {
 }
 
 </script>
+<style>
+.v-textarea > .v-input__control > .v-input__slot > .v-text-field__slot {
+  max-height: 100%;
+}
+</style>
