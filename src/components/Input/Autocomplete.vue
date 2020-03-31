@@ -145,7 +145,7 @@ export default {
       })
 
 
-      this.rawValue = val;
+      this.rawValue = Object.values(val);
     },
     querySelections (v) {
       this.loading = true;
