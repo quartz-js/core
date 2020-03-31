@@ -10,6 +10,7 @@
         :hint="getAttributeDescription(attribute)"
         v-bind="globalAttributeProps()"
         :disabled="isDisabled()"
+        autocomplete="new-password"
       ></q-autocomplete>
     <div
       v-if="error"

@@ -19,6 +19,7 @@
             clearable
             v-bind="globalAttributeProps()"
             :disabled="isDisabled()"
+            autocomplete="new-password"
           ></q-autocomplete>
         </v-spacer>
         <div>
