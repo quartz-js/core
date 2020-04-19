@@ -1,9 +1,10 @@
 import { BaseAttribute } from './BaseAttribute'
 
 export class LongTextAttribute extends BaseAttribute {
+  simple = true
+
   constructor (name) {
     super(name);
-    this.priority = 0;
   }
 
   getClassName() {

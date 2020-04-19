@@ -173,9 +173,25 @@ export class Manager {
      * @return {BaseAttribute}
      */
     this.getPrimaryAttributes = function() {
-      return this.attributes.filter(function (attribute) {
-        return attribute.required
-      });
+
+      let attributes = [];
+
+      if (this.hasAttribute('name')) {
+        attributes.push(this.getAttribute('name'))
+      }
+
+      this.attributes.filter(function (attribute) {
+        return attribute.required && attribute.simple && attribute.name != 'name'
+      }).map(attr => {
+        attributes.push(attr)
+      })
+
+      if (attributes.length === 0 && this.hasAttribute('id')) {
+        attributes.push(this.getAttribute('id'))
+      }
+      
+
+      return attributes
     };
 
 

@@ -12,7 +12,7 @@
           </h2>
         </div>
         <v-spacer />
-        <slot name="actions" :config="config"></slot>
+        <slot name="actions" :config="config" :resource="data"></slot>
       </v-layout>
       <v-divider></v-divider>
       <div class="content">

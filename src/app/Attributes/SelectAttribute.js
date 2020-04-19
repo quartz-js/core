@@ -1,6 +1,7 @@
 import { BaseAttribute } from './BaseAttribute'
 
 export class SelectAttribute extends BaseAttribute {
+  simple = true
  
   /**
    * @param {array} options

@@ -28,7 +28,9 @@ export default {
     },
     vars: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     }
   },
   data: function () {

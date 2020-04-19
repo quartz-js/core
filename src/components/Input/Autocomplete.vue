@@ -63,6 +63,7 @@ export default {
     return {
       checked: false,
       rawValue: null,
+      booting: false,
       loading: false,
       search: '',
       items: []
@@ -76,6 +77,8 @@ export default {
     if (!this.canMount()) {
       return;
     }
+
+    this.booting = true;
 
     this.attribute.hook.execute('watchToReload', []).then((arr) => {
       return arr.map(field => {
@@ -92,6 +95,8 @@ export default {
       } else {
         this.querySelections('');
       }
+    }).finally(i => {
+      this.booting = false;
     })
   },
   watch: {
@@ -145,10 +150,13 @@ export default {
         }
       })
 
-
-      this.rawValue = Object.values(val);
+      this.rawValue = this.attribute.multiple ? Object.values(val) : val
     },
     querySelections (v) {
+
+      if (this.booting) {
+        return;
+      }
       this.loading = true;
 
       this.lastRawValue = this.rawValue;

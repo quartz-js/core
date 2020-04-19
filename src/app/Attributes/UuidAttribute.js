@@ -1,6 +1,8 @@
 import { BaseAttribute } from './BaseAttribute'
 
 export class UuidAttribute extends BaseAttribute {
+  simple = true
+  
   constructor () {
     super('uuid', {});
     this.extractor = function (resource) {
