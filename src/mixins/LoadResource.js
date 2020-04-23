@@ -40,12 +40,14 @@ export var LoadResource = {
     },
     loadDataByQuery(query)
     {
-      return this.config.index({
-        include: includes.join(","),
-        query: query, 
-        show: 1, 
-        page: 1
-      }).then(response => {
+       return this.config.hook.execute('include', []).then(includes => {
+          return this.config.index({
+            include: includes.join(","),
+            query: query,
+            show: 1,
+            page: 1
+          })
+        }).then(response => {
       
         var resource = response.body;
         return this.config.loadResources([resource.data[0]])
