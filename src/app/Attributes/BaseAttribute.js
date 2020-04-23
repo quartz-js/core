@@ -2,6 +2,8 @@ import _ from 'lodash';
 var clone = require('clone');
 import { container } from '../Container';
 import { Translator } from '../Translator';
+import { ValueInjector } from '../Concerns/ValueInjector';
+import { ValueExtractor } from '../Concerns/ValueExtractor';
 import { Helper } from '../Helper';
 import { Hook } from '../Hook';
 import Twig from 'twig';
@@ -51,29 +53,12 @@ export class BaseAttribute {
 
   async extractor (resource) {
 
-    if (!this.extract) {
-      return Promise.resolve(null)
-    }
+    let valueExtractor = new ValueExtractor();
 
-    for (let i in this.extract.attributes) {
-
-      let val = this.extract.attributes[i];
-
-
-      if (val.path && _.has(resource, val.path)) {
-          return Promise.resolve(_.get(resource, val.path))
-      }
-
-      if (val.query) {
-        return this.attribute.select.manager(resource).index({
-          query: container.get('template').parse(val.query, {resource: resource})
-        })
-      }
-    }
-    return Promise.resolve(null)
-    // throw new Error("It seems that the extraction of the resource to retrieve the attribute value failed. Please check your 'extract' attribute in the attribute: " + this.name)
+    return valueExtractor.extract(resource, this.extract.attributes, {
+      queryManager: null, //this.attribute.select.manager(resource)
+    })
   }
-
   ini () {
   }
 
@@ -192,25 +177,9 @@ export class BaseAttribute {
    */
   injectValue (resource, value) {
 
-    if (!resource) {
-      return;
-    }
+    let injector = new ValueInjector()
 
-    _.map(this.inject.attributes, (val, key) => {
-
-      if (val.template) {
-        let parsed = container.get('template').parse(val.template, {value: value, resource: resource})
-
-        _.set(resource, key, parsed);
-      }
-
-      if (val.path) {
-        _.set(resource, key, _.get({value: value}, val.path));
-      }
-    })
-
-
-    return resource;
+    return injector.inject(resource, value, this.inject.attributes, {})
   }
 
   injectPersist(resource, value, action) {
