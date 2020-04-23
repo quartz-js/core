@@ -59,8 +59,6 @@ export class BaseAttribute {
       queryManager: null, //this.attribute.select.manager(resource)
     })
   }
-  ini () {
-  }
 
   fill (vars) {
     _.map(vars, (val, key) => {

@@ -222,7 +222,6 @@ export class Manager {
   addAttribute (attribute) {
     this.attributes.push(attribute)
     attribute.manager = () => { return this };
-    attribute.ini();
   }
 
   async getParamsToPersist (original, action) {
