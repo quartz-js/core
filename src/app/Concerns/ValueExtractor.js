@@ -38,6 +38,10 @@ export class ValueExtractor
 
       let val = config[key]
 
+      if (typeof val === 'string' || typeof val === 'number') {
+        return Promise.resolve(val)
+      }
+
       if (val.path && _.has(resource, val.path)) {
         return Promise.resolve(_.get(resource, val.path))
       }
@@ -48,8 +52,9 @@ export class ValueExtractor
         })
       }
 
+
     }
-    
+
     // throw new Error("It seems that the extraction of the resource to retrieve the attribute value failed. Please check your 'extract' attribute in the attribute: " + this.name)
   
     return Promise.resolve(null)

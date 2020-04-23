@@ -9,6 +9,7 @@ import { Hook } from '../Hook';
 import Twig from 'twig';
 
 export class BaseAttribute {
+  disabled = false;
   required = false;
   simple = false;
   showComponent = 'q-show-text'
@@ -77,39 +78,19 @@ export class BaseAttribute {
   get (name) {
     return _.get(this, name)
   }
-
-  setFixed (callback, query) {
-    this.set('fixed', callback);
-    this.manager().parserFinalQuery.push((query) => {
-
-      let fixed = this.fixed(null);
-      
-      // @todo: label of fixed
-      fixed = typeof fixed === 'object' && fixed ? fixed.id : fixed;
-
-      let newQuery = '';
-
-      if (fixed === null) {
-        newQuery = `${this.column} is null`;
-      } else {
-        newQuery = `${this.column} = '${fixed}'`
-      }
-
-      return Helper.mergePartsQuery([newQuery, query], 'and');
-    })
-  }
-  
   toPage (resource) {
     return null
 
     // this.getSelectManager(resource).getRouteShow(this.extractValue(resource))
   }
 
-  injectDefault (data, route) {
+  async injectDefault (data, route) {
 
     let defaultByRoute = this.parseExtractedDefaultFromRoute(this.extractDefaultFromRoute(route));
 
-    this.injectValue(data, defaultByRoute ? defaultByRoute : this.getDefault())
+    let fixed = await this.fixed(null);
+
+    this.injectValue(data, defaultByRoute ? defaultByRoute : (fixed ? fixed : this.getDefault()))
   }
 
   extractDefaultFromRoute (route) {
@@ -124,7 +105,7 @@ export class BaseAttribute {
    * @return {Closure}
    */
   getDefault () {
-    return this.fixed(null) || this.default();
+    return this.default();
   }
 
   /**
@@ -178,6 +159,16 @@ export class BaseAttribute {
     let injector = new ValueInjector()
 
     return injector.inject(resource, value, this.inject.attributes, {})
+  }
+
+  setFixed (config, vars)
+  {
+    this.disabled = true;
+    this.set('fixed', async (resource) => {
+      let extractor = new ValueExtractor()
+
+      return await extractor.extract(vars, [config], {})
+    })
   }
 
   injectPersist(resource, value, action) {

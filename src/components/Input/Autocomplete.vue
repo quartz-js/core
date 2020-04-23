@@ -22,7 +22,7 @@
             autocomplete="new-password"
           ></q-autocomplete>
         </v-spacer>
-        <div>
+        <div v-if="!isDisabled()">
           <component 
             v-for="component in attribute.actions"
             v-bind:is="$container.get('template').parse(component, {resource:value})"
