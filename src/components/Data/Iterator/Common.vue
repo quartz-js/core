@@ -244,6 +244,8 @@ export default {
       }).finally(response => {
         this.loading = false;
         this.retrieved()
+
+        this.$emit("onLoad")
       })
     },
 
