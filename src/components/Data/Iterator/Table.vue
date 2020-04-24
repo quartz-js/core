@@ -49,28 +49,32 @@
           :loading="loading"
           :headers-length="countColumns()"
           multi-sort
+          calculate-widths
+          hide-default-header
           :options.sync="options"
           :footer-props="{
             'items-per-page-options': rowsPerPageItems
           }"
           flat
+          class="data-table"
         >
           <v-progress-linear slot="progress" color="blue" indeterminate style='margin-top: -1px; height: 3px'></v-progress-linear>
 
-          <template v-slot:header="{ headers }">
-            <thead>
-              <tr>
-                <th
-                  v-for="header in headers"
-                  :key="header.text"
-                  :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-                  @click="changeSort(header.value)"
-                >
-                  {{ header.attribute.label }}
-                  <q-icon small>arrow_upward</q-icon>
-                </th>
-              </tr>
-            </thead>
+          <template v-slot:header="{ props: { headers } }">
+            <slot name="header" :headers="headers">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th
+                    v-for="header in headers"
+                    :key="header.text"
+                    v-if="header.attribute"
+                  >
+                    {{ header.attribute.label }}
+                  </th>
+                </tr>
+              </thead>
+            </slot>
           </template>
           <template v-slot:body="{ items,select }" >
             <tbody>
@@ -81,8 +85,8 @@
                   v-if="showAttribute(attribute)" 
                   :key="index" 
                   :width="getAttributeWidth(attribute)" 
-                  style='cursor: pointer' 
                   @click="switchRow(item);"
+                  :data-attribute-name="attribute.name"
                 >
                   <component :is="attribute.showComponent" :resource="item" :attribute="attribute" :showLabel="false" class="cell ma-0"/>
                 </td>
@@ -183,6 +187,7 @@ export default {
 }
 </script>
 <style scoped>
+
   .search {
     padding-top:0;
   }
@@ -191,7 +196,6 @@ export default {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 600px;
   }
 
   .noBottomMargin {
