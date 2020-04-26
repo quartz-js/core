@@ -79,7 +79,7 @@
           <template v-slot:body="{ items,select }" >
             <tbody>
               <tr v-for="item in items" :key="item.id" :class="{'disable': !config.showRow(item)}">
-                <td><v-checkbox color="primary" class="mt-2"></v-checkbox></td>
+                <td style='max-width: 40px;'><v-checkbox color="primary" class="mt-2"></v-checkbox></td>
                 <td 
                   v-for="(attribute, index) in attributesShowable()" 
                   v-if="showAttribute(attribute)" 
