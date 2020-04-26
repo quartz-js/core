@@ -61,6 +61,10 @@ export class BaseAttribute {
     })
   }
 
+  canShow() {
+    return this.hide === false && this.fixed(null) == undefined && this.fixed(null) !== null
+  }
+
   fill (vars) {
     _.map(vars, (val, key) => {
       this.set(key, val)

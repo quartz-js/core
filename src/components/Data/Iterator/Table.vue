@@ -37,7 +37,7 @@
         
         <v-data-table
           v-model="selected"
-          :headers="getHeaders()"
+          :headers="headers"
           :items="response.body.data || []"
           :search="null"
           :show-select="true"
@@ -82,7 +82,6 @@
                 <td style='max-width: 40px;'><v-checkbox color="primary" class="mt-2"></v-checkbox></td>
                 <td 
                   v-for="(attribute, index) in attributesShowable()" 
-                  v-if="showAttribute(attribute)" 
                   :key="index" 
                   :width="getAttributeWidth(attribute)" 
                   @click="switchRow(item);"

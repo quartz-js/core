@@ -59,26 +59,36 @@ export default {
       },
       timeout: null,
       loading: false,
-      queryTimeout: null
+      queryTimeout: null,
+      headers: []
     }
+  },
+  computed: {
   },
   created () {
     this.reload();
     this.defineDefaultValue();
     this.manager = this.config;
     this.attributes = this.config.attributes;
+    this.manager.sortAttributes();
+    this.setHeaders();
 
-    if (this.showAttribute(this.config.getAttribute('created_at'))) {
+    if (this.config.getAttribute('created_at').canShow()) {
       this.pagination.sort.push({
         attribute: 'created_at',
         descending: true
       })
-    } else if (this.showAttribute(this.config.getAttribute('id'))) {
+    } else if (this.config.getAttribute('id').canShow()) {
       this.pagination.sort.push({
         attribute: 'id',
         descending: true
       })
     }
+
+    bus.$on(this.config.resourceEvent("reload"), data => {
+      this.setHeaders();
+      this.load(true);
+    });
 
     bus.$on(this.config.resourceEvent("updated"), data => {
       this.load(true);
@@ -97,7 +107,38 @@ export default {
     bus.$off(this.config.resourceEvent("created"));
     bus.$off(this.config.resourceEvent("removed"));
   },
+  watch: {
+    config: {
+      handler: function () {
+        // this.setHeaders()
+        // this.load()
+      },
+      deep: true
+    },
+  },
   methods: {
+    setHeaders() {
+      let headers = this.manager.attributes.filter((attribute) => {
+        return attribute.canShow();
+      }).map((attribute) => {
+        return {
+          attribute: attribute,
+          value: attribute.name,
+          text: attribute.label,
+          align: 'left',
+          sortable: true
+        };
+      });
+
+      headers.push({ 
+        text: '', 
+        value: 'action', 
+        sortable: false, 
+        align:'right' 
+      })
+
+      this.headers = headers;
+    },
     switchRow (item) {
       if (window.getSelection().toString()) {
         return;
@@ -107,18 +148,15 @@ export default {
     },
     attributesShowable () {
       return this.attributes.filter((attr) => {
-        return this.showAttribute(attr);
+        return attr.canShow();
       });
     },
     defineDefaultValue() {
     },
     countColumns () {
       return this.attributes.filter((attribute) => {
-        return this.showAttribute(attribute)
+        return attribute.canShow()
       }).length+2;
-    },
-    showAttribute: function (attribute) {
-      return attribute.hide === false && attribute.fixed(null) == undefined && attribute.fixed(null) !== null
     },
     goToShow: function (resource) {
       if (window.getSelection().isCollapsed === false) {
@@ -271,23 +309,6 @@ export default {
     },
     toggleAll () {
       this.selected = this.selected.length ? [] : this.data.slice();
-    },
-    getHeaders () {
-      let headers = this.attributes.filter((attribute) => {
-        return this.showAttribute(attribute);
-      }).map((attribute) => {
-        return {
-          attribute: attribute,
-          value: attribute.name,
-          text: attribute.label,
-          align: 'left',
-          sortable: true
-        };
-      });
-
-      headers.push({ text: '', value: 'action', sortable: false,align:'right' })
-
-      return headers;
     },
     getAlternateLabel (count) {
         let plural = ''

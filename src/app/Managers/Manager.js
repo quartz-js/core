@@ -200,6 +200,12 @@ export class Manager {
     }
   }
   
+  sortAttributes () {
+    this.attributes.sort((a, b) => {
+      return a.sort - b.sort
+    })
+  }
+
   resourceEvent (label) {
     return this.getKeyResourceEvent(this.data, label)
   }
