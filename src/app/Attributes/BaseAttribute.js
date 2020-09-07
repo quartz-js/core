@@ -29,10 +29,6 @@ export class BaseAttribute {
       return undefined;
     }
 
-    this.mutator = (resource) => {
-      return this.getLabelByResource(resource)
-    }
-
     this.query = (key, resource) => {
 
       let relationable = this.getRelationable(resource);
@@ -120,13 +116,6 @@ export class BaseAttribute {
   }
 
   /**
-   * @return {Callable}
-   */
-  getMutator () {
-    return this.mutator;
-  }
-
-  /**
    * Extract value from resource
    *
    * @param {object} resource
@@ -145,7 +134,7 @@ export class BaseAttribute {
    * @return mixed
    */
   extractReadableValue (resource) {
-    return this.extractValue(resource).then(value => {
+    return this.extractor(resource).then(value => {
       return this.getLabelByResource(value, resource)
     })
   }
@@ -232,7 +221,7 @@ export class BaseAttribute {
     if (!this.persist.data) {
       return Promise.resolve(1)
     }
-    return this.extractValue(data).then(val => {
+    return this.extractor(data).then(val => {
 
       let calls = this.multiple ? val || [] : [val]
 
@@ -314,8 +303,15 @@ export class BaseAttribute {
       return null;
     }
 
+    // performance issue, skip template
+    if (this.readable.label === '{{ value }}') {
+      return value;
+    }
+
     let resources = this.multiple ? (value || []) : [value]
-    return resources.map(value => container.get('template').parse(this.readable.label, value ? {resource: resource, value: value} : {})).join("\n");
+    let t = resources.map(value => container.get('template').parse(this.readable.label, value ? {resource: resource, value: value} : {})).join("\n");
+
+    return t;
   }
 
   /**

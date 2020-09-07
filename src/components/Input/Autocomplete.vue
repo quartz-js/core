@@ -183,7 +183,7 @@ export default {
     },
     onChange: function (val) {
 
-      this.query = this.attribute.mutator(this.rawValue);
+      this.query = this.attribute.getLabelByResource(this.rawValue);
 
       let currVal = this.attribute.injectValue(this.value, this.rawValue);
   
