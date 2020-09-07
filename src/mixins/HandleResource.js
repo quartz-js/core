@@ -1,8 +1,11 @@
 export var HandleResource = {
   props: ['resource'],
   watch: {
-    resource: function (){
-      this.reloadRawResource();
+    resource: {
+      handle: function (){
+        this.reloadRawResource();
+      },
+      deep: true
     }
   },
   data() {
