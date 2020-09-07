@@ -1,7 +1,7 @@
 import { container } from '../app/Container'
 
 export var AttributePreMount = {
-  props: ['action'],
+  props: ['action', 'disabled'],
   data() {
     return {
       show: true,
@@ -10,7 +10,7 @@ export var AttributePreMount = {
   },
   methods: {
     isDisabled() {
-      return (this.action === 'update' && !this.attribute.mutable) || this.attribute.disabled
+      return this.disabled || (this.action === 'update' && !this.attribute.mutable) || this.attribute.disabled
     },
     globalAttributeProps() {
       return container.get('$quartz.core.props.form', {});

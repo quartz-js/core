@@ -154,7 +154,7 @@ export default {
     },
     querySelections (v) {
 
-      if (this.booting) {
+      if (this.booting || this.isDisabled()) {
         return;
       }
       this.loading = true;
