@@ -116,11 +116,11 @@ export default {
       let relationable = this.attribute.select.manager(this.value)
       // relationable.onLoad(t);
 
-      t.onUpdateSuccess = (vue, response) => {
-        this.unload(response.body.data);
+      t.onUpdateSuccess = (vue, data) => {
+        this.unload(data);
       }
-      t.onCreateSuccess = (vue, response) => {
-        this.unload(response.body.data);
+      t.onCreateSuccess = (vue, data) => {
+        this.unload(data);
       }
       return t;
     },

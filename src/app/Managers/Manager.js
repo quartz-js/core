@@ -301,7 +301,7 @@ export class Manager {
 
       return Promise.all(promises).then(() => {
 
-        return this.onCreateSuccess(this, response.body.data);
+        return this.onCreateSuccess(this, data);
 
       }).then(i => {
         bus.$emit(this.resourceEvent("created"), response.body.data);
@@ -356,7 +356,7 @@ export class Manager {
 
       return Promise.all(promises).then(() => {
 
-        this.onUpdateSuccess(this, response);
+        this.onUpdateSuccess(this, data);
 
         bus.$emit(this.resourceEvent("updated"), data);
 
