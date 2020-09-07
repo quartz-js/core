@@ -1,13 +1,5 @@
 export var HandleResource = {
   props: ['resource'],
-  watch: {
-    resource: {
-      handle: function (){
-        this.reloadRawResource();
-      },
-      deep: true
-    }
-  },
   data() {
     return {
       rawResource: null
