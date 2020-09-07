@@ -150,7 +150,8 @@ export default {
         }
       })
 
-      this.rawValue = this.attribute.multiple ? Object.values(val) : val
+
+      this.rawValue = this.attribute.multiple && val ? Object.values(val) : val
     },
     querySelections (v) {
 
