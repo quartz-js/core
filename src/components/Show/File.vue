@@ -59,7 +59,7 @@ export default {
       var filename = resource.url;
       var extension = filename.split(/\#|\?/)[0].split('.').pop().trim();
 
-      if (_.includes(['jpeg', 'jpg', 'png', 'gif'], extension)) {
+      if (_.includes(['jpeg', 'jpg', 'png', 'gif', 'svg', 'svg+xml'], extension)) {
         return resource.url
       }
 
