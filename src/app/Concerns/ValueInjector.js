@@ -1,4 +1,5 @@
 import { container } from '../Container';
+import Vue from 'vue'
 
 export class ValueInjector
 {
@@ -42,11 +43,14 @@ export class ValueInjector
           resource: resource
         }, vars))
 
-        _.set(resource, key, parsed);
+        Vue.set(resource, key, parsed);
+
+        //_.set(resource, key, parsed);
       }
 
       if (val.path) {
-        _.set(resource, key, _.get({value: value}, val.path));
+        //_.set(resource, key, _.get({value: value}, val.path));
+        Vue.set(resource, key, _.get({value: value}, val.path));
       }
     })
 
