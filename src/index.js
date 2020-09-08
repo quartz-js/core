@@ -28,6 +28,7 @@ module.exports = {
         DataName: require('./app/Attributes/DataNameAttribute').DataNameAttribute,
     },
     Interceptor: require('./app/Interceptor').Interceptor,
+    Url: require('./app/Url').Url,
     ProviderLoader: require('./app/Providers/ProviderLoader').ProviderLoader,
     ServiceProvider: require('./app/Providers/ServiceProvider').ServiceProvider,
     QuartzServiceProvider: require('./app/Providers/QuartzServiceProvider').QuartzServiceProvider,

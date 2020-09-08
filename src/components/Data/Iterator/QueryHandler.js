@@ -1,3 +1,5 @@
+import { Url } from "../../../app/Url"
+
 /**
  * Provide a query parameters utils to better search for a resource
  */
@@ -128,11 +130,7 @@ export var QueryHandler = {
      * Update the url after a succesuful api request with the current parameters
      */
     pushHistory() {
-      var push = Object.assign({}, this.$route.query);
-
-      push[this.getQueryParameterKey()] = this.paramsToQueryUrl();
-
-      window.history.pushState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
+      Url.updateQueryUrlParameter(this.getQueryParameterKey(), this.paramsToQueryUrl());
     }
   }
 }
