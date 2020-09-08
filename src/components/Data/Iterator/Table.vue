@@ -168,9 +168,6 @@ export default {
   methods: {
     retrieved () {
       this.showTable = this.loading || (this.pagination && this.pagination.totalItems !== 0) || this.query
-    },
-    keydownSearch() {
-      alert('Yolo')
     }
   },
   mounted() {
