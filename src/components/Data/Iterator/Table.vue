@@ -161,7 +161,7 @@ export default {
 
         this.queryTimeout = setTimeout(i => {
           this.load()
-        }, 100)
+        }, 300)
       }
     }
   },
