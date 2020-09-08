@@ -12,7 +12,7 @@
           />
       </slot>
       <slot :resource="data" name="main">
-        <q-form app v-model="drawable" fixed>
+        <q-form app v-model="drawable" fixed >
           <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
             <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
@@ -136,6 +136,7 @@
 <script>
 
 import { utils } from '../../mixins/utils'
+import { CloseOnEsc } from '../../mixins/CloseOnEsc'
 import { Helper } from '../../app/Helper'
 import { ResourceLocalization } from '../../mixins/ResourceLocalization'
 import Errors from '../../components/Errors'
@@ -143,6 +144,7 @@ import Errors from '../../components/Errors'
 export default {
   mixins: [ 
     utils,
+    CloseOnEsc,
     ResourceLocalization
   ],
   components: { 'errors': Errors },

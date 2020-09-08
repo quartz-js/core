@@ -70,6 +70,7 @@ import { Helper } from '../../app/Helper'
 import Errors from '../../components/Errors'
 import QBtn from '../../components/Components/QBtn'
 import QBtnInput from '../../components/Components/QBtnInput'
+import { CloseOnEsc } from '../../mixins/CloseOnEsc'
 
 export default {
   components: {
@@ -79,6 +80,7 @@ export default {
   },
   mixins: [ 
     LoadResource,
+    CloseOnEsc,
     ResourceLocalization,
     utils
   ],
