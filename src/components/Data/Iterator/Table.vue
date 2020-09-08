@@ -174,8 +174,6 @@ export default {
     }
   },
   mounted() {
-    this.query = this.$route.query.query;
-
     this.options = {
       multiSort: true,
       sortBy: this.pagination.sort.map(i => i.attribute),
