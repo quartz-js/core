@@ -1,6 +1,7 @@
 <script>
 
 import { utils } from '../../../mixins/utils'
+import { QueryHandler } from './QueryHandler'
 import { Helper } from '../../../app/Helper'
 import Remove from '../../Resource/Remove'
 import QText from '../../Show/Text'
@@ -12,6 +13,7 @@ export default {
   mixins: [
     utils,
     ResourceLocalization,
+    QueryHandler
   ],
   components: {
     QText,
@@ -37,16 +39,6 @@ export default {
     return {
       currentRowOpened: 0,
       showContent: true,
-      query: '',
-      rowsPerPageItems: [
-        5, 10, 25, 50, 100, 250, 500
-      ],
-      pagination: {
-        sort: [],
-        rowsPerPage: 5,
-        totalPages: 0,
-        page: 1
-      },
       selected: [],
       showRemoveSelectedDialog: false,
       manager: null,
@@ -66,24 +58,11 @@ export default {
   computed: {
   },
   created () {
-    this.reload();
     this.defineDefaultValue();
     this.manager = this.config;
     this.attributes = this.config.attributes;
     this.manager.sortAttributes();
     this.setHeaders();
-
-    if (this.config.getAttribute('created_at').canShow()) {
-      this.pagination.sort.push({
-        attribute: 'created_at',
-        descending: true
-      })
-    } else if (this.config.getAttribute('id').canShow()) {
-      this.pagination.sort.push({
-        attribute: 'id',
-        descending: true
-      })
-    }
 
     bus.$on(this.config.resourceEvent("reload"), data => {
       this.setHeaders();
@@ -164,48 +143,6 @@ export default {
       }
       this.$router.push(this.config.getRouteShow(resource));
     },
-    reload(){ 
-      var route = this.getEncodedParamsFromUrl();
-
-      route = this.decodeParams(route);
-
-      this.query = route.query;
-      this.pagination = route.pagination;
-    },
-    encodeParams (params) {
-      return btoa(JSON.stringify(params));
-    },
-    decodeParams (string) {
-      return JSON.parse(atob(string))
-    },
-    getEncodedParamsFromUrl (def) {
-      var string = this.$route.query[this.config.name];
-
-      if (!string) {
-        string = this.encodeParams(def ? def : this.paramsToUrl())
-      }
-
-      return string;
-
-    },
-    paramsToUrl() {
-      return {query: this.query, pagination: this.filterPaginationUrl(this.pagination)};
-    },
-    updateUrl() {
-      var push = Object.assign({}, this.$route.query);
-
-      push[this.config.name] = this.encodeParams(this.paramsToUrl());
-
-      // window.history.replaceState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
-
-      //this.$router.replace({query: push});
-    },
-    filterPaginationUrl(pagination) {
-      return _.pick(pagination, ['sort', 'page', 'rowsPerPage']);
-    },
-    getQuery () {
-      return this.config.getFinalQuery(this.query, this.manager.vars)
-    },
     retrieved () {
 
     },
@@ -221,13 +158,7 @@ export default {
 
       var manager = this.config.manager;
 
-      let params = {
-        include: '',
-        query: this.getQuery(),
-        show: this.pagination.rowsPerPage,
-        page: this.pagination.page,
-        sort: this.pagination.sort.map(i => (i.descending ? '-' : '') + i.attribute).join(','),
-      };
+      let params = this.paramsToApi();
 
       if (!force && _.isEqual(this.params, params)) {
         return;
@@ -243,10 +174,7 @@ export default {
 
         this.errors.search = null
 
-        this.pagination.totalPages = response.body.meta.pagination.total_pages;
-        this.pagination.page = response.body.meta.pagination.current_page;
-        this.pagination.totalItems = response.body.meta.pagination.total;
-        this.pagination.rowsPerPage = response.body.meta.pagination.per_page;
+        this.updateParamsFromResponseApi(response);
 
         var body = response.body;
 
@@ -257,7 +185,7 @@ export default {
           return new Promise((resolve) => {
             return setTimeout((i) => {
               this.response = response;
-              this.updateUrl();
+              this.pushHistory();
               resolve();
             }, 1)
           })
@@ -271,8 +199,7 @@ export default {
           this.errors.search = response.body.message;
         }
         
-        this.pagination.totalPages = 0;
-        this.pagination.page = 1;
+        this.updateParamsOnError();
 
         if (response.body) {
           this.response = response.body;
