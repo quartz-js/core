@@ -1,4 +1,11 @@
+/**
+ * Handle all url related issues
+ */
 export class Url {
+
+  /**
+   * Push the key+value into the url
+   */
   static updateQueryUrlParameter(key, value) {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
