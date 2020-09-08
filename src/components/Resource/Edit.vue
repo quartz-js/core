@@ -13,7 +13,7 @@
       </slot>
       <slot :resource="data" name="main">
         <q-form app v-model="drawer">
-          <div style='overflow-y:auto; max-height: 100%'>
+          <div style='overflow-y:auto; max-height: 100%' ref="content">
             <div class="content text-left" v-if="drawer">
               <h3 class='title'>{{ this.getResourceTitle(config) }} {{ data.id ? " - #" + data.id : null }}</h3>
               <p class='mt-3'>{{ this.getResourceDescription(config) }}</p>
@@ -146,6 +146,7 @@ export default {
         this.errors = [];
         this.drawer = false;
       }).catch(response => {
+        this.$refs.content.scrollTop = 0;
         Helper.handleResponse(response);
         
         this.errors = response.body.errors || response.body.message

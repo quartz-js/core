@@ -13,7 +13,7 @@
       </slot>
       <slot :resource="data" name="main">
         <q-form app v-model="drawable" fixed >
-          <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
+          <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%' ref='content'>
             <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
             <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
             <v-divider class='mb-45'></v-divider>
@@ -64,7 +64,7 @@
           </slot>
           <slot :resource="data" name="main">
             <q-form v-model="drawable" fixed temporary right width='1200' stateless>
-              <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%'>
+              <div class="content text-left" v-if="drawer" style='overflow-y:auto; max-height: 100%' ref="content">
                 <h3 class='title'>{{ this.getResourceTitle(internalConfig) }}</h3>
                 <p class='mt-3'>{{ this.getResourceDescription(internalConfig) }}</p>
                 <v-divider class='mb-45'></v-divider>
@@ -226,6 +226,7 @@ export default {
         this.drawer = false;
         this.load()
       }).catch(response => {
+        this.$refs.content.scrollTop = 0;
         Helper.handleResponse(response);
 
         this.errors = response.body.errors
