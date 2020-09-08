@@ -19,7 +19,7 @@
         <v-text-field
           id="search"
           type="search"
-          v-model="query" 
+          v-model="queryParams.query" 
           class="search py-0" 
           :placeholder="$t('$quartz.core.search-placeholder')" 
           :error-messages="errors.search"  
@@ -43,9 +43,9 @@
           :show-select="true"
           item-key="id"
           v-if="response && response.body"
-          :items-per-page="pagination.rowsPerPage"
-          :page.sync="pagination.page"
-          :server-items-length="pagination.totalItems"
+          :items-per-page="queryParams.rowsPerPage"
+          :page.sync="queryParams.page"
+          :server-items-length="queryParams.totalItems"
           :loading="loading"
           :headers-length="countColumns()"
           multi-sort
@@ -141,10 +141,10 @@ export default {
   watch: {
     options: {
       handler () {
-        this.pagination.rowsPerPage = this.options.itemsPerPage;
-        this.pagination.page = this.options.page
+        this.queryParams.rowsPerPage = this.options.itemsPerPage;
+        this.queryParams.page = this.options.page
 
-        this.pagination.sort = this.options.sortDesc.map((i, key) => {
+        this.queryParams.sort = this.options.sortDesc.map((i, key) => {
           return {
             descending: i,
             attribute: this.options.sortBy[key]
@@ -155,7 +155,7 @@ export default {
       },
       deep: true
     },
-    query: {
+    "queryParams.query": {
       handler () {
         clearTimeout(this.queryTimeout)
 
@@ -167,14 +167,14 @@ export default {
   },
   methods: {
     retrieved () {
-      this.showTable = this.loading || (this.pagination && this.pagination.totalItems !== 0) || this.query
+      this.showTable = this.loading || (this.queryParams && this.queryParams.totalItems !== 0) || this.queryParams.query
     }
   },
   mounted() {
     this.options = {
       multiSort: true,
-      sortBy: this.pagination.sort.map(i => i.attribute),
-      sortDesc: this.pagination.sort.map(i => i.descending)
+      sortBy: this.queryParams.sort.map(i => i.attribute),
+      sortDesc: this.queryParams.sort.map(i => i.descending)
     }
     this.load();
   }

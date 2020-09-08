@@ -49,6 +49,9 @@ export default {
         form: [],
         search: null
       },
+      rowsPerPageItems: [
+        5, 10, 25, 50, 100, 250, 500
+      ],
       timeout: null,
       loading: false,
       queryTimeout: null,

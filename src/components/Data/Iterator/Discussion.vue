@@ -62,7 +62,7 @@ export default {
   extends: Table,
   methods: {
     defineDefaultValue() {
-      this.pagination =  {
+      this.queryParams =  {
         sortBy: "id",
         descending: false,
         rowsPerPage: 25,
