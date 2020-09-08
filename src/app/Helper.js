@@ -10,8 +10,16 @@ export class Helper {
 
   static handleResponse(response)
   {
-     if (response instanceof Error) {
-        throw response
-      }
+    if (response instanceof Error) {
+      throw response
+    }
+
+    if (response.status === 500) {
+      response.body.errors = [
+        {
+          'message': response.body.message
+        }
+      ]
+    }
   }
 };
