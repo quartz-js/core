@@ -138,7 +138,7 @@ export var QueryHandler = {
 
       push[this.getQueryParameterKey()] = this.paramsToQueryUrl();
 
-      window.history.replaceState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
+      window.history.pushState(null, '', window.location.href.split("?")[0] + "?" + _.map(push, (val, key) => { return key+"="+val; }).join("&"));
     }
   }
 }
